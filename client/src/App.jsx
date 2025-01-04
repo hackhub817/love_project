@@ -1,9 +1,18 @@
-import { useState } from "react";
-
-import "./App.css";
+import Register from "./Pages/Auth/Register";
+import { Route, Routes } from "react-router-dom";
+import PageNotFound from "./Pages/PageNotFound";
 
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <>
+      <Routes>
+        {/* Add other routes here */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<>Coming Soon</>} />
+        <Route path="/*" element={<PageNotFound />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
