@@ -477,6 +477,22 @@ const verifyOTP = async (req, res, next) => {
   }
 };
 
+const verifyToken = async (req, res) => {
+  try {
+    // The authMiddleware already verified the token
+    // Just send success response
+    res.status(200).json({
+      success: true,
+      message: "Token is valid",
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: "Invalid token",
+    });
+  }
+};
+
 export {
   register,
   login,
@@ -487,4 +503,5 @@ export {
   resendOtp,
   forgotPassword,
   verifyOTP,
+  verifyToken,
 };

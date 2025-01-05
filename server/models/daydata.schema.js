@@ -5,8 +5,8 @@ const dayDataSchema = new mongoose.Schema({
     type: String,
     enum: [
       "Rose",
-      "Propose ",
-      "Chocolate ",
+      "Propose",
+      "Chocolate",
       "Teddy",
       "Promise",
       "Hug",
@@ -15,20 +15,12 @@ const dayDataSchema = new mongoose.Schema({
     ],
     required: true,
   },
-  message: {
-    type: String,
+  messages: {
+    type: [String], 
     required: true,
   },
-  heroSectionImage: {
-    type: String, // URL or file path for the hero section image
-    required: true,
-  },
-  image2: {
-    type: String, // URL or file path for the second image
-    required: true,
-  },
-  imageMemories: {
-    type: String, // URL or file path for the memories image
+  images: {
+    type: [String], 
     required: true,
   },
   needToTellSomething: {

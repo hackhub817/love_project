@@ -1,13 +1,11 @@
-import React, { useState, Fragment, useEffect } from "react";
+import  { useState, Fragment, useEffect } from "react";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import {
   registerUser,
-  loginUser,
-  logout,
+
   sendOtp,
-  resendOtp,
 } from "../api/Api";
 
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
@@ -37,7 +35,6 @@ const SignUpForm = () => {
   const [isOtp, setIsOtp] = useState(false);
   const [eye, setEye] = useState(true);
   const navigate = useNavigate();
-  const url = window.location.href;
   useEffect(() => {
     let interval;
 
@@ -54,7 +51,6 @@ const SignUpForm = () => {
   }, [timer]);
 
   // Parse the URL and extract the referral code
-  const params = new URLSearchParams(new URL(url).search);
 
   const [phone, setPhone] = useState("");
   const [isLoadingResendOtp, setIsLoadingResendOtp] = useState(false);
@@ -93,7 +89,7 @@ const SignUpForm = () => {
       fullName,
       confirmPassword,
       phoneNumber,
-      otp,
+      
     } = registerData;
     if (!userEmail || !userPassword || !fullName || !confirmPassword) {
       setLoaderActive(false);
@@ -131,8 +127,12 @@ const SignUpForm = () => {
         console.log(response);
 
         if (response?.success) {
+          // Store token and user data
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("user", JSON.stringify(response.user));
+
           setLoaderActive(false);
-          navigate("/");
+          navigate("/dashboard");
           setRegisterData({
             userEmail: "",
             userPassword: "",
