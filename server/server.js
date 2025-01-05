@@ -8,6 +8,7 @@ import cloudinary from "cloudinary";
 import morgan from "morgan";
 import http from "http";
 import userRoute from "./routes/user.routes.js";
+import dayDataRoute from "./routes/daydata.routes.js";
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -48,6 +49,7 @@ const connectDB = async () => {
 connectDB();
 
 app.use("/api/user", userRoute);
+app.use("/api/day-data", dayDataRoute);
 
 app.get("/", (req, res) => {
   res.send("API is running");

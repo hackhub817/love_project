@@ -89,3 +89,27 @@ export const verifyToken = async () => {
     throw error;
   }
 };
+
+export const uploadImages = async (formData) => {
+  try {
+    const response = await axiosInstance.post("/upload-images", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading images:", error);
+    throw error;
+  }
+};
+
+export const submitTeddyDayData = async (data) => {
+  try {
+    const response = await axiosInstance.post("/day-data", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting teddy day data:", error);
+    throw error;
+  }
+};
