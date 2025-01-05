@@ -2,6 +2,13 @@ import React, { useState, Fragment, useEffect } from "react";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  registerUser,
+  loginUser,
+  logout,
+  sendOtp,
+  resendOtp,
+} from "../api/Api";
 
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
@@ -25,7 +32,7 @@ const SocialLoginButton = () => (
 
 const SignUpForm = () => {
   const [loaderActive, setLoaderActive] = useState(false);
-  const [timer, setTimer] = useState(60); // Countdown starts from 60 seconds
+  const [timer, setTimer] = useState(60);
   const [showResendButton, setShowResendButton] = useState(false);
   const [isOtp, setIsOtp] = useState(false);
   const [eye, setEye] = useState(true);
@@ -36,7 +43,7 @@ const SignUpForm = () => {
 
     if (timer > 0) {
       interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1); // Decrease timer every second
+        setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
     } else if (timer === 0) {
       setShowResendButton(true); // Show resend button when timer hits 0
@@ -48,9 +55,7 @@ const SignUpForm = () => {
 
   // Parse the URL and extract the referral code
   const params = new URLSearchParams(new URL(url).search);
-  const referralCode = params.get("referralCode");
 
-  console.log("Referral Code:", referralCode);
   const [phone, setPhone] = useState("");
   const [isLoadingResendOtp, setIsLoadingResendOtp] = useState(false);
   const [registerData, setRegisterData] = useState({
@@ -58,7 +63,6 @@ const SignUpForm = () => {
     fullName: "",
     userPassword: "",
     confirmPassword: "",
-    referralCode: referralCode ? referralCode : "",
     phoneNumber: "",
     otp: "",
   });
@@ -88,7 +92,6 @@ const SignUpForm = () => {
       userPassword,
       fullName,
       confirmPassword,
-      referralCode,
       phoneNumber,
       otp,
     } = registerData;
@@ -123,32 +126,68 @@ const SignUpForm = () => {
       return toast.error("Password and confirm password must be same!");
     }
     if (isOtp) {
-      const response = await dispatch(createAccount(registerData));
+      try {
+        const response = await registerUser(registerData); // Call the API
+        console.log(response);
 
-      if (response?.payload?.success) {
+        if (response?.success) {
+          setLoaderActive(false);
+          navigate("/");
+          setRegisterData({
+            userEmail: "",
+            userPassword: "",
+            fullName: "",
+          });
+        } else {
+          setLoaderActive(false);
+          // Handle the case where response.success is false
+          console.error(
+            "Registration failed:",
+            response?.message || "Unknown error."
+          );
+          toast.error(
+            response?.message || "Registration failed. Please try again."
+          );
+        }
+      } catch (error) {
+        // Catch any errors thrown during the API call
         setLoaderActive(false);
-        navigate("/");
-        setRegisterData({
-          userEmail: "",
-          userPassword: "",
-          fullName: "",
-        });
-      } else {
-        setLoaderActive(false);
+
+        if (error.response) {
+          // The server responded with an error status
+          console.error("API Error:", error.response.data);
+          toast.error(
+            error.response.data.message ||
+              "An error occurred during registration."
+          );
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("Network Error:", error.request);
+          toast.error(
+            "Unable to connect to the server. Please check your network connection."
+          );
+        } else {
+          // Something unexpected happened
+          console.error("Unexpected Error:", error.message);
+          toast.error("An unexpected error occurred. Please try again.");
+        }
       }
     } else {
-      const response = await dispatch(registerOtpSend(registerData));
+      const response = await sendOtp(registerData);
+      console.log(response);
       setIsOtp(true);
       setTimer(60); // Start countdown at 60 seconds
       setShowResendButton(false);
-      if (response?.payload?.success) {
+      if (response?.status) {
         setLoaderActive(false);
+        console.log("OTP Send Successfully");
         toast.success("OTP Send Successfully");
       } else {
         setLoaderActive(false);
       }
     }
   };
+
   const resendOtp = async (e) => {
     e.preventDefault();
     setRegisterData({
@@ -168,11 +207,9 @@ const SignUpForm = () => {
       setIsLoadingResendOtp(false);
       return toast.error("Email is Invalid!");
     }
-    const response = await dispatch(
-      registerResendOtp({ userEmail: registerData.userEmail })
-    );
+    const response = await resendOtp({ userEmail: registerData.userEmail });
 
-    if (response?.payload?.success) {
+    if (response?.success) {
       setLoaderActive(false);
       setIsLoadingResendOtp(false);
       toast.success("Resent otp is done !!");
@@ -292,7 +329,7 @@ const SignUpForm = () => {
             />
           </div>
         </div>
-        <div className="w-full ">
+        {/* <div className="w-full ">
           <div className="flex flex-col mx-2 mb-6">
             <label
               htmlFor="referralCode"
@@ -310,7 +347,7 @@ const SignUpForm = () => {
               value={registerData?.referralCode}
             />
           </div>
-        </div>
+        </div> */}
         {isOtp && (
           <>
             <div className="w-full lg:w-1/2">
@@ -398,7 +435,7 @@ const Register = () => {
               <div className="flex items-center justify-center w-full h-full">
                 <div className="p-4 py-6 bg-white rounded-lg shadow-xl md:p-8">
                   <h2 className="mb-3 text-2xl font-bold text-indigo-900 ">
-                    Welcome to Refer Biz
+                    Welcome to Love Bird
                   </h2>
                   <div className="flex items-center mb-5">
                     <p className="mb-0 mr-2 opacity-50">

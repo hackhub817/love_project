@@ -3,7 +3,16 @@ import mongoose from "mongoose";
 const dayDataSchema = new mongoose.Schema({
   day: {
     type: String,
-    enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    enum: [
+      "Rose",
+      "Propose ",
+      "Chocolate ",
+      "Teddy",
+      "Promise",
+      "Hug",
+      "Kiss",
+      "Valentine",
+    ],
     required: true,
   },
   message: {

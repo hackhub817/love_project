@@ -16,7 +16,7 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ["USER", "ADMIN", "VENDOR"],
+    enum: ["USER", "ADMIN"],
     default: "USER",
   },
   userEmail: {
@@ -35,7 +35,6 @@ const userSchema = new Schema({
   },
   referralCode: {
     type: String,
-    unique: true,
   },
   createdAt: {
     type: Date,
@@ -43,7 +42,7 @@ const userSchema = new Schema({
   },
   isPaymentDone: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   otp: {
     type: Number,
@@ -52,7 +51,7 @@ const userSchema = new Schema({
     type: Date,
   },
   selectedDays: {
-    type: [String], // Array of strings
+    type: [String],
     enum: [
       "Rose",
       "Propose ",
@@ -68,7 +67,7 @@ const userSchema = new Schema({
   dayData: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "DayData", // Reference to the DayData model
+      ref: "DayData",
     },
   ],
 });
