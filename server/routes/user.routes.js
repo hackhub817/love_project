@@ -11,6 +11,7 @@ import {
   resendOtp,
   forgotPassword,
   verifyOTP,
+  verifyToken,
 } from "../controllers/user.controller.js";
 
 router.post("/sent-otp", sentOtp);
@@ -22,5 +23,6 @@ router.get("/get-user/:id", isLoggedIn, getUserById);
 router.get("/", isLoggedIn, profile);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", verifyOTP);
+router.get("/verify-token", verifyToken);
 
 export default router;

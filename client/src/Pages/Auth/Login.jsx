@@ -71,8 +71,11 @@ const AuthForm = () => {
       const response = await loginUser(loginData);
       console.log(response);
       if (response?.success) {
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+
         setLoaderActive(false);
-        navigate(-1);
+        navigate("/dashboard");
         setLoginData({
           userEmail: "",
           userPassword: "",

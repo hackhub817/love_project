@@ -8,6 +8,7 @@ import cloudinary from "cloudinary";
 import morgan from "morgan";
 import http from "http";
 import userRoute from "./routes/user.routes.js";
+import dayDataRoute from "./routes/daydata.routes.js";
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -25,13 +26,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:5175",
-      process.env.FRONTEND_URL,
-      process.env.ADMIN_FRONTEND_URL,
-    ],
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
   })
 );
@@ -54,6 +49,7 @@ const connectDB = async () => {
 connectDB();
 
 app.use("/api/user", userRoute);
+app.use("/api/day-data", dayDataRoute);
 
 app.get("/", (req, res) => {
   res.send("API is running");
