@@ -1,5 +1,6 @@
 import cloudinary from "cloudinary";
 import DayData from "../models/daydata.schema.js";
+import User from "../models/user.schema.js";
 import fs from "fs/promises";
 import CustomError from "../utils/error.utils.js";
 
@@ -71,13 +72,17 @@ export const createDayData = async (req, res, next) => {
     });
 
     // Update user's dayData array
-    await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
         $push: { dayData: dayData._id },
       },
       { new: true }
     );
+
+    if (!updatedUser) {
+      return next(new CustomError("User not found", 404));
+    }
 
     res.status(201).json({
       success: true,
