@@ -1,9 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { submitTeddyDayData } from "../../Pages/api/Api";
+import { submitTeddyDayData, uploadImages } from "../../Pages/api/Api";
+import { motion } from "framer-motion";
+
+const PreviewCard = ({ title, children, delay = 0 }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay }}
+      className="bg-white rounded-xl shadow-lg p-6 mb-8"
+    >
+      <h2 className="text-2xl font-bold text-indigo-900 mb-4">{title}</h2>
+      {children}
+    </motion.div>
+  );
+};
 
 const TeddyDay = () => {
   const [loading, setLoading] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [formData, setFormData] = useState({
     topImages: [],
     prettyMessage: "",
@@ -11,7 +28,13 @@ const TeddyDay = () => {
     needToSay: "",
   });
 
-  const handleImageChange = async (e, type) => {
+  // Store temporary image files before upload
+  const [tempImages, setTempImages] = useState({
+    topImages: [],
+    meetingImages: [],
+  });
+
+  const handleImageChange = (e, type) => {
     const files = Array.from(e.target.files);
 
     if (files.length > 3) {
@@ -19,36 +42,25 @@ const TeddyDay = () => {
       return;
     }
 
-    const formData = new FormData();
-    files.forEach((file) => {
-      formData.append("images", file);
-    });
+    // Create temporary URLs for preview
+    const tempUrls = files.map((file) => URL.createObjectURL(file));
+    setTempImages((prev) => ({
+      ...prev,
+      [type]: files,
+    }));
 
-    try {
-      setLoading(true);
-      // You'll need to implement this API endpoint
-      const response = await uploadImages(formData);
-
-      setFormData((prev) => ({
-        ...prev,
-        [type]: response.imageUrls,
-      }));
-      toast.success("Images uploaded successfully!");
-    } catch (error) {
-      toast.error("Failed to upload images");
-    } finally {
-      setLoading(false);
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [type]: tempUrls,
+    }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handlePreview = () => {
     if (
       formData.topImages.length === 0 ||
       formData.meetingImages.length === 0
     ) {
-      toast.error("Please upload all required images");
+      toast.error("Please select all required images");
       return;
     }
 
@@ -57,35 +69,201 @@ const TeddyDay = () => {
       return;
     }
 
+    setShowPreview(true);
+  };
+
+  const handleSubmit = async () => {
     try {
       setLoading(true);
+
+      // Upload top images
+      const topImagesFormData = new FormData();
+      tempImages.topImages.forEach((file) => {
+        topImagesFormData.append("images", file);
+      });
+      const topImagesResponse = await uploadImages(topImagesFormData);
+
+      // Upload meeting images
+      const meetingImagesFormData = new FormData();
+      tempImages.meetingImages.forEach((file) => {
+        meetingImagesFormData.append("images", file);
+      });
+      const meetingImagesResponse = await uploadImages(meetingImagesFormData);
+
+      // Submit all data
       await submitTeddyDayData({
         day: "Teddy",
         messages: [formData.prettyMessage, formData.needToSay],
-        images: [...formData.topImages, ...formData.meetingImages],
+        images: [
+          ...topImagesResponse.imageUrls,
+          ...meetingImagesResponse.imageUrls,
+        ],
       });
 
       toast.success("Teddy Day data submitted successfully!");
-      // Reset form
+
+      // Reset form and preview
       setFormData({
         topImages: [],
         prettyMessage: "",
         meetingImages: [],
         needToSay: "",
       });
-    } catch (error) {
+      setTempImages({
+        topImages: [],
+        meetingImages: [],
+      });
+      setShowPreview(false);
+    } catch (err) {
+      console.error("Submit error:", err);
       toast.error("Failed to submit data");
     } finally {
       setLoading(false);
     }
   };
 
+  if (showPreview) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-pink-50 to-indigo-50 py-12">
+        <div className="max-w-4xl mx-auto px-4">
+          {/* Header with Teddy Bear */}
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <div className="w-32 h-32 mx-auto mb-4">
+              <img
+                src="/teddy-bear.png"
+                alt="Teddy Bear"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <h1 className="text-4xl font-bold text-indigo-900 mb-2">
+              You're my favorite teddy bear
+            </h1>
+            <p className="text-gray-600">Preview your special moments</p>
+          </motion.div>
+
+          {/* Top Images Section */}
+          <PreviewCard title="Our Special Moments" delay={0.2}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {formData.topImages.map((url, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.2 }}
+                  className="aspect-square rounded-lg overflow-hidden shadow-md"
+                >
+                  <img
+                    src={url}
+                    alt={`Special moment ${idx + 1}`}
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </PreviewCard>
+
+          {/* Pretty Message Section */}
+          <PreviewCard title="My Heart Says..." delay={0.4}>
+            <div className="bg-pink-50 p-6 rounded-lg border-2 border-pink-200">
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="text-gray-800 whitespace-pre-wrap text-lg italic"
+              >
+                "{formData.prettyMessage}"
+              </motion.p>
+            </div>
+          </PreviewCard>
+
+          {/* First Meeting Section */}
+          <PreviewCard title="When We First Met" delay={0.6}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {formData.meetingImages.map((url, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.2 }}
+                  className="aspect-square rounded-lg overflow-hidden shadow-md"
+                >
+                  <img
+                    src={url}
+                    alt={`Meeting moment ${idx + 1}`}
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </PreviewCard>
+
+          {/* Need to Say Section */}
+          <PreviewCard title="Need to Tell You..." delay={0.8}>
+            <div className="bg-indigo-50 p-6 rounded-lg border-2 border-indigo-200">
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="text-gray-800 whitespace-pre-wrap text-lg"
+              >
+                {formData.needToSay}
+              </motion.p>
+            </div>
+          </PreviewCard>
+
+          {/* Action Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="flex justify-end gap-4 mt-8"
+          >
+            <button
+              onClick={() => setShowPreview(false)}
+              className="px-6 py-3 text-indigo-600 border-2 border-indigo-600 rounded-full hover:bg-indigo-50 transition-colors duration-300"
+            >
+              Edit
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="px-6 py-3 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors duration-300 disabled:bg-gray-400 flex items-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <span>Submitting</span>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                </>
+              ) : (
+                "Submit"
+              )}
+            </button>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold text-indigo-900 mb-6">Teddy Day</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Top Images */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handlePreview();
+        }}
+        className="space-y-6"
+      >
+        {/* Form fields remain the same */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Upload Top Images (Max 3)
@@ -114,7 +292,6 @@ const TeddyDay = () => {
           </div>
         </div>
 
-        {/* Pretty Message */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Pretty Message
@@ -139,7 +316,6 @@ const TeddyDay = () => {
           </p>
         </div>
 
-        {/* Meeting Images */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Meeting for the First Time Images (Max 3)
@@ -168,7 +344,6 @@ const TeddyDay = () => {
           </div>
         </div>
 
-        {/* Need to Say */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
             Need to Say
@@ -189,14 +364,9 @@ const TeddyDay = () => {
 
         <button
           type="submit"
-          disabled={loading}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          {loading ? (
-            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          ) : (
-            "Submit"
-          )}
+          Preview
         </button>
       </form>
     </div>

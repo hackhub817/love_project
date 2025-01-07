@@ -19,14 +19,13 @@ const DashboardHome = () => {
           return;
         }
 
-        // Verify token
         await verifyToken();
 
         if (user?.fullName) {
           setUserName(user.fullName);
         }
-      } catch (error) {
-        // If token verification fails, redirect to login
+      } catch (err) {
+        console.error("Session validation error:", err);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         navigate("/login");
@@ -46,7 +45,8 @@ const DashboardHome = () => {
         toast.success("Logged out successfully!");
         navigate("/login");
       }
-    } catch (error) {
+    } catch (err) {
+      console.error("Logout error:", err);
       toast.error("Error logging out. Please try again.");
     } finally {
       setLoading(false);

@@ -8,14 +8,14 @@ const Sidebar = () => {
   const location = useLocation();
 
   const valentineDays = [
-    { name: "Rose Day", path: "rose-day" },
-    { name: "Propose Day", path: "propose-day" },
-    { name: "Chocolate Day", path: "chocolate-day" },
-    { name: "Teddy Day", path: "teddy-day" },
-    { name: "Promise Day", path: "promise-day" },
-    { name: "Hug Day", path: "hug-day" },
-    { name: "Kiss Day", path: "kiss-day" },
-    { name: "Valentine Day", path: "valentine-day" },
+    { name: "Rose Day", path: "/dashboard/rose-day" },
+    { name: "Propose Day", path: "/dashboard/propose-day" },
+    { name: "Chocolate Day", path: "/dashboard/chocolate-day" },
+    { name: "Teddy Day", path: "/dashboard/teddy-day" },
+    { name: "Promise Day", path: "/dashboard/promise-day" },
+    { name: "Hug Day", path: "/dashboard/hug-day" },
+    { name: "Kiss Day", path: "/dashboard/kiss-day" },
+    { name: "Valentine Day", path: "/dashboard/valentine-day" },
   ];
 
   return (
@@ -64,9 +64,7 @@ const Sidebar = () => {
             key={day.name}
             to={day.path}
             className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-indigo-100 rounded-md ${
-              location.pathname === `/dashboard/${day.path}`
-                ? "bg-indigo-100"
-                : ""
+              location.pathname === day.path ? "bg-indigo-100" : ""
             }`}
           >
             <div>{idx + 1}</div>
