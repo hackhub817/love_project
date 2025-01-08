@@ -11,21 +11,22 @@ import couple1 from "../../assets/hug/couple1.jpg";
 import couple2 from "../../assets/hug/couple2.jpg";
 import couple3 from "../../assets/hug/couple3.jpg";
 import couple4 from "../../assets/hug/couple4.jpg";
+import banner from "../../assets/hug/banner.png";
 export const HugDay = () => {
   return (
     <div
-      className="w-full  bg-cover bg-center"
+      className="w-full  bg-cover bg-center "
       style={{ backgroundImage: `url(${bgShape})` }}
     >
-      <section className="relative">
-        <div className="max-w-4xl mx-auto flex items-center  relative">
+      <section className="relative w-full">
+        <div className="max-w-4xl mx-auto flex items-center  relative w-full">
           {/* Hug Image */}
           <div className="relative z-10">
             <img src={hug} alt="Hug Image" className="lg:h-64 sm:h-64 h-32" />
           </div>
 
           {/* Note Image */}
-          <div className="absolute z-0 lg:left-96 sm:left-96 left-1/2 transform -translate-x-1/2">
+          <div className="absolute z-0 lg:left-96 sm:left-96 left-1/2 transform -translate-x-1/2 ">
             <img src={notes} alt="Notes Image" className="lg:h-32 sm:h-24 " />
           </div>
         </div>
@@ -36,6 +37,51 @@ export const HugDay = () => {
           <div>Happy Hug Day</div>
         </div>
       </section>
+      <section className="my-20">
+        <div className="max-w-3xl mx-auto relative">
+          {/* Banner Image */}
+          <img src={banner} alt="Banner" className="w-full" />
+
+          {/* Overlay Images */}
+          {/* Top Left */}
+          <img
+            src={couple1}
+            alt="Overlay 1"
+            className="absolute top-10 left-[150px] w-40 h-40"
+          />
+          {/* Top Center */}
+          <img
+            src={couple1}
+            alt="Overlay 2"
+            className="absolute top-10 right-[70px] transform -translate-x-1/2 w-40 h-40"
+          />
+          {/* Top Right */}
+          <img
+            src={couple1}
+            alt="Overlay 3"
+            className="absolute top-[190px] right-4 w-28 h-28"
+          />
+          {/* Bottom Left */}
+          <img
+            src={couple1}
+            alt="Overlay 4"
+            className="absolute bottom-[170px] left-5 w-28 h-28"
+          />
+          {/* Bottom Center */}
+          <img
+            src={couple1}
+            alt="Overlay 5"
+            className="absolute bottom-2 left-[230px] transform -translate-x-1/2 w-44 h-40"
+          />
+          {/* Bottom Right */}
+          <img
+            src={couple1}
+            alt="Overlay 6"
+            className="absolute bottom-3 right-[150px] w-44 h-40"
+          />
+        </div>
+      </section>
+
       <section>
         <div className="max-w-4xl mx-auto sm:p-10 p-4">
           <div className="w-full bg-[#F5B98D] flex items-center ">
