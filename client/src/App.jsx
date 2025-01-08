@@ -3,12 +3,14 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { HugDay } from "./components/days/HugDay";
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/hug" element={<HugDay />} />
       <Route
         path="/dashboard/*"
         element={
