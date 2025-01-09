@@ -18,7 +18,7 @@ export const HugDay = () => {
       className="w-full  bg-cover bg-center "
       style={{ backgroundImage: `url(${bgShape})` }}
     >
-      <section className="relative w-full">
+      <section className="relative w-full lg:block sm:block hidden">
         <div className="max-w-4xl mx-auto flex items-center  relative w-full">
           {/* Hug Image */}
           <div className="relative z-10">
