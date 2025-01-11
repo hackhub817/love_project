@@ -6,6 +6,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { HugDay } from "./components/days/HugDay";
 import { ChocolateDay } from "./components/days/Chocolate";
 import { Teddy } from "./components/days/Teddy";
+import { Demo } from "./components/ui/Demo";
+import { KissDay } from "./components/days/KissDay";
 function App() {
   return (
     <Routes>
@@ -14,6 +16,8 @@ function App() {
       <Route path="/hug" element={<HugDay />} />
       <Route path="/chocolate" element={<ChocolateDay />} />
       <Route path="/teddy" element={<Teddy />} />
+      <Route path="/demo" element={<Demo />} />
+      <Route path="/kiss" element={<KissDay />} />
       <Route
         path="/dashboard/*"
         element={

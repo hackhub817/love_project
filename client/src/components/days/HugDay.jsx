@@ -37,50 +37,6 @@ export const HugDay = () => {
           <div>Happy Hug Day</div>
         </div>
       </section>
-      <section className="my-20">
-        <div className="max-w-3xl mx-auto relative">
-          {/* Banner Image */}
-          <img src={banner} alt="Banner" className="w-full" />
-
-          {/* Overlay Images */}
-          {/* Top Left */}
-          <img
-            src={couple1}
-            alt="Overlay 1"
-            className="absolute top-10 left-[150px] w-40 h-40"
-          />
-          {/* Top Center */}
-          <img
-            src={couple1}
-            alt="Overlay 2"
-            className="absolute top-10 right-[70px] transform -translate-x-1/2 w-40 h-40"
-          />
-          {/* Top Right */}
-          <img
-            src={couple1}
-            alt="Overlay 3"
-            className="absolute top-[190px] right-4 w-28 h-28"
-          />
-          {/* Bottom Left */}
-          <img
-            src={couple1}
-            alt="Overlay 4"
-            className="absolute bottom-[170px] left-5 w-28 h-28"
-          />
-          {/* Bottom Center */}
-          <img
-            src={couple1}
-            alt="Overlay 5"
-            className="absolute bottom-2 left-[230px] transform -translate-x-1/2 w-44 h-40"
-          />
-          {/* Bottom Right */}
-          <img
-            src={couple1}
-            alt="Overlay 6"
-            className="absolute bottom-3 right-[150px] w-44 h-40"
-          />
-        </div>
-      </section>
 
       <section>
         <div className="max-w-4xl mx-auto sm:p-10 p-4">
@@ -155,7 +111,6 @@ export const HugDay = () => {
           </div>
         </div>
       </section>
-      {/* Your content goes here */}
     </div>
   );
 };

@@ -53,7 +53,7 @@ export const Teddy = () => {
             </div>
           </div>
         </section>
-        <section className="max-w-4xl mx-auto mt-5">
+        <section className="max-w-4xl mx-auto mt-5 sm:px-4">
           <div className="bg-[#483F2C] h-auto grid grid-cols-3 gap-10 ">
             <img
               src={couple1}
@@ -72,14 +72,14 @@ export const Teddy = () => {
             />
           </div>
         </section>
-        <section className="max-w-4xl mx-auto mt-5 relative">
+        <section className="max-w-4xl mx-auto mt-5 relative sm:px-6">
           <div className="flex items-center">
             {/* Background Box */}
-            <div className="bg-[#483F2C] h-72 rounded-[40px] relative z-10 p-12 -mr-10">
-              <div className="text-2xl text-center text-white mb-2">
+            <div className="bg-[#483F2C] lg:h-72 sm:h-64 h-52  rounded-[40px] relative z-10 lg:p-12 sm:p-12 p-6 pl-3 -mr-10">
+              <div className="text-2xl text-center text-white ">
                 Happy Teddy Day!
               </div>
-              <div className="text-lg text-white">
+              <div className="lg:text-lg sm:text-lg text-sm text-white">
                 You're my favorite teddy bear. You're not just my
                 boyfriend/girlfriend, you're my favorite cuddly buddy! 🐻❤️
                 Every moment with you feels like a warm hug. I love you more
@@ -91,46 +91,46 @@ export const Teddy = () => {
             <img
               src={sit}
               alt="Image 1"
-              className="w-full h-auto object-cover relative z-20 -ml-24"
+              className="lg:w-full lg:h-auto sm:h-64 h-52 object-cover relative z-20 -ml-24"
             />
           </div>
         </section>
-        <section className="max-w-4xl mx-auto mt-5 p-2  ">
+        <section className="max-w-4xl mx-auto mt-5 sm:px-5  ">
           <div className="flex items-center">
             <img
               src={loveteddy}
               alt="Image 1"
-              className=" h-52 object-cover relative z-20 -ml-10"
+              className="lg:h-52 sm:h-44 h-24 object-cover relative z-20 lg:-ml-10 sm:-ml-10"
             />
             <img
               src={love}
               alt="Image 1"
-              className="w-44 h-44  object-cover relative z-20 -ml-10"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-20   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
             <img
               src={love}
               alt="Image 1"
-              className="w-44 h-44 object-cover relative z-20 "
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-20   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
             <img
               src={love}
               alt="Image 1"
-              className="w-44 h-44  object-cover relative z-20 "
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-20   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
             <img
               src={loveteddy2}
               alt="Image 1"
-              className="h-52 object-cover relative z-20 -ml-10"
+              className="lg:h-52 sm:h-44 h-24 object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
           </div>
         </section>
-        <section className="max-w-4xl mx-auto mt-5 p-2 relative">
+        <section className="max-w-4xl mx-auto mt-5 px-2 relative">
           <div className="flex items-center relative">
             {/* Ballon Image */}
             <img
               src={ballon}
               alt="Image 1"
-              className="h-96 mb-10 object-cover relative z-10 -mr-40"
+              className="lg:h-96 sm:h-72 h-44 lg:mb-10 sm:mb-10 mb-28 object-cover relative z-10 lg:-mr-40 sm:-mr-40 -mr-10"
             />
 
             {/* Wall Image */}
@@ -138,41 +138,41 @@ export const Teddy = () => {
               <img
                 src={wall}
                 alt="Wall Image"
-                className="h-full w-[850px] object-cover relative  "
+                className="lg:h-full sm:h-56 h-32 lg:w-[850px] sm:w-[550px] w-[300px] object-cover relative  "
               />
 
               {/* Three Smaller Images */}
-              <div className="absolute top-10 left-32 w-full flex gap-10 -mt-5 z-20">
+              <div className="absolute top-10 lg:left-32 sm:left-32 left-8 w-full flex lg:gap-10 sm:gap-10 gap-2 -mt-5 z-20">
                 <img
                   src={couple1}
                   alt="Small Image 1"
-                  className="h-24 w-24  border-4 border-white border-b-[14px] shadow-md"
+                  className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-14 w-14   border-4 border-white border-b-[14px] shadow-md"
                 />
                 <img
                   src={couple1}
                   alt="Small Image 2"
-                  className="h-24 w-24  border-4 border-white border-b-[14px] shadow-md"
+                  className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-14 w-14   border-4 border-white border-b-[14px] shadow-md"
                 />
                 <img
                   src={couple1}
                   alt="Small Image 3"
-                  className="h-24 w-24  border-4 border-white border-b-[14px] shadow-md"
+                  className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-14 w-14   border-4 border-white border-b-[14px] shadow-md"
                 />
               </div>
             </div>
           </div>
         </section>
-        <section className="max-w-4xl mx-auto mt-5 p-2 relative">
+        <section className="max-w-4xl mx-auto  px-2 relative">
           <div className="flex items-center relative">
             {/* Hand Image */}
             <img
               src={hand}
               alt="Image 1"
-              className="h-64 object-cover relative z-20 ml-20"
+              className="lg:h-64 sm:h-48 h-32 object-cover relative z-20 lg:ml-20 sm:ml-32"
             />
 
             {/* BG2 Image */}
-            <div className="relative w-[550px] h-60">
+            <div className="relative lg:w-[550px] sm:w-[450px] w-[300px] px-2 lg:h-60 sm:h-60 h-48 ">
               <img
                 src={bg2}
                 alt="Background Image"
@@ -182,7 +182,7 @@ export const Teddy = () => {
               {/* Text Overlay */}
               <div className="absolute inset-0 flex items-center justify-center text-center text-white p-4">
                 <div>
-                  <p className="text-lg mt-2">
+                  <p className="lg:text-lg sm:text-base text-xs font-semibold mt-2">
                     All our adventures together, from silly movie nights to
                     exploring new places, feel like the best cuddles with my
                     favorite teddy bear. 🐻❤️ You know, I feel like I've found
