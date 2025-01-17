@@ -45,7 +45,7 @@ export const KissDay = () => {
                   <img
                     src={couple}
                     alt=""
-                    className="absolute lg:left-[80px] sm:left-[80px] left-[40px] top-[1px] lg:h-[230px] lg:w-[174px] h-[110px] w-[90px] sm:h-[230px] sm:w-[174px]"
+                    className="absolute lg:left-[80px] sm:left-[80px] left-[40px] top-[1px] lg:h-[230px] lg:w-[174px] h-[110px] w-[90px] sm:h-[230px] sm:w-[174px] "
                   />
                   <img
                     src={couple}
@@ -55,7 +55,7 @@ export const KissDay = () => {
                   <img
                     src={couple}
                     alt=""
-                    className="absolute lg:left-[590px] sm:left-[590px] lg:h-[230px] lg:w-[174px] sm:h-[230px] sm:w-[172px] h-[113px] w-[85px] top-[1px] left-[330px]"
+                    className="absolute lg:left-[590px] sm:left-[590px] lg:h-[230px] lg:w-[174px] sm:h-[230px] sm:w-[172px] h-[113px] w-[85px] top-[1px] left-[330px] "
                   />
                 </div>
               </div>

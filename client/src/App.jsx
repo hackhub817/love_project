@@ -8,6 +8,7 @@ import { ChocolateDay } from "./components/days/Chocolate";
 import { Teddy } from "./components/days/Teddy";
 import { Demo } from "./components/ui/Demo";
 import { KissDay } from "./components/days/KissDay";
+import { Kiss } from "./components/days/Kiss";
 function App() {
   return (
     <Routes>
@@ -18,6 +19,7 @@ function App() {
       <Route path="/teddy" element={<Teddy />} />
       <Route path="/demo" element={<Demo />} />
       <Route path="/kiss" element={<KissDay />} />
+      <Route path="/kissDay" element={<Kiss />} />
       <Route
         path="/dashboard/*"
         element={
