@@ -3,13 +3,17 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import HugDay from "./components/days/HugDay";
+import { HugDay } from "./components/days/HugDay";
+import { ChocolateDay } from "./components/days/Chocolate";
+import { Teddy } from "./components/days/Teddy";
+import { Demo } from "./components/ui/Demo";
+import { KissDay } from "./components/days/KissDay";
+import { Kiss } from "./components/days/Kiss";
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/hug" element={<HugDay />} />
       <Route
         path="/dashboard/*"
         element={
