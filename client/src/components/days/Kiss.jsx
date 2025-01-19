@@ -8,6 +8,7 @@ import message from "../../assets/kiss/message.png";
 import couple2 from "../../assets/hug/couple2.jpg";
 import dil from "../../assets/kiss/dil.png";
 import love from "../../assets/kiss/lovelove.png";
+import Ballpit from "../../blocks/Backgrounds/Ballpit/Ballpit";
 
 import img from "../../assets/kiss/img-2.png";
 import kissfooter from "../../assets/kiss/kissfooter.png";
@@ -71,7 +72,6 @@ export const Kiss = () => {
         }}
       ></div>
       <div className="absolute inset-0 bg-white opacity-[.55]"></div>
-
       <section className="max-w-4xl mx-auto relative z-10">
         {" "}
         {/* Add z-10 to place above the overlay */}
@@ -138,6 +138,23 @@ export const Kiss = () => {
           />
         </div>
       </section>
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          minHeight: "500px",
+          maxHeight: "500px",
+          width: "100%",
+        }}
+      >
+        <Ballpit
+          count={150}
+          gravity={0.7}
+          friction={0.8}
+          wallBounce={0.95}
+          followCursor={true}
+        />
+      </div>
     </div>
   );
 };

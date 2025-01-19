@@ -9,6 +9,12 @@ import butterfly from "../../assets/kisss/butterfly.png";
 import couple from "../../assets/hug/couple1.jpg";
 import couple2 from "../../assets/hug/couple2.jpg";
 import ribbon from "../../assets/kisss/ribbon.png";
+import React from "react";
+import {
+  TextRevealCard,
+  TextRevealCardDescription,
+  TextRevealCardTitle,
+} from "../ui/text-reveal-card";
 
 export const ProposeDay = () => {
   const [loading, setLoading] = useState(true);
@@ -78,6 +84,19 @@ export const ProposeDay = () => {
             </div>
           </div>
         </section>
+        <section className="py-6">
+          <div className="flex items-center justify-center bg-[#CDBEE9] border-white border-4  rounded-2xl w-full">
+            <TextRevealCard
+              text="Secret Message"
+              revealText="I Love You My Love"
+              className="bg-transparent"
+            >
+              <TextRevealCardTitle className="text-gray-500 font-semibold text-xl">
+                Please Hover on the to know Secret Message
+              </TextRevealCardTitle>
+            </TextRevealCard>
+          </div>
+        </section>
         <section className="mt-10">
           <div className="grid grid-cols-3 relative">
             {promiseData?.images.slice(0, 3).map((imageUrl, idx) => (
@@ -138,6 +157,23 @@ export const ProposeDay = () => {
             <img src={butterfly} alt="" className="h-10 w-10" />
           </div>
         </div>
+      </div>
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          minHeight: "500px",
+          maxHeight: "500px",
+          width: "100%",
+        }}
+      >
+        <Ballpit
+          count={200}
+          gravity={0.7}
+          friction={0.8}
+          wallBounce={0.95}
+          followCursor={true}
+        />
       </div>
     </div>
   );

@@ -6,11 +6,14 @@ import frame2 from "../../assets/Chocolate/chocolateFrame.png";
 import chocoBack from "../../assets/Chocolate/chocoBack.png";
 import bottomShape from "../../assets/Chocolate/bottom_shape.png";
 import cir from "../../assets/Chocolate/cir.png";
+import couple3 from "../../assets/hug/couple3.jpg";
+import RollingGallery from "../../blocks/Components/RollingGallery/RollingGallery";
+import Marquee from "../../components/ui/marquee";
 
 export const ChocolateDay = () => {
   return (
     <div className="bg-[#a97e75] h-auto">
-      <div className="max-w-4xl mx-auto">
+      <div className=" ">
         <div
           className="bg-cover bg-center"
           style={{ backgroundImage: `url(${chocoBack})` }}
@@ -28,7 +31,7 @@ export const ChocolateDay = () => {
               </div>
             </div>
           </section>
-          <section className="mt-20">
+          <section className=" max-w-4xl mx-auto mt-20">
             <div className="relative flex justify-center items-center h-64">
               {/* First Image */}
               <img
@@ -45,18 +48,15 @@ export const ChocolateDay = () => {
               />
             </div>
           </section>
-          <section className=" mt-20">
-            <div className="flex justify-center items-center mt-8">
-              {/* Container for the images */}
+          <section className="max-w-6xl mx-auto mt-20">
+            {/* <div className="flex justify-center items-center mt-8">
               <div className="relative">
-                {/* Bottom Image */}
                 <img
                   src={cir}
                   alt="Bottom"
                   className="lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[120px] h-[120px] "
                 />
 
-                {/* Top Image */}
                 <img
                   src={love}
                   alt="Top"
@@ -64,14 +64,12 @@ export const ChocolateDay = () => {
                 />
               </div>
               <div className="relative">
-                {/* Bottom Image */}
                 <img
                   src={cir}
                   alt="Bottom"
                   className="lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[120px] h-[120px] "
                 />
 
-                {/* Top Image */}
                 <img
                   src={love}
                   alt="Top"
@@ -79,14 +77,12 @@ export const ChocolateDay = () => {
                 />
               </div>
               <div className="relative">
-                {/* Bottom Image */}
                 <img
                   src={cir}
                   alt="Bottom"
                   className="lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[120px] h-[120px] "
                 />
 
-                {/* Top Image */}
                 <img
                   src={love}
                   alt="Top"
@@ -94,6 +90,19 @@ export const ChocolateDay = () => {
                 />
               </div>
             </div>
+            <RollingGallery autoplay={true} pauseOnHover={true} /> */}
+            <Marquee pauseOnHover className="[--duration:20s]">
+              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+
+              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+            </Marquee>
+            <Marquee reverse pauseOnHover className="[--duration:20s]">
+              {" "}
+              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+            </Marquee>
           </section>
           <section className="mt-20">
             <div className="flex items-center justify-center p-2 ">

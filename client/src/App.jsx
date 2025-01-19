@@ -3,12 +3,12 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { HugDay } from "./components/days/HugDay";
 import { ChocolateDay } from "./components/days/Chocolate";
 import { Teddy } from "./components/days/Teddy";
 import { Demo } from "./components/ui/Demo";
 import { ProposeDay } from "./components/days/Propose";
 import { Kiss } from "./components/days/Kiss";
+import { HugDay } from "./components/days/Hug";
 
 function App() {
   return (

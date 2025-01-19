@@ -17,13 +17,12 @@ const KissDay = () => {
   const [loading, setLoading] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [formData, setFormData] = useState({
-    upperImage: [], // For 1 upper image
-    middleImages: [], // For 3 middle images
-    lowerImage: [], // For 1 lower image
+    upperImage: [],
+    middleImages: [],
+    lowerImage: [],
     message: "",
   });
 
-  // Store temporary image files
   const [tempImages, setTempImages] = useState({
     upperImage: [],
     middleImages: [],

@@ -12,13 +12,15 @@ import couple2 from "../../assets/hug/couple2.jpg";
 import couple3 from "../../assets/hug/couple3.jpg";
 import couple4 from "../../assets/hug/couple4.jpg";
 import banner from "../../assets/hug/banner.png";
+import love_ballon from "../../assets/hug/love_ballon.png";
+
 export const HugDay = () => {
   return (
     <div
       className="w-full  bg-cover bg-center "
       style={{ backgroundImage: `url(${bgShape})` }}
     >
-      <section className="relative w-full lg:block sm:block hidden">
+      <section className="relative  w-full lg:block sm:block hidden">
         <div className="max-w-4xl mx-auto flex items-center  relative w-full">
           {/* Hug Image */}
           <div className="relative z-10">
@@ -38,7 +40,68 @@ export const HugDay = () => {
         </div>
       </section>
       <section>
-        <div className="max-w-4xl mx-auto sm:p-10 p-4">
+        <section>
+          <div className="max-w-4xl mx-auto relative">
+            <div className="flex items-center justify-between px-40 ">
+              <div>
+                <img
+                  src={couple1}
+                  alt=""
+                  className="absolute -z-10 top-10  h-[200px] w-[250px] border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
+                />
+              </div>
+              <div>
+                <img
+                  src={couple2}
+                  alt=""
+                  className="absolute top-10 right-10 h-[200px] w-[250px] border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between ">
+              <div>
+                <img
+                  src={couple3}
+                  alt=""
+                  className="h-[200px] w-[200px] absolute top-48 border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
+                />
+              </div>
+              <div>
+                <img
+                  src={love_ballon}
+                  alt=""
+                  className="h-[300px]  absolute top-40 left-[360px] "
+                />
+              </div>
+              <div>
+                <img
+                  src={couple4}
+                  alt=""
+                  className=" absolute top-48 left-[800px] h-[200px] w-[200px] z-10 border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between px-40">
+              <div>
+                <img
+                  src={couple2}
+                  alt=""
+                  className="absolute top-[350px] -z-10 h-[200px] w-[250px] border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
+                />
+              </div>
+              <div>
+                <img
+                  src={couple1}
+                  alt=""
+                  className="h-[200px] right-10 w-[250px] absolute top-[350px] border-[6px] rounded-xl border-t-[30px] border-[#EE714B] -z-10 "
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+      <section>
+        <div className="max-w-4xl mt-[550px] mx-auto sm:p-10 p-4">
           <div className="w-full bg-[#F5B98D] flex items-center ">
             {/* Container for the vertical color blocks */}
 
@@ -59,58 +122,6 @@ export const HugDay = () => {
                 alt="hand"
                 className="lg:h-60 sm:h-60 h-32 w-auto ml-4"
               />
-            </div>
-          </div>
-        </div>
-      </section>
-      <section>
-        <div className="w-full min-h-screen bg-orange-50 p-4">
-          <div className="max-w-3xl mx-auto relative">
-            {/* Container for the entire layout */}
-            <div className="relative aspect-square w-full">
-              {/* Center penguin */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 aspect-square">
-                <div className="w-full h-full relative">
-                  {/* Penguin body */}
-                  <div className="w-full h-full bg-black rounded-full relative">
-                    <div className="absolute w-3/4 h-3/4 bg-white rounded-full bottom-0 left-1/2 transform -translate-x-1/2"></div>
-                    <div className="absolute -top-4 right-0 text-red-500 text-2xl">
-                      ❤️
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Surrounding frames - positioned at 60-degree intervals */}
-              {/* Top frame */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 w-1/4 aspect-square">
-                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-              </div>
-
-              {/* Top right frame */}
-              <div className="absolute top-1/4 right-4 translate-x-1/4 w-1/4 aspect-square">
-                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-              </div>
-
-              {/* Bottom right frame */}
-              <div className="absolute bottom-1/4 right-0 translate-x-1/4 w-1/4 aspect-square">
-                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-              </div>
-
-              {/* Bottom frame */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/4 w-1/4 aspect-square">
-                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-              </div>
-
-              {/* Bottom left frame */}
-              <div className="absolute bottom-1/4 left-0 -translate-x-1/4 w-1/4 aspect-square">
-                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-              </div>
-
-              {/* Top left frame */}
-              <div className="absolute top-1/4 left-0 -translate-x-1/4 w-1/4 aspect-square">
-                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-              </div>
             </div>
           </div>
         </div>
