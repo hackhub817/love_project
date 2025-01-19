@@ -10,6 +10,12 @@ const userSchema = new Schema({
     required: [true, "Full name is required"],
     trim: true,
   },
+  userName: {
+    type: String,
+    required: [true, "User name is required"],
+    trim: true,
+    unique: true,
+  },
   isBlocked: {
     type: Boolean,
     default: false,

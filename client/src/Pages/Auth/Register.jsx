@@ -1,12 +1,8 @@
-import  { useState, Fragment, useEffect } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  registerUser,
-
-  sendOtp,
-} from "../api/Api";
+import { registerUser, sendOtp } from "../api/Api";
 
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
@@ -60,6 +56,7 @@ const SignUpForm = () => {
     userPassword: "",
     confirmPassword: "",
     phoneNumber: "",
+    userName: "",
     otp: "",
   });
 
@@ -89,9 +86,15 @@ const SignUpForm = () => {
       fullName,
       confirmPassword,
       phoneNumber,
-      
+      userName,
     } = registerData;
-    if (!userEmail || !userPassword || !fullName || !confirmPassword) {
+    if (
+      !userEmail ||
+      !userPassword ||
+      !fullName ||
+      !confirmPassword ||
+      !userName
+    ) {
       setLoaderActive(false);
       return toast.error("Please fill all the fields!");
     }
@@ -207,7 +210,9 @@ const SignUpForm = () => {
       setIsLoadingResendOtp(false);
       return toast.error("Email is Invalid!");
     }
-    const response = await resendOtp({ userEmail: registerData.userEmail });
+    const response = await resendOtp({
+      userEmail: registerData.userEmail,
+    });
 
     if (response?.success) {
       setLoaderActive(false);
@@ -238,6 +243,25 @@ const SignUpForm = () => {
               name="fullName"
               onChange={handleUserInput}
               value={registerData?.fullName}
+            />
+          </div>
+        </div>
+        <div className="w-full lg:w-1/2">
+          <div className="flex flex-col mx-2 mb-6">
+            <label
+              htmlFor="userName"
+              className="mb-1 text-[0.85rem]  font-semibold"
+            >
+              userName
+            </label>
+            <input
+              type="text"
+              className="px-4 leading-10 rounded-md bg-blue-50 focus:outline-none focus:border focus:border-blue-600 "
+              id="userName"
+              placeholder="Please Enter unique user name"
+              name="userName"
+              onChange={handleUserInput}
+              value={registerData?.userName}
             />
           </div>
         </div>

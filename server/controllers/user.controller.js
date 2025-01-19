@@ -16,13 +16,18 @@ const cookieOption = {
 
 const sentOtp = async (req, res, next) => {
   try {
-    const { userEmail } = req.body;
+    const { userEmail, userName } = req.body;
+    console.log("body", req.body);
 
     // Check if user already exists
     const existingUser = await User.findOne({ userEmail });
 
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
+    }
+    const existingUserName = await User.findOne({ userName });
+    if (existingUserName) {
+      return res.status(400).json({ message: "Enter Unique UserName" });
     }
 
     // Generate and save OTP
@@ -171,7 +176,8 @@ const resendOtp = async (req, res, next) => {
 
 const register = async (req, res, next) => {
   try {
-    const { fullName, userEmail, userPassword, phoneNumber, otp } = req.body;
+    const { fullName, userEmail, userPassword, phoneNumber, otp, userName } =
+      req.body;
     console.log("body", req.body);
     const isValidOTP = otpService.verifyOTP(userEmail, otp);
     console.log("isValidOTP", isValidOTP);
@@ -188,6 +194,10 @@ const register = async (req, res, next) => {
     if (uniqueEmail) {
       return next(new CustomError("Email is already registered", 400));
     }
+    const uniqueName = await User.findOne({ userName });
+    if (uniqueName) {
+      return next(new CustomError("UniqueName is required", 400));
+    }
     console.log("uniqueEmail", uniqueEmail);
 
     const user = await User.create({
@@ -195,6 +205,7 @@ const register = async (req, res, next) => {
       userEmail,
       userPassword,
       phoneNumber: phoneNumber && phoneNumber,
+      userName,
     });
 
     if (!user) {
