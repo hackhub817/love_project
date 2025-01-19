@@ -133,3 +133,23 @@ export const getTeddyDayData = async (username) => {
     throw error;
   }
 };
+
+export const getPromiseDayData = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/day-data/Promise/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching promise day data:", error);
+    throw error;
+  }
+};
+
+export const getKissDayData = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/day-data/Kiss/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching kiss day data:", error);
+    throw error;
+  }
+};
