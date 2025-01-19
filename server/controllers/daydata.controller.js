@@ -17,17 +17,26 @@ export const uploadImages = async (req, res, next) => {
         const result = await cloudinary.v2.uploader.upload(file.path, {
           folder: "valentine_days",
         });
-        // Delete the local file after upload
+
+        // Delete the local file after successful upload
         await fs.unlink(file.path);
         return result.secure_url;
-      } catch (error) {
-        // If upload fails, delete the local file
-        await fs.unlink(file.path);
-        throw error;
+      } catch (uploadError) {
+        // If upload fails, delete the local file and rethrow
+        await fs
+          .unlink(file.path)
+          .catch((err) =>
+            console.error(`Failed to delete file ${file.path}:`, err)
+          );
+        throw uploadError;
       }
     });
 
     const imageUrls = await Promise.all(uploadPromises);
+
+    if (!imageUrls || imageUrls.length === 0) {
+      return next(new CustomError("Failed to upload images", 500));
+    }
 
     res.status(200).json({
       success: true,
@@ -38,10 +47,20 @@ export const uploadImages = async (req, res, next) => {
     // Clean up any remaining files in case of error
     if (req.files) {
       await Promise.all(
-        req.files.map((file) => fs.unlink(file.path).catch(() => {}))
+        req.files.map((file) =>
+          fs
+            .unlink(file.path)
+            .catch((err) =>
+              console.error(`Failed to delete file ${file.path}:`, err)
+            )
+        )
       );
     }
-    next(new CustomError(error.message || "Error uploading images", 500));
+
+    console.error("Upload error:", error);
+    return next(
+      new CustomError(error.message || "Error uploading images", 500)
+    );
   }
 };
 
@@ -101,6 +120,36 @@ export const getDayData = async (req, res, next) => {
     const userId = req.user.id;
 
     const dayData = await DayData.findOne({ day, user: userId });
+
+    if (!dayData) {
+      return next(new CustomError("Day data not found", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      dayData,
+    });
+  } catch (error) {
+    next(new CustomError(error.message || "Error fetching day data", 500));
+  }
+};
+
+export const getDayDataByUsername = async (req, res, next) => {
+  try {
+    const { day, username } = req.params;
+    console.log("day, username", day, username);
+    // First find the user by username
+    const user = await User.findOne({ userName: username });
+
+    if (!user) {
+      return next(new CustomError("User not found", 404));
+    }
+
+    // Find the day data for this user
+    const dayData = await DayData.findOne({
+      day: day,
+      user: user._id,
+    });
 
     if (!dayData) {
       return next(new CustomError("Day data not found", 404));

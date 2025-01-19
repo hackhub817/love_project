@@ -1,3 +1,7 @@
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getTeddyDayData } from "../../Pages/api/Api";
+import { toast } from "sonner";
 import flower from "../../assets/teddy/flower.png";
 import bg from "../../assets/teddy/bg.png";
 import { TypewriterEffectSmooth } from "../ui/typewriter-effect";
@@ -12,6 +16,55 @@ import hand from "../../assets/teddy/hand.png";
 import bg2 from "../../assets/teddy/bg2.png";
 
 export const Teddy = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [teddyData, setTeddyData] = useState(null);
+  const navigate = useNavigate();
+  const { username } = useParams(); // Get username from URL
+
+  useEffect(() => {
+    const fetchTeddyData = async () => {
+      try {
+        setLoading(true);
+        const response = await getTeddyDayData(username);
+        if (response.success) {
+          setTeddyData(response.dayData);
+        }
+      } catch (err) {
+        console.error("Error fetching teddy day data:", err);
+        setError(err.message || "Failed to fetch teddy day data");
+        toast.error("Failed to load teddy day data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (username) {
+      fetchTeddyData();
+    }
+  }, [username]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Error Loading Data
+          </h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   const words = [
     {
       text: "Happy",
@@ -54,22 +107,15 @@ export const Teddy = () => {
           </div>
         </section>
         <section className="max-w-4xl mx-auto mt-5 sm:px-4">
-          <div className="bg-[#483F2C] h-auto grid grid-cols-3 gap-10 ">
-            <img
-              src={couple1}
-              alt="Image 1"
-              className="w-full h-auto object-cover py-10"
-            />
-            <img
-              src={couple1}
-              alt="Image 2"
-              className="w-full h-auto object-cover py-10"
-            />
-            <img
-              src={couple1}
-              alt="Image 3"
-              className="w-full h-auto object-cover py-10"
-            />
+          <div className="bg-[#483F2C] h-auto grid grid-cols-3 gap-10">
+            {teddyData?.images.slice(0, 3).map((imageUrl, idx) => (
+              <img
+                key={idx}
+                src={imageUrl}
+                alt={`Image ${idx + 1}`}
+                className="w-full h-auto object-cover py-10"
+              />
+            ))}
           </div>
         </section>
         <section className="max-w-4xl mx-auto mt-5 relative sm:px-6">
@@ -80,10 +126,7 @@ export const Teddy = () => {
                 Happy Teddy Day!
               </div>
               <div className="lg:text-lg sm:text-lg text-sm text-white">
-                You're my favorite teddy bear. You're not just my
-                boyfriend/girlfriend, you're my favorite cuddly buddy! 🐻❤️
-                Every moment with you feels like a warm hug. I love you more
-                than words can say! 🥰
+                {teddyData?.messages[0]}
               </div>
             </div>
 
@@ -143,21 +186,13 @@ export const Teddy = () => {
 
               {/* Three Smaller Images */}
               <div className="absolute top-10 lg:left-32 sm:left-32 left-8 w-full flex lg:gap-10 sm:gap-10 gap-2 -mt-5 z-20">
-                <img
-                  src={couple1}
-                  alt="Small Image 1"
-                  className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-14 w-14   border-4 border-white border-b-[14px] shadow-md"
-                />
-                <img
-                  src={couple1}
-                  alt="Small Image 2"
-                  className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-14 w-14   border-4 border-white border-b-[14px] shadow-md"
-                />
-                <img
-                  src={couple1}
-                  alt="Small Image 3"
-                  className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-14 w-14   border-4 border-white border-b-[14px] shadow-md"
-                />
+                {teddyData?.images.slice(3, 6).map((imageUrl, idx) => (
+                  <img
+                    src={imageUrl}
+                    alt="Small Image 1"
+                    className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-14 w-14   border-4 border-white border-b-[14px] shadow-md"
+                  />
+                ))}
               </div>
             </div>
           </div>

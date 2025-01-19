@@ -3,6 +3,7 @@ import multer from "multer";
 import {
   uploadImages,
   createDayData,
+  getDayDataByUsername,
 } from "../controllers/daydata.controller.js";
 import isLoggedIn from "../middlewares/auth.middleware.js";
 
@@ -12,7 +13,7 @@ const router = Router();
 const upload = multer({
   dest: "uploads/",
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 20 * 1024 * 1024, // 5MB limit
   },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith("image/")) {
@@ -26,9 +27,10 @@ const upload = multer({
 router.post(
   "/upload-images",
   isLoggedIn,
-  upload.array("images", 3),
+  upload.array("images", 5),
   uploadImages
 );
 router.post("/create", isLoggedIn, createDayData);
+router.get("/:day/:username", getDayDataByUsername);
 
 export default router;

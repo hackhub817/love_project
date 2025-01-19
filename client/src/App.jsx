@@ -7,8 +7,9 @@ import { HugDay } from "./components/days/HugDay";
 import { ChocolateDay } from "./components/days/Chocolate";
 import { Teddy } from "./components/days/Teddy";
 import { Demo } from "./components/ui/Demo";
-import { KissDay } from "./components/days/KissDay";
+import { ProposeDay } from "./components/days/Propose";
 import { Kiss } from "./components/days/Kiss";
+
 function App() {
   return (
     <Routes>
@@ -18,16 +19,11 @@ function App() {
       <Route path="/chocolate" element={<ChocolateDay />} />
       <Route path="/teddy" element={<Teddy />} />
       <Route path="/demo" element={<Demo />} />
-      <Route path="/kiss" element={<KissDay />} />
-      <Route path="/kissDay" element={<Kiss />} />
-      <Route
-        path="/dashboard/*"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/propose" element={<ProposeDay />} />
+      <Route path="/kiss/:username" element={<Kiss />} />
+      <Route path="/dashboard/*" element={<Dashboard />} />
+      <Route path="/propose/:username" element={<ProposeDay />} />
+      <Route path="/teddy/:username" element={<Teddy />} />
       {/* Redirect root to dashboard if logged in, otherwise to login */}
       <Route
         path="/"

@@ -1,341 +1,77 @@
-// import { useState } from "react";
-// import { motion } from "framer-motion";
-// import { toast } from "sonner";
-// import { submitTeddyDayData, uploadImages } from "../../Pages/api/Api";
+import bgShape from "../../assets/hug/background.png";
+import hug from "../../assets/hug/HeroHugImage.png";
+import notes from "../../assets/hug/Note.png";
+import love from "../../assets/hug/love.png";
+import handshake from "../../assets/hug/handshake.png";
+import img1 from "../../assets/hug/img-1.png";
+import img2 from "../../assets/hug/img-2.png";
+import img3 from "../../assets/hug/img-3.png";
+import img4 from "../../assets/hug/img-4.png";
+import couple1 from "../../assets/hug/couple1.jpg";
+import couple2 from "../../assets/hug/couple2.jpg";
+import couple3 from "../../assets/hug/couple3.jpg";
+import couple4 from "../../assets/hug/couple4.jpg";
+import banner from "../../assets/hug/banner.png";
+export const HugDay = () => {
+  return (
+    <div
+      className="w-full  bg-cover bg-center "
+      style={{ backgroundImage: `url(${bgShape})` }}
+    >
+      <section className="relative w-full lg:block sm:block hidden">
+        <div className="max-w-4xl mx-auto flex items-center  relative w-full">
+          {/* Hug Image */}
+          <div className="relative z-10">
+            <img src={hug} alt="Hug Image" className="lg:h-64 sm:h-64 h-32" />
+          </div>
 
-// const HugDay = () => {
-//   const [loading, setLoading] = useState(false);
-//   const [showPreview, setShowPreview] = useState(false);
-//   const [formData, setFormData] = useState({
-//     centerImage: null,
-//     surroundingImages: [],
-//     message: "",
-//   });
-
-//   // Store temporary image files
-//   const [tempImages, setTempImages] = useState({
-//     centerImage: null,
-//     surroundingImages: [],
-//   });
-
-//   const handleCenterImageChange = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       setTempImages((prev) => ({
-//         ...prev,
-//         centerImage: file,
-//       }));
-//       setFormData((prev) => ({
-//         ...prev,
-//         centerImage: URL.createObjectURL(file),
-//       }));
-//     }
-//   };
-
-//   const handleSurroundingImagesChange = (e) => {
-//     const files = Array.from(e.target.files);
-//     if (files.length > 6) {
-//       toast.error("You can only upload up to 6 surrounding images");
-//       return;
-//     }
-
-//     const tempUrls = files.map((file) => URL.createObjectURL(file));
-//     setTempImages((prev) => ({
-//       ...prev,
-//       surroundingImages: files,
-//     }));
-//     setFormData((prev) => ({
-//       ...prev,
-//       surroundingImages: tempUrls,
-//     }));
-//   };
-
-//   const handlePreview = (e) => {
-//     e.preventDefault();
-//     if (!formData.centerImage || formData.surroundingImages.length < 6) {
-//       toast.error("Please upload all required images");
-//       return;
-//     }
-//     setShowPreview(true);
-//   };
-
-//   const handleSubmit = async () => {
-//     try {
-//       setLoading(true);
-
-//       // Upload center image
-//       const centerImageFormData = new FormData();
-//       centerImageFormData.append("images", tempImages.centerImage);
-//       const centerImageResponse = await uploadImages(centerImageFormData);
-
-//       // Upload surrounding images
-//       const surroundingImagesFormData = new FormData();
-//       tempImages.surroundingImages.forEach((file) => {
-//         surroundingImagesFormData.append("images", file);
-//       });
-//       const surroundingImagesResponse = await uploadImages(
-//         surroundingImagesFormData
-//       );
-
-//       // Submit all data
-//       await submitTeddyDayData({
-//         day: "Hug",
-//         messages: [formData.message],
-//         images: [
-//           centerImageResponse.imageUrls[0],
-//           ...surroundingImagesResponse.imageUrls,
-//         ],
-//       });
-
-//       toast.success("Hug Day data submitted successfully!");
-//       setShowPreview(false);
-//       // Reset form
-//       setFormData({
-//         centerImage: null,
-//         surroundingImages: [],
-//         message: "",
-//       });
-//       setTempImages({
-//         centerImage: null,
-//         surroundingImages: [],
-//       });
-//     } catch (error) {
-//       toast.error("Failed to submit data");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   if (showPreview) {
-//     return (
-//       <div className="min-h-screen bg-gradient-to-b from-pink-50 to-indigo-50 py-12 px-4">
-//         <div className="max-w-4xl mx-auto">
-//           <motion.div
-//             initial={{ opacity: 0, y: -20 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             className="text-center mb-8"
-//           >
-//             <h1 className="text-3xl font-bold text-indigo-900">
-//               Hug Day Preview
-//             </h1>
-//           </motion.div>
-
-//           <div className="relative w-full aspect-square max-w-2xl mx-auto">
-//             {/* Center Image */}
-//             <motion.div
-//               initial={{ scale: 0 }}
-//               animate={{ scale: 1 }}
-//               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 aspect-square rounded-full overflow-hidden z-10 border-4 border-white shadow-xl"
-//             >
-//               <img
-//                 src={formData.centerImage}
-//                 alt="Center"
-//                 className="w-full h-full object-cover"
-//               />
-//             </motion.div>
-
-//             {/* Surrounding Images */}
-//             {formData.surroundingImages.map((url, index) => {
-//               const angle = index * 60 * (Math.PI / 180);
-//               const radius = 42; // Percentage of container width
-//               const x = 50 + radius * Math.cos(angle);
-//               const y = 50 + radius * Math.sin(angle);
-
-//               return (
-//                 <div
-//                   key={index}
-//                   initial={{ scale: 0 }}
-//                   animate={{ scale: 1 }}
-//                   transition={{ delay: index * 0.1 }}
-//                   className="absolute w-1/4 aspect-square rounded-full overflow-hidden border-4 border-white shadow-lg"
-//                   style={{
-
-//                     transform: "translate(-50%, -50%)",
-//                   }}
-//                 >
-//                   <img
-//                     src={url}
-//                     alt={Surrounding ${index + 1}}
-//                     className="w-full h-full object-cover"
-//                   />
-//                 </.div>
-//               );
-//             })}
-//           </div>
-
-//           <div className="flex justify-center gap-4 mt-8">
-//             <button
-//               onClick={() => setShowPreview(false)}
-//               className="px-6 py-2 bg-white text-indigo-600 rounded-full border-2 border-indigo-600 hover:bg-indigo-50"
-//             >
-//               Edit
-//             </button>
-//             <button
-//               onClick={handleSubmit}
-//               disabled={loading}
-//               className="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 disabled:bg-gray-400 flex items-center gap-2"
-//             >
-//               {loading ? (
-//                 <>
-//                   <span>Submitting</span>
-//                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-//                 </>
-//               ) : (
-//                 "Submit"
-//               )}
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="p-6 max-w-4xl mx-auto">
-//       <h1 className="text-2xl font-bold text-indigo-900 mb-6">Hug Day</h1>
-
-//       <form onSubmit={handlePreview} className="space-y-6">
-//         <div className="space-y-2">
-//           <label className="block text-sm font-medium text-gray-700">
-//             Center Image
-//           </label>
-//           <input
-//             type="file"
-//             accept="image/*"
-//             onChange={handleCenterImageChange}
-//             className="block w-full text-sm text-gray-500
-//               file:mr-4 file:py-2 file:px-4
-//               file:rounded-full file:border-0
-//               file:text-sm file:font-semibold
-//               file:bg-indigo-50 file:text-indigo-700
-//               hover:file:bg-indigo-100"
-//           />
-//           {formData.centerImage && (
-//             <div className="w-32 h-32 rounded-full overflow-hidden">
-//               <img
-//                 src={formData.centerImage}
-//                 alt="Center preview"
-//                 className="w-full h-full object-cover"
-//               />
-//             </div>
-//           )}
-//         </div>
-
-//         <div className="space-y-2">
-//           <label className="block text-sm font-medium text-gray-700">
-//             Surrounding Images (Exactly 6)
-//           </label>
-//           <input
-//             type="file"
-//             multiple
-//             accept="image/*"
-//             onChange={handleSurroundingImagesChange}
-//             className="block w-full text-sm text-gray-500
-//               file:mr-4 file:py-2 file:px-4
-//               file:rounded-full file:border-0
-//               file:text-sm file:font-semibold
-//               file:bg-indigo-50 file:text-indigo-700
-//               hover:file:bg-indigo-100"
-//           />
-//           <div className="flex flex-wrap gap-2">
-//             {formData.surroundingImages.map((url, idx) => (
-//               <div key={idx} className="w-20 h-20 rounded-full overflow-hidden">
-//                 <img
-//                   src={url}
-//                   alt={Surrounding ${idx + 1}}
-//                   className="w-full h-full object-cover"
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         <div className="space-y-2">
-//           <label className="block text-sm font-medium text-gray-700">
-//             Your Message
-//           </label>
-//           <textarea
-//             value={formData.message}
-//             onChange={(e) =>
-//               setFormData((prev) => ({ ...prev, message: e.target.value }))
-//             }
-//             rows={4}
-//             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-//             placeholder="Write your message..."
-//           />
-//         </div>
-
-//         <button
-//           type="submit"
-//           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-//         >
-//           Preview
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default HugDay;
-<section>
-  <div className="w-full min-h-screen bg-orange-50 p-4">
-    <div className="max-w-3xl mx-auto relative">
-      {/* Container for the entire layout */}
-      <div className="relative aspect-square w-full">
-        {/* Center penguin */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 aspect-square">
-          <div className="w-full h-full relative">
-            {/* Penguin body */}
-            <div className="w-full h-full bg-black rounded-full relative">
-              <div className="absolute w-3/4 h-3/4 bg-white rounded-full bottom-0 left-1/2 transform -translate-x-1/2"></div>
-              <div className="absolute -top-4 right-0 text-red-500 text-2xl">
-                ❤️
-              </div>
-            </div>
+          {/* Note Image */}
+          <div className="absolute z-0 lg:left-96 sm:left-96 left-1/2 transform -translate-x-1/2 ">
+            <img src={notes} alt="Notes Image" className="lg:h-32 sm:h-24 " />
           </div>
         </div>
 
-        {/* Surrounding frames - positioned at 60-degree intervals */}
-        {/* Top frame */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 w-1/4 aspect-square">
-          <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
+        {/* Text */}
+        <div className="absolute left-2/4   lg:top-28 sm:top-28 top-14 flex items-center gap-2 transform -translate-x-1/2 z-20 text-center text-black sm:text-2xl lg:text-4xl text-sm">
+          <img src={love} className="lg:h-10 lg:w-12 sm:h-10 sm:w-12 h-5 w-7" />
+          <div>Happy Hug Day</div>
         </div>
+      </section>
+      <section>
+        <div className="max-w-4xl mx-auto sm:p-10 p-4">
+          <div className="w-full bg-[#F5B98D] flex items-center ">
+            {/* Container for the vertical color blocks */}
 
-        {/* Top right frame */}
-        <div className="absolute top-1/4 right-4 translate-x-1/4 w-1/4 aspect-square">
-          <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
+            <div className="lg:w-44 lg:h-64 sm:h-64 w-20 h-48 bg-[#EE714B]"></div>
+            <div className="lg:w-44 lg:h-64 sm:h-64  w-20 h-48 bg-[#FDA76F] "></div>
+
+            {/* Text and image container */}
+            <div className="flex items-center ml-4">
+              {/* Text Section */}
+              <div className="lg:text-lg sm:text-lg text-xs text-black">
+                Happy Hug Day, my love! ❤ I can ' t wait to feel your warm
+                embrace. 😘 You make me feel safe and loved. 🥰 Let's hug tight
+                and cherish this moment. 💕
+              </div>
+              {/* Image Section */}
+              <img
+                src={handshake}
+                alt="hand"
+                className="lg:h-60 sm:h-60 h-32 w-auto ml-4"
+              />
+            </div>
+          </div>
         </div>
-
-        {/* Bottom right frame */}
-        <div className="absolute bottom-1/4 right-0 translate-x-1/4 w-1/4 aspect-square">
-          <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-        </div>
-
-        {/* Bottom frame */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/4 w-1/4 aspect-square">
-          <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-        </div>
-
-        {/* Bottom left frame */}
-        <div className="absolute bottom-1/4 left-0 -translate-x-1/4 w-1/4 aspect-square">
-          <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-        </div>
-
-        {/* Top left frame */}
-        <div className="absolute top-1/4 left-0 -translate-x-1/4 w-1/4 aspect-square">
-          <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-        </div>
-      </div>
-
-      {/* Mobile layout for smaller screens */}
-      {/* <div className="md:hidden mt-8 grid grid-cols-2 gap-4">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="aspect-square">
-                  <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
-                </div>
-              ))}
-              <div className="col-span-2 flex justify-center mt-4">
-                <div className="w-24 h-24 relative">
+      </section>
+      <section>
+        <div className="w-full min-h-screen bg-orange-50 p-4">
+          <div className="max-w-3xl mx-auto relative">
+            {/* Container for the entire layout */}
+            <div className="relative aspect-square w-full">
+              {/* Center penguin */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 aspect-square">
+                <div className="w-full h-full relative">
+                  {/* Penguin body */}
                   <div className="w-full h-full bg-black rounded-full relative">
                     <div className="absolute w-3/4 h-3/4 bg-white rounded-full bottom-0 left-1/2 transform -translate-x-1/2"></div>
                     <div className="absolute -top-4 right-0 text-red-500 text-2xl">
@@ -344,7 +80,89 @@
                   </div>
                 </div>
               </div>
-            </div> */}
+
+              {/* Surrounding frames - positioned at 60-degree intervals */}
+              {/* Top frame */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 w-1/4 aspect-square">
+                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
+              </div>
+
+              {/* Top right frame */}
+              <div className="absolute top-1/4 right-4 translate-x-1/4 w-1/4 aspect-square">
+                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
+              </div>
+
+              {/* Bottom right frame */}
+              <div className="absolute bottom-1/4 right-0 translate-x-1/4 w-1/4 aspect-square">
+                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
+              </div>
+
+              {/* Bottom frame */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/4 w-1/4 aspect-square">
+                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
+              </div>
+
+              {/* Bottom left frame */}
+              <div className="absolute bottom-1/4 left-0 -translate-x-1/4 w-1/4 aspect-square">
+                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
+              </div>
+
+              {/* Top left frame */}
+              <div className="absolute top-1/4 left-0 -translate-x-1/4 w-1/4 aspect-square">
+                <div className="w-full h-full bg-white rounded-lg shadow-md border-2 border-orange-300"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-8">
+            {/* Testimonial 1 */}
+            <div className="relative p-2 flex justify-center">
+              <img
+                src={img1}
+                className="h-[150px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
+              />
+              <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
+                Hello My love this is for you
+                <img src={couple1} alt="" className=" h-[180px] w-[250px]" />
+              </div>
+            </div>
+            <div className="relative p-2 flex justify-center">
+              <img
+                src={img2}
+                className="h-[110px] w-[150px] absolute  -top-4   lg:left-0 lg:right-0 mx-auto "
+              />
+              <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
+                Hello My love this is for you
+                <img src={couple2} alt="" className=" h-[180px] w-[250px]" />
+              </div>
+            </div>
+            <div className="relative p-2 flex justify-center">
+              <img
+                src={img3}
+                className="h-[110px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
+              />
+              <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
+                Hello My love this is for you
+                <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+              </div>
+            </div>
+            <div className="relative p-2 flex justify-center">
+              <img
+                src={img4}
+                className="h-[110px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
+              />
+              <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
+                Hello My love this is for you
+                <img src={couple4} alt="" className=" h-[180px] w-[250px]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
-</section>;
+  );
+};
