@@ -14,6 +14,12 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/hug" element={<HugDay />} />
+      <Route path="/chocolate" element={<ChocolateDay />} />
+      <Route path="/teddy" element={<Teddy />} />
+      <Route path="/demo" element={<Demo />} />
+      <Route path="/kiss" element={<KissDay />} />
+      <Route path="/kissDay" element={<Kiss />} />
       <Route
         path="/dashboard/*"
         element={
@@ -22,6 +28,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/teddy/:username" element={<Teddy />} />
       {/* Redirect root to dashboard if logged in, otherwise to login */}
       <Route
         path="/"

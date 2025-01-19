@@ -123,3 +123,13 @@ export const submitTeddyDayData = async (data) => {
     throw error;
   }
 };
+
+export const getTeddyDayData = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/day-data/Teddy/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching teddy day data:", error);
+    throw error;
+  }
+};
