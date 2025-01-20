@@ -14,6 +14,7 @@ import ballon from "../../assets/teddy/ballon.png";
 import wall from "../../assets/teddy/wall.png";
 import hand from "../../assets/teddy/hand.png";
 import bg2 from "../../assets/teddy/bg2.png";
+import AnimatedTestimonials from "../../components/ui/animated-testimonials";
 
 export const Teddy = () => {
   const [loading, setLoading] = useState(true);
@@ -21,6 +22,44 @@ export const Teddy = () => {
   const [teddyData, setTeddyData] = useState(null);
   const navigate = useNavigate();
   const { username } = useParams(); // Get username from URL
+
+  const testimonials = [
+    {
+      quote:
+        "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
+      name: "Sarah Chen",
+      designation: "Product Manager at TechFlow",
+      src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      quote:
+        "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
+      name: "Michael Rodriguez",
+      designation: "CTO at InnovateSphere",
+      src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      quote:
+        "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
+      name: "Emily Watson",
+      designation: "Operations Director at CloudScale",
+      src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      quote:
+        "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
+      name: "James Kim",
+      designation: "Engineering Lead at DataPro",
+      src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      quote:
+        "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
+      name: "Lisa Thompson",
+      designation: "VP of Technology at FutureNet",
+      src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+  ];
 
   useEffect(() => {
     const fetchTeddyData = async () => {
@@ -98,35 +137,42 @@ export const Teddy = () => {
 
       {/* Content */}
       <div className="relative z-10">
-        <section className="max-w-4xl mx-auto p-4">
-          <div className="flex items-center justify-between">
-            <img src={flower} alt="" className="h-80" />
+        <section className="max-w-4xl mx-auto lg:p-4 sm:p-4">
+          <div className="flex items-center  justify-center">
+            <img src={flower} alt="" className="lg:h-80 sm:h-72 h-28" />
             <div>
-              <TypewriterEffectSmooth className="text-4xl" words={words} />
+              <TypewriterEffectSmooth
+                className="lg:text-4xl sm:text-4xl text-2xl"
+                words={words}
+              />
             </div>
           </div>
         </section>
         <section className="max-w-4xl mx-auto mt-5 sm:px-4">
-          <div className="bg-[#483F2C] h-auto grid grid-cols-3 gap-10">
+          <div className="bg-[#483F2C] lg:h-96 sm:h-96 h-52 grid grid-cols-3 gap-10">
             {teddyData?.images.slice(0, 3).map((imageUrl, idx) => (
               <img
                 key={idx}
                 src={imageUrl}
                 alt={`Image ${idx + 1}`}
-                className="w-full h-auto object-cover py-10"
+                className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
               />
             ))}
           </div>
         </section>
         <section className="max-w-4xl mx-auto mt-5 relative sm:px-6">
-          <div className="flex items-center">
+          <div className="flex items-center p-2">
             {/* Background Box */}
-            <div className="bg-[#483F2C] lg:h-72 sm:h-64 h-52  rounded-[40px] relative z-10 lg:p-12 sm:p-12 p-6 pl-3 -mr-10">
-              <div className="text-2xl text-center text-white ">
+            <div className="bg-[#483F2C]  lg:h-72 sm:h-64 h-52  rounded-[40px] relative z-10 lg:p-12 sm:p-12 p-4 pl-3 -mr-10">
+              <div className="lg:text-2xl sm:text-2xl text-lg text-center text-white ">
                 Happy Teddy Day!
               </div>
-              <div className="lg:text-lg sm:text-lg text-sm text-white">
-                {teddyData?.messages[0]}
+              <div className="lg:text-lg sm:text-lg text-xs text-white px-4">
+                All our adventures together, from silly movie nights to
+                exploring new places, feel like the best cuddles with my
+                favorite teddy bear. 🐻❤️ You know, I feel like I've found my
+                forever cuddle buddy in you. 🐻 ❤️ You're always there for me, a
+                constant source of comfort and joy. Happy Teddy Day, my love.
               </div>
             </div>
 
@@ -134,7 +180,7 @@ export const Teddy = () => {
             <img
               src={sit}
               alt="Image 1"
-              className="lg:w-full lg:h-auto sm:h-64 h-52 object-cover relative z-20 -ml-24"
+              className="lg:w-full lg:h-auto sm:h-64 h-32 object-cover relative z-20 -ml-24"
             />
           </div>
         </section>
@@ -143,45 +189,45 @@ export const Teddy = () => {
             <img
               src={loveteddy}
               alt="Image 1"
-              className="lg:h-52 sm:h-44 h-24 object-cover relative z-20 lg:-ml-10 sm:-ml-10"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
             <img
               src={love}
               alt="Image 1"
-              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-20   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
             <img
               src={love}
               alt="Image 1"
-              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-20   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
             <img
               src={love}
               alt="Image 1"
-              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-20   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
             <img
               src={loveteddy2}
               alt="Image 1"
-              className="lg:h-52 sm:h-44 h-24 object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
             />
           </div>
         </section>
-        <section className="max-w-4xl mx-auto mt-5 px-2 relative">
+        <section className="max-w-4xl mx-auto mt-5 lg:px-2 sm:px-2 relative">
           <div className="flex items-center relative">
             {/* Ballon Image */}
             <img
               src={ballon}
               alt="Image 1"
-              className="lg:h-96 sm:h-72 h-44 lg:mb-10 sm:mb-10 mb-28 object-cover relative z-10 lg:-mr-40 sm:-mr-40 -mr-10"
+              className="lg:h-96 sm:h-72 h-40 lg:w-96 sm:w-72 w-28 lg:mb-10 sm:mb-10 mb-28 object-cover relative z-10 lg:-mr-40 sm:-mr-40 -mr-10"
             />
 
             {/* Wall Image */}
-            <div className="relative h-64 ">
+            <div className="relative  ">
               <img
                 src={wall}
                 alt="Wall Image"
-                className="lg:h-full sm:h-56 h-32 lg:w-[850px] sm:w-[550px] w-[300px] object-cover relative  "
+                className="lg:h-full sm:h-56 h-32 lg:w-[850px] sm:w-[550px] w-[200px] object-cover relative  "
               />
 
               {/* Three Smaller Images */}
@@ -190,7 +236,7 @@ export const Teddy = () => {
                   <img
                     src={imageUrl}
                     alt="Small Image 1"
-                    className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-14 w-14   border-4 border-white border-b-[14px] shadow-md"
+                    className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
                   />
                 ))}
               </div>
@@ -199,15 +245,14 @@ export const Teddy = () => {
         </section>
         <section className="max-w-4xl mx-auto  px-2 relative">
           <div className="flex items-center relative">
-            {/* Hand Image */}
             <img
               src={hand}
               alt="Image 1"
-              className="lg:h-64 sm:h-48 h-32 object-cover relative z-20 lg:ml-20 sm:ml-32"
+              className="lg:h-64 sm:h-48 h-32 lg:w-64 sm:w-64 w-24 object-cover relative z-20 lg:ml-20 sm:ml-32"
             />
 
             {/* BG2 Image */}
-            <div className="relative lg:w-[550px] sm:w-[450px] w-[300px] px-2 lg:h-60 sm:h-60 h-48 ">
+            <div className="relative lg:w-[550px] sm:w-[450px] w-[300px] px-2 lg:h-60 sm:h-60 h-64 ">
               <img
                 src={bg2}
                 alt="Background Image"
@@ -229,6 +274,9 @@ export const Teddy = () => {
               </div>
             </div>
           </div>
+        </section>
+        <section>
+          <AnimatedTestimonials testimonials={testimonials} />
         </section>
       </div>
     </div>

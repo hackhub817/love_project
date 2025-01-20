@@ -9,8 +9,47 @@ import cir from "../../assets/Chocolate/cir.png";
 import couple3 from "../../assets/hug/couple3.jpg";
 import RollingGallery from "../../blocks/Components/RollingGallery/RollingGallery";
 import Marquee from "../../components/ui/marquee";
+import IconCloud from "../../components/ui/icon-cloud";
+import love_icon from "../../assets/love_icon.png";
 
 export const ChocolateDay = () => {
+  const images = [
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+    love_icon,
+  ];
   return (
     <div className="bg-[#a97e75] h-auto">
       <div className=" ">
@@ -103,6 +142,11 @@ export const ChocolateDay = () => {
               <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
               <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
             </Marquee>
+          </section>
+          <section className="max-w-4xl mx-auto mt-20">
+            <div className="relative flex   items-center justify-center overflow-hidden rounded-lg border ">
+              <IconCloud images={images} />
+            </div>
           </section>
           <section className="mt-20">
             <div className="flex items-center justify-center p-2 ">
