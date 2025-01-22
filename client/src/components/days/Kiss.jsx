@@ -18,6 +18,31 @@ export const Kiss = () => {
   const [error, setError] = useState(null);
   const [kissData, setKissData] = useState(null);
   const { username } = useParams();
+  const [ballCount, setBallCount] = useState(150);
+
+  useEffect(() => {
+    const updateBallCount = () => {
+      if (window.innerWidth < 640) {
+        // Small screens (e.g., mobile)
+        setBallCount(50);
+      } else if (window.innerWidth < 1024) {
+        // Medium screens (e.g., tablets)
+        setBallCount(100);
+      } else {
+        // Large screens (e.g., desktops)
+        setBallCount(150);
+      }
+    };
+
+    // Initialize on mount
+    updateBallCount();
+
+    // Update on window resize
+    window.addEventListener("resize", updateBallCount);
+
+    // Cleanup event listener
+    return () => window.removeEventListener("resize", updateBallCount);
+  }, []);
 
   useEffect(() => {
     const fetchKissData = async () => {
@@ -138,19 +163,11 @@ export const Kiss = () => {
           />
         </div>
       </section>
-      <div
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          minHeight: "500px",
-          maxHeight: "500px",
-          width: "100%",
-        }}
-      >
+      <div className="relative overflow-hidden h-40 lg:h-62 sm:h-80 ">
         <Ballpit
-          count={150}
-          gravity={0.7}
-          friction={0.8}
+          count={ballCount}
+          gravity={1}
+          friction={0.9}
           wallBounce={0.95}
           followCursor={true}
         />

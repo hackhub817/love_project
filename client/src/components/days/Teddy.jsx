@@ -14,7 +14,7 @@ import ballon from "../../assets/teddy/ballon.png";
 import wall from "../../assets/teddy/wall.png";
 import hand from "../../assets/teddy/hand.png";
 import bg2 from "../../assets/teddy/bg2.png";
-import AnimatedTestimonials from "../../components/ui/animated-testimonials";
+// import AnimatedTestimonials from "../../components/ui/animated-testimonials";
 
 export const Teddy = () => {
   const [loading, setLoading] = useState(true);
@@ -23,43 +23,43 @@ export const Teddy = () => {
   const navigate = useNavigate();
   const { username } = useParams(); // Get username from URL
 
-  const testimonials = [
-    {
-      quote:
-        "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
-      name: "Sarah Chen",
-      designation: "Product Manager at TechFlow",
-      src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      quote:
-        "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
-      name: "Michael Rodriguez",
-      designation: "CTO at InnovateSphere",
-      src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      quote:
-        "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
-      name: "Emily Watson",
-      designation: "Operations Director at CloudScale",
-      src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      quote:
-        "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
-      name: "James Kim",
-      designation: "Engineering Lead at DataPro",
-      src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      quote:
-        "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
-      name: "Lisa Thompson",
-      designation: "VP of Technology at FutureNet",
-      src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
+  // const testimonials = [
+  //   {
+  //     quote:
+  //       "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
+  //     name: "Sarah Chen",
+  //     designation: "Product Manager at TechFlow",
+  //     src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //   },
+  //   {
+  //     quote:
+  //       "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
+  //     name: "Michael Rodriguez",
+  //     designation: "CTO at InnovateSphere",
+  //     src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //   },
+  //   {
+  //     quote:
+  //       "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
+  //     name: "Emily Watson",
+  //     designation: "Operations Director at CloudScale",
+  //     src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //   },
+  //   {
+  //     quote:
+  //       "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
+  //     name: "James Kim",
+  //     designation: "Engineering Lead at DataPro",
+  //     src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //   },
+  //   {
+  //     quote:
+  //       "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
+  //     name: "Lisa Thompson",
+  //     designation: "VP of Technology at FutureNet",
+  //     src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //   },
+  // ];
 
   useEffect(() => {
     const fetchTeddyData = async () => {
@@ -219,7 +219,7 @@ export const Teddy = () => {
             <img
               src={ballon}
               alt="Image 1"
-              className="lg:h-96 sm:h-72 h-40 lg:w-96 sm:w-72 w-28 lg:mb-10 sm:mb-10 mb-28 object-cover relative z-10 lg:-mr-40 sm:-mr-40 -mr-10"
+              className="lg:h-96 sm:h-72 h-40 lg:w-96 sm:w-72 w-28 lg:mb-10 sm:mb-10 mb-8 object-cover relative z-10 lg:-mr-40 sm:-mr-40 -mr-10"
             />
 
             {/* Wall Image */}
@@ -227,7 +227,7 @@ export const Teddy = () => {
               <img
                 src={wall}
                 alt="Wall Image"
-                className="lg:h-full sm:h-56 h-32 lg:w-[850px] sm:w-[550px] w-[200px] object-cover relative  "
+                className="lg:h-full sm:h-56 h-32 lg:w-[850px] sm:w-[550px] w-[210px] object-cover relative  "
               />
 
               {/* Three Smaller Images */}
@@ -275,9 +275,10 @@ export const Teddy = () => {
             </div>
           </div>
         </section>
-        <section>
+
+        {/* <section>
           <AnimatedTestimonials testimonials={testimonials} />
-        </section>
+        </section> */}
       </div>
     </div>
   );

@@ -158,7 +158,7 @@ export const ProposeDay = () => {
           </div>
         </div>
       </div>
-      <div
+      {/* <div
         style={{
           position: "relative",
           overflow: "hidden",
@@ -174,7 +174,7 @@ export const ProposeDay = () => {
           wallBounce={0.95}
           followCursor={true}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
