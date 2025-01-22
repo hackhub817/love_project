@@ -187,7 +187,7 @@ const TeddyDay = () => {
                     <img
                       src={url}
                       alt="Image 1"
-                      className="w-full h-auto object-cover py-10"
+                      className="w-full h-96 object-cover py-10"
                     />
                   ))}
                 </div>

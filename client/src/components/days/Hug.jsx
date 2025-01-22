@@ -14,7 +14,7 @@ import couple4 from "../../assets/hug/couple4.jpg";
 import banner from "../../assets/hug/banner.png";
 import love_ballon from "../../assets/hug/love_ballon.png";
 
-export const HugDay = () => {
+export const HugDay = ({ isPreview }) => {
   return (
     <div
       className="w-full  bg-cover bg-center "

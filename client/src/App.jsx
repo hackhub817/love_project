@@ -5,7 +5,6 @@ import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ChocolateDay } from "./components/days/Chocolate";
 import { Teddy } from "./components/days/Teddy";
-import { Demo } from "./components/ui/Demo";
 import { ProposeDay } from "./components/days/Propose";
 import { Kiss } from "./components/days/Kiss";
 import { HugDay } from "./components/days/Hug";
@@ -23,7 +22,6 @@ function App() {
       <Route path="/chocolate" element={<ChocolateDay />} />
       <Route path="/teddy" element={<Teddy />} />
       <Route path="/promise" element={<Promise />} />
-      <Route path="/demo" element={<Demo />} />
       <Route path="/propose" element={<ProposeDay />} />
       <Route path="/kiss/:username" element={<Kiss />} />
       <Route path="/dashboard/*" element={<Dashboard />} />

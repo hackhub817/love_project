@@ -16,7 +16,7 @@ import hand from "../../assets/teddy/hand.png";
 import bg2 from "../../assets/teddy/bg2.png";
 // import AnimatedTestimonials from "../../components/ui/animated-testimonials";
 
-export const Teddy = () => {
+export const Teddy = ({ isPreview }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [teddyData, setTeddyData] = useState(null);
@@ -60,48 +60,49 @@ export const Teddy = () => {
   //     src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   //   },
   // ];
-
-  useEffect(() => {
-    const fetchTeddyData = async () => {
-      try {
-        setLoading(true);
-        const response = await getTeddyDayData(username);
-        if (response.success) {
-          setTeddyData(response.dayData);
+  if (!isPreview) {
+    useEffect(() => {
+      const fetchTeddyData = async () => {
+        try {
+          setLoading(true);
+          const response = await getTeddyDayData(username);
+          if (response.success) {
+            setTeddyData(response.dayData);
+          }
+        } catch (err) {
+          console.error("Error fetching teddy day data:", err);
+          setError(err.message || "Failed to fetch teddy day data");
+          toast.error("Failed to load teddy day data");
+        } finally {
+          setLoading(false);
         }
-      } catch (err) {
-        console.error("Error fetching teddy day data:", err);
-        setError(err.message || "Failed to fetch teddy day data");
-        toast.error("Failed to load teddy day data");
-      } finally {
-        setLoading(false);
+      };
+
+      if (username) {
+        fetchTeddyData();
       }
-    };
+    }, [username]);
 
-    if (username) {
-      fetchTeddyData();
-    }
-  }, [username]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">
-            Error Loading Data
-          </h2>
-          <p className="text-gray-600">{error}</p>
+    if (loading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">
+              Error Loading Data
+            </h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      );
+    }
   }
 
   const words = [
@@ -150,14 +151,36 @@ export const Teddy = () => {
         </section>
         <section className="max-w-4xl mx-auto mt-5 sm:px-4">
           <div className="bg-[#483F2C] lg:h-96 sm:h-96 h-52 grid grid-cols-3 gap-10">
-            {teddyData?.images.slice(0, 3).map((imageUrl, idx) => (
-              <img
-                key={idx}
-                src={imageUrl}
-                alt={`Image ${idx + 1}`}
-                className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
-              />
-            ))}
+            {teddyData ? (
+              teddyData?.images
+                .slice(0, 3)
+                .map((imageUrl, idx) => (
+                  <img
+                    key={idx}
+                    src={imageUrl}
+                    alt={`Image ${idx + 1}`}
+                    className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
+                  />
+                ))
+            ) : (
+              <>
+                <img
+                  src={couple1}
+                  alt={`Image 1`}
+                  className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
+                />
+                <img
+                  src={couple1}
+                  alt={`Image 2`}
+                  className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
+                />
+                <img
+                  src={couple1}
+                  alt={`Image 3`}
+                  className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
+                />
+              </>
+            )}
           </div>
         </section>
         <section className="max-w-4xl mx-auto mt-5 relative sm:px-6">
@@ -194,17 +217,17 @@ export const Teddy = () => {
             <img
               src={love}
               alt="Image 1"
-              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-6 sm:-ml-10 -ml-2"
             />
             <img
               src={love}
               alt="Image 1"
-              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-6 sm:-ml-10 -ml-2"
             />
             <img
               src={love}
               alt="Image 1"
-              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-10 sm:-ml-10 -ml-2"
+              className="lg:w-44 lg:h-44 sm:w-32 sm:h-32 h-16   object-cover relative z-20 lg:-ml-6 sm:-ml-10 -ml-2"
             />
             <img
               src={loveteddy2}
@@ -232,13 +255,36 @@ export const Teddy = () => {
 
               {/* Three Smaller Images */}
               <div className="absolute top-10 lg:left-32 sm:left-32 left-8 w-full flex lg:gap-10 sm:gap-10 gap-2 -mt-5 z-20">
-                {teddyData?.images.slice(3, 6).map((imageUrl, idx) => (
-                  <img
-                    src={imageUrl}
-                    alt="Small Image 1"
-                    className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
-                  />
-                ))}
+                {teddyData ? (
+                  teddyData?.images
+                    .slice(3, 6)
+                    .map((imageUrl, idx) => (
+                      <img
+                        src={imageUrl}
+                        alt="Small Image 1"
+                        className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
+                      />
+                    ))
+                ) : (
+                  <>
+                    {" "}
+                    <img
+                      src={couple1}
+                      alt="Small Image 1"
+                      className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
+                    />{" "}
+                    <img
+                      src={couple1}
+                      alt="Small Image 1"
+                      className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
+                    />{" "}
+                    <img
+                      src={couple1}
+                      alt="Small Image 1"
+                      className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
+                    />
+                  </>
+                )}
               </div>
             </div>
           </div>

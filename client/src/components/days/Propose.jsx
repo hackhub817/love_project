@@ -16,7 +16,7 @@ import {
   TextRevealCardTitle,
 } from "../ui/text-reveal-card";
 
-export const ProposeDay = () => {
+export const ProposeDay = ({ isPreview }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [promiseData, setPromiseData] = useState(null);

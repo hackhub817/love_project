@@ -12,7 +12,7 @@ import Marquee from "../../components/ui/marquee";
 import IconCloud from "../../components/ui/icon-cloud";
 import love_icon from "../../assets/love_icon.png";
 
-export const ChocolateDay = () => {
+export const ChocolateDay = ({ isPreview }) => {
   const images = [
     love_icon,
     love_icon,

@@ -13,7 +13,7 @@ import Ballpit from "../../blocks/Backgrounds/Ballpit/Ballpit";
 import img from "../../assets/kiss/img-2.png";
 import kissfooter from "../../assets/kiss/kissfooter.png";
 
-export const Kiss = () => {
+export const Kiss = ({ isPreview }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [kissData, setKissData] = useState(null);
@@ -43,52 +43,53 @@ export const Kiss = () => {
     // Cleanup event listener
     return () => window.removeEventListener("resize", updateBallCount);
   }, []);
-
-  useEffect(() => {
-    const fetchKissData = async () => {
-      try {
-        setLoading(true);
-        const response = await getKissDayData(username);
-        if (response.success) {
-          setKissData(response.dayData);
+  if (!isPreview) {
+    useEffect(() => {
+      const fetchKissData = async () => {
+        try {
+          setLoading(true);
+          const response = await getKissDayData(username);
+          if (response.success) {
+            setKissData(response.dayData);
+          }
+        } catch (err) {
+          console.error("Error fetching kiss day data:", err);
+          setError(err.message || "Failed to fetch kiss day data");
+          toast.error("Failed to load kiss day data");
+        } finally {
+          setLoading(false);
         }
-      } catch (err) {
-        console.error("Error fetching kiss day data:", err);
-        setError(err.message || "Failed to fetch kiss day data");
-        toast.error("Failed to load kiss day data");
-      } finally {
-        setLoading(false);
+      };
+
+      if (username) {
+        fetchKissData();
       }
-    };
+    }, [username]);
 
-    if (username) {
-      fetchKissData();
-    }
-  }, [username]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">
-            Error Loading Data
-          </h2>
-          <p className="text-gray-600">{error}</p>
+    if (loading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">
+              Error Loading Data
+            </h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      );
+    }
   }
 
   return (
-    <div className="bg-pink-200  relative">
+    <div className="bg-pink-200 sm:p-2 relative">
       {/* Background Image with Opacity */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -119,11 +120,19 @@ export const Kiss = () => {
             this moment. 💕
           </div>
           <div className="relative my-10">
-            <img
-              src={kissData?.images[0]}
-              alt=""
-              className="border-[10px] rounded-tr-xl rounded-br-xl border-pink-500 lg:w-[600px] sm:w-[600px] w-[1000px] sm:h-[250px] lg:h-[250px] h-[180px]"
-            />
+            {kissData ? (
+              <img
+                src={kissData?.images[0]}
+                alt=""
+                className="border-[10px] rounded-tr-xl rounded-br-xl border-pink-500 lg:w-[600px] sm:w-[600px] w-[1000px] sm:h-[250px] lg:h-[250px] h-[180px]"
+              />
+            ) : (
+              <img
+                src={couple2}
+                alt=""
+                className="border-[10px] rounded-tr-xl rounded-br-xl border-pink-500 lg:w-[600px] sm:w-[600px] w-[1000px] sm:h-[250px] lg:h-[250px] h-[180px]"
+              />
+            )}
             <div className="flex items-center justify-center lg:block sm:block hidden">
               <div className="absolute top-0 -mt-5 ">
                 <img src={dil} alt="" className="" />
@@ -145,22 +154,52 @@ export const Kiss = () => {
                 className="lg:h-28 lg:w-28 sm:h-28 sm:w-28 h-8 w-8  "
               />
             </div>
-            {kissData?.images.slice(1, 4).map((imageUrl, idx) => (
-              <img
-                src={imageUrl}
-                alt=""
-                className="lg:w-[250px] sm:w-[250px] sm:h-[280px]  lg:h-[280px] w-[135px] h-[120px] py-4 px-1"
-              />
-            ))}
+            {kissData ? (
+              kissData?.images
+                .slice(1, 4)
+                .map((imageUrl, idx) => (
+                  <img
+                    src={imageUrl}
+                    alt=""
+                    className="lg:w-[250px] sm:w-[250px] sm:h-[280px]  lg:h-[280px] w-[135px] h-[120px] py-4 px-1"
+                  />
+                ))
+            ) : (
+              <>
+                <img
+                  src={couple2}
+                  alt=""
+                  className="lg:w-[220px] sm:w-[200px] sm:h-[280px]  lg:h-[280px] w-[135px] h-[120px] py-4 px-1"
+                />
+                <img
+                  src={couple2}
+                  alt=""
+                  className="lg:w-[250px] sm:w-[200px] sm:h-[280px]  lg:h-[280px] w-[135px] h-[120px] py-4 px-1"
+                />
+                <img
+                  src={couple2}
+                  alt=""
+                  className="lg:w-[250px] sm:w-[200px] sm:h-[280px]  lg:h-[280px] w-[135px] h-[120px] py-4 px-1"
+                />
+              </>
+            )}
           </div>
         </div>
         <div className="relative py-10">
           <img src={kissfooter} alt="" className="w-full" />
-          <img
-            src={kissData?.images[4]}
-            alt=""
-            className="absolute lg:top-24 lg:left-[28px] lg:w-[276px] lg:h-[335px] sm:top-[85px] sm:left-[28px] sm:w-[236px] sm:h-[290px] top-14 left-[12px] w-[95px] h-[125px]"
-          />
+          {kissData ? (
+            <img
+              src={kissData?.images[4]}
+              alt=""
+              className="absolute lg:top-24 lg:left-[28px] lg:w-[276px] lg:h-[335px] sm:top-[85px] sm:left-[28px] sm:w-[236px] sm:h-[290px] top-14 left-[12px] w-[95px] h-[125px]"
+            />
+          ) : (
+            <img
+              src={couple2}
+              alt=""
+              className="absolute lg:top-24 lg:left-[28px] lg:w-[276px] lg:h-[335px] sm:top-[85px] sm:left-[28px] sm:w-[236px] sm:h-[290px] top-14 left-[12px] w-[95px] h-[125px]"
+            />
+          )}
         </div>
       </section>
       <div className="relative overflow-hidden h-40 lg:h-62 sm:h-80 ">
