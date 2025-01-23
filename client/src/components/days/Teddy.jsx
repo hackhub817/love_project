@@ -16,94 +16,52 @@ import hand from "../../assets/teddy/hand.png";
 import bg2 from "../../assets/teddy/bg2.png";
 // import AnimatedTestimonials from "../../components/ui/animated-testimonials";
 
-export const Teddy = ({ isPreview }) => {
+export const Teddy = ({
+  isPreview,
+  previewImages,
+  messages,
+  ...previewData
+}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [teddyData, setTeddyData] = useState(null);
   const navigate = useNavigate();
-  const { username } = useParams(); // Get username from URL
+  const { username } = useParams();
 
-  // const testimonials = [
-  //   {
-  //     quote:
-  //       "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
-  //     name: "Sarah Chen",
-  //     designation: "Product Manager at TechFlow",
-  //     src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //   },
-  //   {
-  //     quote:
-  //       "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
-  //     name: "Michael Rodriguez",
-  //     designation: "CTO at InnovateSphere",
-  //     src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //   },
-  //   {
-  //     quote:
-  //       "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
-  //     name: "Emily Watson",
-  //     designation: "Operations Director at CloudScale",
-  //     src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //   },
-  //   {
-  //     quote:
-  //       "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
-  //     name: "James Kim",
-  //     designation: "Engineering Lead at DataPro",
-  //     src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //   },
-  //   {
-  //     quote:
-  //       "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
-  //     name: "Lisa Thompson",
-  //     designation: "VP of Technology at FutureNet",
-  //     src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //   },
-  // ];
-  if (!isPreview) {
-    useEffect(() => {
-      const fetchTeddyData = async () => {
-        try {
-          setLoading(true);
-          const response = await getTeddyDayData(username);
-          if (response.success) {
-            setTeddyData(response.dayData);
-          }
-        } catch (err) {
-          console.error("Error fetching teddy day data:", err);
-          setError(err.message || "Failed to fetch teddy day data");
-          toast.error("Failed to load teddy day data");
-        } finally {
-          setLoading(false);
+  useEffect(() => {
+    const fetchTeddyData = async () => {
+      try {
+        setLoading(true);
+        const response = await getTeddyDayData(username);
+        if (response.success) {
+          setTeddyData(response.dayData);
         }
-      };
-
-      if (username) {
-        fetchTeddyData();
+      } catch (err) {
+        console.error("Error fetching teddy day data:", err);
+        setError(err.message || "Failed to fetch teddy day data");
+        toast.error("Failed to load teddy day data");
+      } finally {
+        setLoading(false);
       }
-    }, [username]);
+    };
 
-    if (loading) {
-      return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
-        </div>
-      );
+    if (!isPreview && username) {
+      fetchTeddyData();
+    } else if (isPreview) {
+      setTeddyData({
+        images: previewImages || [],
+        messages: messages || [],
+        ...previewData,
+      });
+      setLoading(false);
     }
+  }, [isPreview, username, previewImages, messages, previewData]);
 
-    if (error) {
-      return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-red-600 mb-4">
-              Error Loading Data
-            </h2>
-            <p className="text-gray-600">{error}</p>
-          </div>
-        </div>
-      );
-    }
-  }
+  // Helper function to get images
+  const getImages = (start, end) => {
+    const images = isPreview ? previewImages : teddyData?.images;
+    return images?.slice(start, end) || Array(end - start).fill(couple1);
+  };
 
   const words = [
     {
@@ -151,36 +109,14 @@ export const Teddy = ({ isPreview }) => {
         </section>
         <section className="max-w-4xl mx-auto mt-5 sm:px-4">
           <div className="bg-[#483F2C] lg:h-96 sm:h-96 h-52 grid grid-cols-3 gap-10">
-            {teddyData ? (
-              teddyData?.images
-                .slice(0, 3)
-                .map((imageUrl, idx) => (
-                  <img
-                    key={idx}
-                    src={imageUrl}
-                    alt={`Image ${idx + 1}`}
-                    className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
-                  />
-                ))
-            ) : (
-              <>
-                <img
-                  src={couple1}
-                  alt={`Image 1`}
-                  className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
-                />
-                <img
-                  src={couple1}
-                  alt={`Image 2`}
-                  className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
-                />
-                <img
-                  src={couple1}
-                  alt={`Image 3`}
-                  className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
-                />
-              </>
-            )}
+            {getImages(0, 3).map((imageUrl, idx) => (
+              <img
+                key={idx}
+                src={imageUrl}
+                alt={`Image ${idx + 1}`}
+                className="w-full lg:h-96 sm:h-96 h-48 object-cover py-10"
+              />
+            ))}
           </div>
         </section>
         <section className="max-w-4xl mx-auto mt-5 relative sm:px-6">
@@ -255,36 +191,14 @@ export const Teddy = ({ isPreview }) => {
 
               {/* Three Smaller Images */}
               <div className="absolute top-10 lg:left-32 sm:left-32 left-8 w-full flex lg:gap-10 sm:gap-10 gap-2 -mt-5 z-20">
-                {teddyData ? (
-                  teddyData?.images
-                    .slice(3, 6)
-                    .map((imageUrl, idx) => (
-                      <img
-                        src={imageUrl}
-                        alt={`Small Image ${idx + 1}`}
-                        className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12 border-4 border-white border-b-[14px] shadow-md"
-                      />
-                    ))
-                ) : (
-                  <>
-                    {" "}
-                    <img
-                      src={couple1}
-                      alt="Small Image 1"
-                      className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
-                    />{" "}
-                    <img
-                      src={couple1}
-                      alt="Small Image 1"
-                      className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
-                    />{" "}
-                    <img
-                      src={couple1}
-                      alt="Small Image 1"
-                      className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
-                    />
-                  </>
-                )}
+                {getImages(3, 6).map((imageUrl, idx) => (
+                  <img
+                    key={idx}
+                    src={imageUrl}
+                    alt={`Small Image ${idx + 1}`}
+                    className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12 border-4 border-white border-b-[14px] shadow-md"
+                  />
+                ))}
               </div>
             </div>
           </div>

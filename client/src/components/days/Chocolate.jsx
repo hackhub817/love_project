@@ -11,8 +11,57 @@ import RollingGallery from "../../blocks/Components/RollingGallery/RollingGaller
 import Marquee from "../../components/ui/marquee";
 import IconCloud from "../../components/ui/icon-cloud";
 import love_icon from "../../assets/love_icon.png";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getChocolateDayData } from "../../Pages/api/Api";
+import { toast } from "sonner";
 
-export const ChocolateDay = ({ isPreview }) => {
+export const ChocolateDay = ({
+  isPreview,
+  previewImages,
+  messages,
+  ...previewData
+}) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [chocolateData, setChocolateData] = useState(null);
+  const { username } = useParams();
+
+  useEffect(() => {
+    const fetchChocolateData = async () => {
+      try {
+        setLoading(true);
+        const response = await getChocolateDayData(username);
+        if (response.success) {
+          setChocolateData(response.dayData);
+        }
+      } catch (err) {
+        console.error("Error fetching chocolate day data:", err);
+        setError(err.message || "Failed to fetch chocolate day data");
+        toast.error("Failed to load chocolate day data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!isPreview && username) {
+      fetchChocolateData();
+    } else if (isPreview) {
+      setChocolateData({
+        images: previewImages || [],
+        messages: messages || [],
+        ...previewData,
+      });
+      setLoading(false);
+    }
+  }, [isPreview, username, previewImages, messages, previewData]);
+
+  // Helper function to get images
+  const getImages = (start, end) => {
+    const images = isPreview ? previewImages : chocolateData?.images;
+    return images?.slice(start, end) || Array(end - start).fill(defaultImage);
+  };
+
   const images = [
     love_icon,
     love_icon,

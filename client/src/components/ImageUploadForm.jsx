@@ -48,6 +48,9 @@ const ImageUploadForm = () => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Add new state for sidebar
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length !== 12) {
@@ -214,7 +217,7 @@ const ImageUploadForm = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-4">
       {!previewMode ? (
         // Upload Form
         <div className="space-y-6">
@@ -255,109 +258,240 @@ const ImageUploadForm = () => {
           </button>
         </div>
       ) : (
-        // Preview Mode - Modified for better mobile experience
-        <div className="space-y-6">
-          {Object.keys(daySelections).map((day) => (
-            <div key={day} className="space-y-4">
-              {/* Day Selection Card */}
-              <div className="border p-4 rounded">
-                <h3 className="font-bold text-lg mb-4">{day}</h3>
+        <div className="space-y-4 max-w-7xl mx-auto">
+          {/* Desktop/Tablet Layout - Hidden on Mobile */}
+          <div className="hidden sm:block">
+            <div className="flex lg:flex-row sm:flex-row flex-col gap-4">
+              <div className="space-y-4 flex-1">
+                {Object.keys(daySelections).map((day) => (
+                  <div key={day} className="border p-4 lg:w-96 sm:w-72 rounded">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="font-bold text-lg">{day}</h3>
+                      <button
+                        onClick={() => setSelectedDay(day)}
+                        className="bg-blue-500 text-white px-2 py-1 rounded text-sm"
+                      >
+                        Preview Page
+                      </button>
+                    </div>
 
-                {/* Day-specific message input */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Day Message
-                  </label>
-                  <textarea
-                    value={dayMessages[day]?.[0] || ""}
-                    onChange={(e) =>
-                      handleDayMessageChange(day, e.target.value)
-                    }
-                    className="w-full rounded-md border-gray-300 shadow-sm"
-                    rows={2}
-                  />
-                </div>
-
-                {/* Image Selection Grid */}
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                  {previewImages.map((url, idx) => (
-                    <div
-                      key={idx}
-                      className={`cursor-pointer border-2 p-1 ${
-                        daySelections[day].includes(url)
-                          ? "border-blue-500"
-                          : "border-gray-200"
-                      }`}
-                      onClick={() => {
-                        const newSelection = daySelections[day].includes(url)
-                          ? daySelections[day].filter((i) => i !== url)
-                          : [...daySelections[day], url];
-                        handleDayImageSelection(day, newSelection);
-                        // Automatically show preview on mobile after selection
-                        if (window.innerWidth < 768) {
-                          setSelectedDay(day);
+                    {/* Day-specific message input */}
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Day Message
+                      </label>
+                      <textarea
+                        value={dayMessages[day]?.[0] || ""}
+                        onChange={(e) =>
+                          handleDayMessageChange(day, e.target.value)
                         }
-                      }}
-                    >
-                      <img
-                        src={url}
-                        alt=""
-                        className="w-full aspect-square object-cover"
+                        className="w-full rounded-md border-gray-300 shadow-sm"
+                        rows={2}
                       />
                     </div>
-                  ))}
-                </div>
-                <p className="text-sm text-gray-500 mt-2">
-                  Selected: {daySelections[day].length}/6 images
-                </p>
 
-                {/* Preview Button - Hidden on mobile */}
-                <button
-                  onClick={() => setSelectedDay(day)}
-                  className="hidden sm:block bg-blue-500 text-white px-2 py-1 rounded text-sm mt-4"
-                >
-                  Preview Page
-                </button>
+                    <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-2">
+                      {previewImages.map((url, idx) => (
+                        <div
+                          key={idx}
+                          className={`cursor-pointer border-2 p-1 ${
+                            daySelections[day].includes(url)
+                              ? "border-blue-500"
+                              : "border-gray-200"
+                          }`}
+                          onClick={() => {
+                            const newSelection = daySelections[day].includes(
+                              url
+                            )
+                              ? daySelections[day].filter((i) => i !== url)
+                              : [...daySelections[day], url];
+                            handleDayImageSelection(day, newSelection);
+                          }}
+                        >
+                          <img
+                            src={url}
+                            alt=""
+                            className="w-full h-16 object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Selected: {daySelections[day].length}/6 images
+                    </p>
+                  </div>
+                ))}
               </div>
 
-              {/* Preview Section - Shows immediately below on mobile */}
-              {selectedDay === day && (
-                <div className="border p-4 rounded">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-bold text-lg">Preview</h3>
-                    <button
-                      onClick={() => setSelectedDay(null)}
-                      className="sm:hidden text-gray-500"
-                    >
-                      Close Preview
-                    </button>
+              {selectedDay && (
+                <div className="w-full">
+                  <div className="border p-4 rounded sticky top-4">
+                    <h3 className="font-bold text-lg mb-4">Page Preview</h3>
+                    {renderDayPreview()}
                   </div>
-                  {renderDayPreview()}
                 </div>
               )}
             </div>
-          ))}
+          </div>
 
-          {/* Submit Buttons */}
-          <div className="flex gap-4 sticky bottom-0 bg-white p-4 border-t">
+          {/* Mobile Layout - Hidden on Tablet and Above */}
+          <div className="sm:hidden">
+            {/* Days Grid */}
+            <div className="grid grid-cols-1 gap-4">
+              {Object.keys(daySelections).map((day) => (
+                <div
+                  key={day}
+                  onClick={() => {
+                    setSelectedDay(day);
+                    setSidebarOpen(true);
+                  }}
+                  className="border rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all"
+                >
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-bold text-lg">{day}</h3>
+                    <span className="text-sm text-gray-500">
+                      {daySelections[day].length}/6 images
+                    </span>
+                  </div>
+                  {dayMessages[day]?.[0] && (
+                    <p className="text-sm text-gray-600 mt-2 truncate">
+                      {dayMessages[day][0]}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile Sidebar */}
+            <div
+              className={`fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
+                sidebarOpen ? "translate-x-0" : "translate-x-full"
+              }`}
+            >
+              {selectedDay && (
+                <div className="h-full flex flex-col">
+                  {/* Sidebar Header */}
+                  <div className="p-4 border-b flex justify-between items-center">
+                    <h2 className="text-xl font-bold">{selectedDay}</h2>
+                    <button
+                      onClick={() => setSidebarOpen(false)}
+                      className="p-2 hover:bg-gray-100 rounded-full"
+                    >
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Sidebar Content */}
+                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                    {/* Message Input */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Day Message
+                      </label>
+                      <textarea
+                        value={dayMessages[selectedDay]?.[0] || ""}
+                        onChange={(e) =>
+                          handleDayMessageChange(selectedDay, e.target.value)
+                        }
+                        className="w-full rounded-md border-gray-300 shadow-sm"
+                        rows={3}
+                      />
+                    </div>
+
+                    {/* Image Selection */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Select Images (tap to select)
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {previewImages.map((url, idx) => (
+                          <div
+                            key={idx}
+                            className={`aspect-square border-2 ${
+                              daySelections[selectedDay].includes(url)
+                                ? "border-blue-500"
+                                : "border-gray-200"
+                            }`}
+                            onClick={() => {
+                              const newSelection = daySelections[
+                                selectedDay
+                              ].includes(url)
+                                ? daySelections[selectedDay].filter(
+                                    (i) => i !== url
+                                  )
+                                : [...daySelections[selectedDay], url];
+                              handleDayImageSelection(
+                                selectedDay,
+                                newSelection
+                              );
+                            }}
+                          >
+                            <img
+                              src={url}
+                              alt=""
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Preview */}
+                    <div className="mt-4">
+                      <h4 className="font-medium text-gray-700 mb-2">
+                        Preview
+                      </h4>
+                      <div className="bg-gray-50 p-2 rounded">
+                        {renderDayPreview()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Backdrop */}
+            {sidebarOpen && (
+              <div
+                className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                onClick={() => setSidebarOpen(false)}
+              />
+            )}
+          </div>
+
+          {/* Submit Buttons - Adjusted for both layouts */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex gap-4">
             <button
               onClick={() => {
                 setPreviewMode(false);
                 setSelectedDay(null);
+                setSidebarOpen(false);
               }}
-              className="bg-gray-500 text-white px-4 py-2 rounded flex-1 sm:flex-none"
+              className="flex-1 sm:flex-none bg-gray-500 text-white px-4 py-2 rounded-lg"
               disabled={isSubmitting}
             >
               Back
             </button>
             <button
               onClick={handleFinalSubmit}
-              className={`bg-green-500 text-white px-4 py-2 rounded flex-1 sm:flex-none ${
-                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              className={`flex-1 sm:flex-none bg-green-500 text-white px-4 py-2 rounded-lg ${
+                isSubmitting ? "opacity-50" : ""
               }`}
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Submitting..." : "Final Submit"}
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </div>
         </div>

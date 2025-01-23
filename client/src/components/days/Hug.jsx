@@ -13,8 +13,57 @@ import couple3 from "../../assets/hug/couple3.jpg";
 import couple4 from "../../assets/hug/couple4.jpg";
 import banner from "../../assets/hug/banner.png";
 import love_ballon from "../../assets/hug/love_ballon.png";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getHugDayData } from "../../Pages/api/Api";
+import { toast } from "sonner";
 
-export const HugDay = ({ isPreview }) => {
+export const HugDay = ({
+  isPreview,
+  previewImages,
+  messages,
+  ...previewData
+}) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [hugData, setHugData] = useState(null);
+  const { username } = useParams();
+
+  useEffect(() => {
+    const fetchHugData = async () => {
+      try {
+        setLoading(true);
+        const response = await getHugDayData(username);
+        if (response.success) {
+          setHugData(response.dayData);
+        }
+      } catch (err) {
+        console.error("Error fetching hug day data:", err);
+        setError(err.message || "Failed to fetch hug day data");
+        toast.error("Failed to load hug day data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!isPreview && username) {
+      fetchHugData();
+    } else if (isPreview) {
+      setHugData({
+        images: previewImages || [],
+        messages: messages || [],
+        ...previewData,
+      });
+      setLoading(false);
+    }
+  }, [isPreview, username, previewImages, messages, previewData]);
+
+  // Helper function to get images
+  const getImages = (start, end) => {
+    const images = isPreview ? previewImages : hugData?.images;
+    return images?.slice(start, end) || Array(end - start).fill(defaultImage);
+  };
+
   return (
     <div
       className="w-full  bg-cover bg-center "

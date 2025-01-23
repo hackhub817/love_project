@@ -11,7 +11,52 @@ import panda3 from "../../assets/Promise/panda3.png";
 import panda4 from "../../assets/Promise/panda4.png";
 import panda5 from "../../assets/Promise/panda5.png";
 import panda6 from "../../assets/Promise/panda6.png";
-const Promise = ({ isPreview, previewImages }) => {
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getPromiseDayData } from "../../Pages/api/Api";
+import { toast } from "sonner";
+
+const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [promiseData, setPromiseData] = useState(null);
+  const { username } = useParams();
+
+  useEffect(() => {
+    const fetchPromiseData = async () => {
+      try {
+        setLoading(true);
+        const response = await getPromiseDayData(username);
+        if (response.success) {
+          setPromiseData(response.dayData);
+        }
+      } catch (err) {
+        console.error("Error fetching promise day data:", err);
+        setError(err.message || "Failed to fetch promise day data");
+        toast.error("Failed to load promise day data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!isPreview && username) {
+      fetchPromiseData();
+    } else if (isPreview) {
+      setPromiseData({
+        images: previewImages || [],
+        messages: messages || [],
+        ...previewData,
+      });
+      setLoading(false);
+    }
+  }, [isPreview, username, previewImages, messages, previewData]);
+
+  // Helper function to get images
+  const getImages = (start, end) => {
+    const images = isPreview ? previewImages : promiseData?.images;
+    return images?.slice(start, end) || Array(end - start).fill(couple2);
+  };
+
   return (
     <>
       <div
@@ -23,11 +68,14 @@ const Promise = ({ isPreview, previewImages }) => {
         <div className="max-w-4xl mx-auto ">
           <div className=" flex items-center px-2 justify-center lg:gap-10 sm:gap-10 gap-2  ">
             <div>
-              <img
-                src={couple2}
-                alt=""
-                className="h-44 border-[5px] border-b-[20px] border-white"
-              />
+              {getImages(0, 1).map((imageUrl, idx) => (
+                <img
+                  key={idx}
+                  src={imageUrl}
+                  alt={`Image ${idx + 1}`}
+                  className="h-44 border-[5px] border-b-[20px] border-white"
+                />
+              ))}
             </div>
             <div>
               <img src={HeroCloud} alt="" className="h-28" />
@@ -168,7 +216,6 @@ const Promise = ({ isPreview, previewImages }) => {
           </div>
         </div>
       </div>
-      ;
     </>
   );
 };
