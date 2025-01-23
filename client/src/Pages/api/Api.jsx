@@ -114,12 +114,42 @@ export const uploadImages = async (formData) => {
   }
 };
 
-export const submitTeddyDayData = async (data) => {
+export const createDayData = async (data) => {
   try {
     const response = await axiosInstance.post("/day-data/create", data);
     return response.data;
   } catch (error) {
-    console.error("Error submitting teddy day data:", error);
+    console.error("Error creating day data:", error);
+    throw error;
+  }
+};
+
+export const getRoseDayData = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/day-data/Rose/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching rose day data:", error);
+    throw error;
+  }
+};
+
+export const getProposeDayData = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/day-data/Propose/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching propose day data:", error);
+    throw error;
+  }
+};
+
+export const getChocolateDayData = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/day-data/Chocolate/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching chocolate day data:", error);
     throw error;
   }
 };
@@ -144,12 +174,32 @@ export const getPromiseDayData = async (username) => {
   }
 };
 
+export const getHugDayData = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/day-data/Hug/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching hug day data:", error);
+    throw error;
+  }
+};
+
 export const getKissDayData = async (username) => {
   try {
     const response = await axiosInstance.get(`/day-data/Kiss/${username}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching kiss day data:", error);
+    throw error;
+  }
+};
+
+export const getValentineDayData = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/day-data/Valentine/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching valentine day data:", error);
     throw error;
   }
 };

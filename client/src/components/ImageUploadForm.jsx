@@ -8,7 +8,7 @@ import { Valintine } from "./days/Valinetine";
 import Promise from "./days/Promise";
 import { Teddy } from "./days/Teddy";
 import { ChocolateDay } from "./days/Chocolate";
-import { uploadImages } from "../Pages/api/Api";
+import { uploadImages, createDayData } from "../Pages/api/Api";
 
 const ImageUploadForm = () => {
   const navigate = useNavigate();
@@ -19,6 +19,17 @@ const ImageUploadForm = () => {
     secretPromise: "",
     secretMessage: "",
     specialMessage: "",
+  });
+
+  const [dayMessages, setDayMessages] = useState({
+    Rose: [],
+    Propose: [],
+    Chocolate: [],
+    Teddy: [],
+    Promise: [],
+    Hug: [],
+    Kiss: [],
+    Valentine: [],
   });
 
   // State for selected images for each day
@@ -35,6 +46,7 @@ const ImageUploadForm = () => {
 
   const [previewMode, setPreviewMode] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -57,6 +69,13 @@ const ImageUploadForm = () => {
     }));
   };
 
+  const handleDayMessageChange = (day, value) => {
+    setDayMessages((prev) => ({
+      ...prev,
+      [day]: Array.isArray(value) ? value : [value],
+    }));
+  };
+
   const handlePreview = () => {
     if (images.length !== 12) {
       toast.error("Please upload 12 images first");
@@ -66,8 +85,8 @@ const ImageUploadForm = () => {
   };
 
   const handleDayImageSelection = (day, selectedImages) => {
-    if (selectedImages.length > 5) {
-      toast.error(`You can only select up to 5 images for ${day}`);
+    if (selectedImages.length > 6) {
+      toast.error(`You can only select up to 6 images for ${day}`);
       return;
     }
     setDaySelections((prev) => ({
@@ -77,70 +96,90 @@ const ImageUploadForm = () => {
   };
 
   const handleFinalSubmit = async () => {
-    // Validate selections
-    for (const day in daySelections) {
-      if (daySelections[day].length === 0) {
-        toast.error(`Please select images for ${day}`);
-        return;
-      }
-    }
-
     try {
-      // First upload all images to cloudinary
+      setIsSubmitting(true);
+      console.log("Starting submission process...");
+
+      // Validation phase
+      console.log("Starting validation...");
+      for (const day in daySelections) {
+        if (daySelections[day].length === 0) {
+          toast.error(`Please select images for ${day}`);
+          setIsSubmitting(false);
+          return;
+        }
+        if (!dayMessages[day] || dayMessages[day].length === 0) {
+          toast.error(`Please add at least one message for ${day}`);
+          setIsSubmitting(false);
+          return;
+        }
+      }
+      console.log("Validation completed successfully");
+
+      // Image upload phase
+      console.log("Preparing to upload images...");
       const formData = new FormData();
       images.forEach((image) => {
         formData.append("images", image);
       });
 
+      console.log("Uploading images to cloudinary...");
       const uploadResponse = await uploadImages(formData);
       if (!uploadResponse.success) {
         throw new Error("Failed to upload images");
       }
+      console.log("Images uploaded successfully");
 
       const imageUrls = uploadResponse.imageUrls;
 
-      // Map local preview URLs to cloudinary URLs
+      // Create URL mapping
+      console.log("Creating URL mapping...");
       const urlMapping = {};
       previewImages.forEach((previewUrl, index) => {
         urlMapping[previewUrl] = imageUrls[index];
       });
 
-      // Create day data for each day with cloudinary URLs
-      for (const day in daySelections) {
-        const cloudinaryUrls = daySelections[day].map(
-          (previewUrl) => urlMapping[previewUrl]
-        );
+      // Create day data sequentially
+      console.log("Starting day data creation...");
+      const days = Object.keys(daySelections);
 
-        const dayData = {
-          day,
-          images: cloudinaryUrls,
-          messages: ["Default message"],
-          ...messages,
-        };
+      // Using sequential async/await instead of Promise.all
+      for (const day of days) {
+        try {
+          console.log(`Creating data for ${day}...`);
+          const cloudinaryUrls = daySelections[day].map(
+            (previewUrl) => urlMapping[previewUrl]
+          );
 
-        const response = await fetch("/api/v1/daydata/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(dayData),
-        });
+          const dayData = {
+            day,
+            images: cloudinaryUrls,
+            messages: dayMessages[day],
+            ...messages,
+          };
 
-        const data = await response.json();
-        if (!data.success) {
-          throw new Error(`Failed to create data for ${day}`);
+          // Use createDayData instead of submitTeddyDayData
+          await createDayData(dayData);
+          console.log(`Successfully created data for ${day}`);
+        } catch (error) {
+          console.error(`Error creating data for ${day}:`, error);
+          throw new Error(`Failed to create data for ${day}: ${error.message}`);
         }
       }
 
-      // Cleanup preview URLs
+      // Cleanup phase
+      console.log("Starting cleanup...");
       previewImages.forEach(URL.revokeObjectURL);
+      console.log("Cleanup completed");
 
       toast.success("Successfully created all day data!");
       navigate("/dashboard");
     } catch (error) {
-      toast.error("Error creating day data");
-      console.error(error);
+      console.error("Error during submission:", error);
+      toast.error(error.message || "Error creating day data");
+    } finally {
+      console.log("Submission process completed");
+      setIsSubmitting(false);
     }
   };
 
@@ -150,6 +189,8 @@ const ImageUploadForm = () => {
     const previewProps = {
       isPreview: true,
       previewImages: daySelections[selectedDay],
+      messages: dayMessages[selectedDay],
+      ...messages,
     };
 
     switch (selectedDay) {
@@ -173,7 +214,7 @@ const ImageUploadForm = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6">
       {!previewMode ? (
         // Upload Form
         <div className="space-y-6">
@@ -190,7 +231,7 @@ const ImageUploadForm = () => {
             />
           </div>
 
-          {/* Message Fields */}
+          {/* Global Message Fields */}
           {Object.keys(messages).map((key) => (
             <div key={key}>
               <label className="block text-sm font-medium text-gray-700">
@@ -216,7 +257,7 @@ const ImageUploadForm = () => {
       ) : (
         // Preview Mode
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex lg:flex-row sm:flex-row flex-col gap-4">
             <div className="space-y-6">
               {Object.keys(daySelections).map((day) => (
                 <div key={day} className="border p-4 rounded">
@@ -224,11 +265,27 @@ const ImageUploadForm = () => {
                     <h3 className="font-bold text-lg">{day}</h3>
                     <button
                       onClick={() => setSelectedDay(day)}
-                      className="bg-blue-500 text-white px-2 py-1 rounded text-sm"
+                      className="bg-blue-500 text-whit  e px-2 py-1 rounded text-sm"
                     >
                       Preview Page
                     </button>
                   </div>
+
+                  {/* Day-specific message input */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Day Message
+                    </label>
+                    <textarea
+                      value={dayMessages[day]?.[0] || ""}
+                      onChange={(e) =>
+                        handleDayMessageChange(day, e.target.value)
+                      }
+                      className="w-full rounded-md border-gray-300 shadow-sm"
+                      rows={2}
+                    />
+                  </div>
+
                   <div className="grid grid-cols-4 gap-2">
                     {previewImages.map((url, idx) => (
                       <div
@@ -254,7 +311,7 @@ const ImageUploadForm = () => {
                     ))}
                   </div>
                   <p className="text-sm text-gray-500 mt-2">
-                    Selected: {daySelections[day].length}/5 images
+                    Selected: {daySelections[day].length}/6 images
                   </p>
                 </div>
               ))}
@@ -273,14 +330,18 @@ const ImageUploadForm = () => {
                 setSelectedDay(null);
               }}
               className="bg-gray-500 text-white px-4 py-2 rounded"
+              disabled={isSubmitting}
             >
               Back
             </button>
             <button
               onClick={handleFinalSubmit}
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className={`bg-green-500 text-white px-4 py-2 rounded ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSubmitting}
             >
-              Final Submit
+              {isSubmitting ? "Submitting..." : "Final Submit"}
             </button>
           </div>
         </div>

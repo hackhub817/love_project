@@ -1,46 +1,59 @@
 import mongoose from "mongoose";
 
-const dayDataSchema = new mongoose.Schema({
-  day: {
-    type: String,
-    enum: [
-      "Rose",
-      "Propose",
-      "Chocolate",
-      "Teddy",
-      "Promise",
-      "Hug",
-      "Kiss",
-      "Valentine",
-    ],
-    required: true,
-  },
-  messages: {
-    type: [String],
-    required: true,
-  },
-  images: {
-    type: [String],
-    required: true,
-  },
+const dayDataSchema = new mongoose.Schema(
+  {
+    day: {
+      type: String,
+      enum: [
+        "Rose",
+        "Propose",
+        "Chocolate",
+        "Teddy",
+        "Promise",
+        "Hug",
+        "Kiss",
+        "Valentine",
+      ],
+      required: true,
+    },
+    messages: {
+      type: [String],
+      required: true,
+    },
+    images: {
+      type: [String],
+      required: true,
+      validate: [
+        {
+          validator: function (images) {
+            return images.length <= 6;
+          },
+          message: "Cannot have more than 6 images per day",
+        },
+      ],
+    },
 
-  needToTellSomething: {
-    type: String, // Any additional information
+    needToTellSomething: {
+      type: String, // Any additional information
+    },
+    secretPromise: {
+      type: String, // Any additional information
+    },
+    secretMessage: {
+      type: String, // Any additional information
+    },
+    specialMessage: {
+      type: String, // Any additional information
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Reference to the User model
+      required: true,
+    },
   },
-  secretPromise: {
-    type: String, // Any additional information
-  },
-  secretMessage: {
-    type: String, // Any additional information
-  },
-  specialMessage: {
-    type: String, // Any additional information
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User model
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 export default mongoose.model("DayData", dayDataSchema);

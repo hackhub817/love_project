@@ -261,8 +261,8 @@ export const Teddy = ({ isPreview }) => {
                     .map((imageUrl, idx) => (
                       <img
                         src={imageUrl}
-                        alt="Small Image 1"
-                        className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12  border-4 border-white border-b-[14px] shadow-md"
+                        alt={`Small Image ${idx + 1}`}
+                        className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12 border-4 border-white border-b-[14px] shadow-md"
                       />
                     ))
                 ) : (

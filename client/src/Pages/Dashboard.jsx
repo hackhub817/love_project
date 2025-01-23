@@ -1,9 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import TeddyDay from "../components/days/TeddyDay";
+// import TeddyDay from "../components/days/TeddyDay";
 import DashboardHome from "../components/DashboardHome";
-import { Propose } from "../components/days/ProposeDay";
-import KissDay from "../components/days/KissDay";
 
 const Dashboard = () => {
   return (
@@ -12,8 +10,6 @@ const Dashboard = () => {
       <div className="flex-1 p-7">
         <Routes>
           <Route index element={<DashboardHome />} />
-          <Route path="teddy-day" element={<TeddyDay />} />
-          <Route path="promise-day" element={<Propose />} />
           <Route path="rose-day" element={<div>Rose Day Component</div>} />
           <Route
             path="propose-day"
@@ -28,7 +24,6 @@ const Dashboard = () => {
             element={<div>Promise Day Component</div>}
           />
           <Route path="hug-day" element={<div>Hug Day Component</div>} />
-          <Route path="kiss-day" element={<KissDay />} />
           <Route
             path="valentine-day"
             element={<div>Valentine Day Component</div>}

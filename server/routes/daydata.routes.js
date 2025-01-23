@@ -3,17 +3,24 @@ import multer from "multer";
 import {
   uploadImages,
   createDayData,
-  getDayDataByUsername,
+  getRoseDayData,
+  getProposeDayData,
+  getChocolateDayData,
+  getTeddyDayData,
+  getPromiseDayData,
+  getHugDayData,
+  getKissDayData,
+  getValentineDayData,
 } from "../controllers/daydata.controller.js";
 import isLoggedIn from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-// Configure multer for handling file uploads
+// Configure multer
 const upload = multer({
   dest: "uploads/",
   limits: {
-    fileSize: 20 * 1024 * 1024, // 5MB limit
+    fileSize: 20 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith("image/")) {
@@ -24,13 +31,23 @@ const upload = multer({
   },
 });
 
+// Upload and create routes
 router.post(
   "/upload-images",
   isLoggedIn,
-  upload.array("images", 5),
+  upload.array("images", 12),
   uploadImages
 );
 router.post("/create", isLoggedIn, createDayData);
-router.get("/:day/:username", getDayDataByUsername);
+
+// Get day data routes
+router.get("/Rose/:username", getRoseDayData);
+router.get("/Propose/:username", getProposeDayData);
+router.get("/Chocolate/:username", getChocolateDayData);
+router.get("/Teddy/:username", getTeddyDayData);
+router.get("/Promise/:username", getPromiseDayData);
+router.get("/Hug/:username", getHugDayData);
+router.get("/Kiss/:username", getKissDayData);
+router.get("/Valentine/:username", getValentineDayData);
 
 export default router;

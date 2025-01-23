@@ -6,23 +6,18 @@ import CustomError from "../utils/error.utils.js";
 
 export const uploadImages = async (req, res, next) => {
   try {
-    // Check if files exist
     if (!req.files || req.files.length === 0) {
       return next(new CustomError("No images provided", 400));
     }
 
-    // Upload each file to cloudinary
     const uploadPromises = req.files.map(async (file) => {
       try {
         const result = await cloudinary.v2.uploader.upload(file.path, {
           folder: "valentine_days",
         });
-
-        // Delete the local file after successful upload
         await fs.unlink(file.path);
         return result.secure_url;
       } catch (uploadError) {
-        // If upload fails, delete the local file and rethrow
         await fs
           .unlink(file.path)
           .catch((err) =>
@@ -34,17 +29,12 @@ export const uploadImages = async (req, res, next) => {
 
     const imageUrls = await Promise.all(uploadPromises);
 
-    if (!imageUrls || imageUrls.length === 0) {
-      return next(new CustomError("Failed to upload images", 500));
-    }
-
     res.status(200).json({
       success: true,
       message: "Images uploaded successfully",
       imageUrls,
     });
   } catch (error) {
-    // Clean up any remaining files in case of error
     if (req.files) {
       await Promise.all(
         req.files.map((file) =>
@@ -56,8 +46,6 @@ export const uploadImages = async (req, res, next) => {
         )
       );
     }
-
-    console.error("Upload error:", error);
     return next(
       new CustomError(error.message || "Error uploading images", 500)
     );
@@ -66,36 +54,43 @@ export const uploadImages = async (req, res, next) => {
 
 export const createDayData = async (req, res, next) => {
   try {
-    const { day, messages, images, needToTellSomething } = req.body;
+    const {
+      day,
+      messages,
+      images,
+      needToTellSomething,
+      secretPromise,
+      secretMessage,
+      specialMessage,
+    } = req.body;
     const userId = req.user.id;
 
-    // Validate required fields
     if (!day || !messages || !images) {
       return next(
         new CustomError("Day, messages, and images are required", 400)
       );
     }
 
-    // Validate arrays
     if (!Array.isArray(messages) || !Array.isArray(images)) {
       return next(new CustomError("Messages and images must be arrays", 400));
     }
 
-    // Create day data
+    // Create day data with all possible fields
     const dayData = await DayData.create({
       day,
       messages,
       images,
       needToTellSomething,
+      secretPromise,
+      secretMessage,
+      specialMessage,
       user: userId,
     });
 
     // Update user's dayData array
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      {
-        $push: { dayData: dayData._id },
-      },
+      { $push: { dayData: dayData._id } },
       { new: true }
     );
 
@@ -113,46 +108,56 @@ export const createDayData = async (req, res, next) => {
   }
 };
 
-// Optional: Get day data for a specific day
-export const getDayData = async (req, res, next) => {
-  try {
-    const { day } = req.params;
-    const userId = req.user.id;
-
-    const dayData = await DayData.findOne({ day, user: userId });
-
-    if (!dayData) {
-      return next(new CustomError("Day data not found", 404));
-    }
-
-    res.status(200).json({
-      success: true,
-      dayData,
-    });
-  } catch (error) {
-    next(new CustomError(error.message || "Error fetching day data", 500));
-  }
+// Add specific day data fetching functions
+export const getRoseDayData = async (req, res, next) => {
+  await getDayDataByType(req, res, next, "Rose");
 };
 
-export const getDayDataByUsername = async (req, res, next) => {
+export const getProposeDayData = async (req, res, next) => {
+  await getDayDataByType(req, res, next, "Propose");
+};
+
+export const getChocolateDayData = async (req, res, next) => {
+  await getDayDataByType(req, res, next, "Chocolate");
+};
+
+export const getTeddyDayData = async (req, res, next) => {
+  await getDayDataByType(req, res, next, "Teddy");
+};
+
+export const getPromiseDayData = async (req, res, next) => {
+  await getDayDataByType(req, res, next, "Promise");
+};
+
+export const getHugDayData = async (req, res, next) => {
+  await getDayDataByType(req, res, next, "Hug");
+};
+
+export const getKissDayData = async (req, res, next) => {
+  await getDayDataByType(req, res, next, "Kiss");
+};
+
+export const getValentineDayData = async (req, res, next) => {
+  await getDayDataByType(req, res, next, "Valentine");
+};
+
+// Helper function for getting day specific data
+const getDayDataByType = async (req, res, next, dayType) => {
   try {
-    const { day, username } = req.params;
-    console.log("day, username", day, username);
-    // First find the user by username
+    const { username } = req.params;
     const user = await User.findOne({ userName: username });
 
     if (!user) {
       return next(new CustomError("User not found", 404));
     }
 
-    // Find the day data for this user
     const dayData = await DayData.findOne({
-      day: day,
+      day: dayType,
       user: user._id,
     });
 
     if (!dayData) {
-      return next(new CustomError("Day data not found", 404));
+      return next(new CustomError(`${dayType} day data not found`, 404));
     }
 
     res.status(200).json({
@@ -160,6 +165,11 @@ export const getDayDataByUsername = async (req, res, next) => {
       dayData,
     });
   } catch (error) {
-    next(new CustomError(error.message || "Error fetching day data", 500));
+    next(
+      new CustomError(
+        error.message || `Error fetching ${dayType} day data`,
+        500
+      )
+    );
   }
 };
