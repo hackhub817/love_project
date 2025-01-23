@@ -11,6 +11,7 @@ import { HugDay } from "./components/days/Hug";
 import Promise from "./components/days/Promise";
 import { Valintine } from "./components/days/Valinetine";
 import { Home } from "./Pages/Home";
+import ImageUploadForm from "./components/ImageUploadForm";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/valintine" element={<Valintine />} />
       <Route path="/propose/:username" element={<ProposeDay />} />
       <Route path="/teddy/:username" element={<Teddy />} />
+      <Route path="/upload" element={<ImageUploadForm />} />
       {/* Redirect root to dashboard if logged in, otherwise to login */}
       <Route
         path="/"

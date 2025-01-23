@@ -16,14 +16,24 @@ const dayDataSchema = new mongoose.Schema({
     required: true,
   },
   messages: {
-    type: [String], 
+    type: [String],
     required: true,
   },
   images: {
-    type: [String], 
+    type: [String],
     required: true,
   },
+
   needToTellSomething: {
+    type: String, // Any additional information
+  },
+  secretPromise: {
+    type: String, // Any additional information
+  },
+  secretMessage: {
+    type: String, // Any additional information
+  },
+  specialMessage: {
     type: String, // Any additional information
   },
   user: {

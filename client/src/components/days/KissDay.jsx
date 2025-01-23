@@ -13,7 +13,7 @@ import love from "../../assets/kiss/lovelove.png";
 import img from "../../assets/kiss/img-2.png";
 import kissfooter from "../../assets/kiss/kissfooter.png";
 
-const KissDay = () => {
+const KissDay = ({previewImages}) => {
   const [loading, setLoading] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [formData, setFormData] = useState({

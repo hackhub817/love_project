@@ -11,7 +11,7 @@ import panda3 from "../../assets/Promise/panda3.png";
 import panda4 from "../../assets/Promise/panda4.png";
 import panda5 from "../../assets/Promise/panda5.png";
 import panda6 from "../../assets/Promise/panda6.png";
-const Promise = ({ isPreview }) => {
+const Promise = ({ isPreview, previewImages }) => {
   return (
     <>
       <div
