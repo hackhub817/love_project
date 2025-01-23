@@ -10,7 +10,7 @@ import Promise from "../days/Promise";
 export function TimelineDemo() {
   const data = [
     {
-      title: " Day",
+      title: " Valentine Day",
       content: (
         <div className="h-[800px] overflow-y-auto overflow-x-hidden">
           <Valintine />

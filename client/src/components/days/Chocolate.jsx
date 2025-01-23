@@ -108,7 +108,7 @@ export const ChocolateDay = ({
         >
           <section className="">
             <div className="max-w-4xl mx-auto">
-              <div className="  flex items-center justify-end">
+              <div className="flex items-center justify-end">
                 <div>
                   <img
                     src={cartoon}

@@ -22,8 +22,9 @@ function App() {
       <Route path="/hug" element={<HugDay />} />
       <Route path="/chocolate" element={<ChocolateDay />} />
       <Route path="/teddy" element={<Teddy />} />
+      <Route path="/kiss" element={<Kiss isPreview={true} />} />
       <Route path="/promise" element={<Promise />} />
-      <Route path="/propose" element={<ProposeDay />} />
+      <Route path="/propose" element={<ProposeDay isPreview={true} />} />
       <Route path="/kiss/:username" element={<Kiss />} />
       <Route path="/dashboard/*" element={<Dashboard />} />
       <Route path="/valintine" element={<Valintine />} />

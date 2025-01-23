@@ -7,6 +7,7 @@ import kiss from "../../assets/kiss/pandakiss.png";
 import message from "../../assets/kiss/message.png";
 import couple2 from "../../assets/hug/couple2.jpg";
 import dil from "../../assets/kiss/dil.png";
+import kisslove from "../../assets/kiss/kisslove.png";
 import love from "../../assets/kiss/lovelove.png";
 import Ballpit from "../../blocks/Backgrounds/Ballpit/Ballpit";
 
@@ -24,86 +25,87 @@ export const Kiss = ({
   const [kissData, setKissData] = useState(null);
   const { username } = useParams();
   const [ballCount, setBallCount] = useState(150);
-
-  useEffect(() => {
-    const updateBallCount = () => {
-      if (window.innerWidth < 640) {
-        // Small screens (e.g., mobile)
-        setBallCount(50);
-      } else if (window.innerWidth < 1024) {
-        // Medium screens (e.g., tablets)
-        setBallCount(100);
-      } else {
-        // Large screens (e.g., desktops)
-        setBallCount(150);
-      }
-    };
-
-    // Initialize on mount
-    updateBallCount();
-
-    // Update on window resize
-    window.addEventListener("resize", updateBallCount);
-
-    // Cleanup event listener
-    return () => window.removeEventListener("resize", updateBallCount);
-  }, []);
-
-  useEffect(() => {
-    const fetchKissData = async () => {
-      try {
-        setLoading(true);
-        const response = await getKissDayData(username);
-        if (response.success) {
-          setKissData(response.dayData);
+  if (!isPreview) {
+    useEffect(() => {
+      const updateBallCount = () => {
+        if (window.innerWidth < 640) {
+          // Small screens (e.g., mobile)
+          setBallCount(50);
+        } else if (window.innerWidth < 1024) {
+          // Medium screens (e.g., tablets)
+          setBallCount(100);
+        } else {
+          // Large screens (e.g., desktops)
+          setBallCount(150);
         }
-      } catch (err) {
-        console.error("Error fetching kiss day data:", err);
-        setError(err.message || "Failed to fetch kiss day data");
-        toast.error("Failed to load kiss day data");
-      } finally {
+      };
+
+      // Initialize on mount
+      updateBallCount();
+
+      // Update on window resize
+      window.addEventListener("resize", updateBallCount);
+
+      // Cleanup event listener
+      return () => window.removeEventListener("resize", updateBallCount);
+    }, []);
+
+    useEffect(() => {
+      const fetchKissData = async () => {
+        try {
+          setLoading(true);
+          const response = await getKissDayData(username);
+          if (response.success) {
+            setKissData(response.dayData);
+          }
+        } catch (err) {
+          console.error("Error fetching kiss day data:", err);
+          setError(err.message || "Failed to fetch kiss day data");
+          toast.error("Failed to load kiss day data");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      if (!isPreview && username) {
+        fetchKissData();
+      } else if (isPreview) {
+        setKissData({
+          images: previewImages || [],
+          messages: messages || [],
+          ...previewData,
+        });
         setLoading(false);
       }
-    };
+    }, [isPreview, username, previewImages, messages, previewData]);
 
-    if (!isPreview && username) {
-      fetchKissData();
-    } else if (isPreview) {
-      setKissData({
-        images: previewImages || [],
-        messages: messages || [],
-        ...previewData,
-      });
-      setLoading(false);
+    // Helper function to get images
+
+    if (loading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
+        </div>
+      );
     }
-  }, [isPreview, username, previewImages, messages, previewData]);
 
-  // Helper function to get images
+    if (error) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">
+              Error Loading Data
+            </h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      );
+    }
+  }
   const getImages = (start, end) => {
     const images = isPreview ? previewImages : kissData?.images;
     return images?.slice(start, end) || Array(end - start).fill(couple2);
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">
-            Error Loading Data
-          </h2>
-          <p className="text-gray-600">{error}</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-pink-200 sm:p-2 relative">
@@ -122,13 +124,25 @@ export const Kiss = ({
           <div className=" flex items-center justify-center">
             <img src={kiss} alt="Panda Kiss" className="" />
           </div>
-          <div className="relative flex items-center justify-center -mt-12 ">
+          <div className="relative flex items-center justify-center  -mt-8 px-2">
             <img src={message} alt="Panda Kiss" className="" />
-            <div className="lg:top-5 sm:top-5 top-2 lg:px-0 sm:px-0 px-4 absolute font-bold text-white lg:text-5xl sm:text-5xl text-2xl">
+            <div className="lg:top-5 sm:top-5 top-2 lg:px-0 sm:px-0 px-4  absolute font-bold text-white lg:text-5xl sm:text-5xl text-2xl">
               Happy Kiss day
             </div>
           </div>
         </div>
+        <section
+          style={{
+            backgroundImage: `url(${kisslove})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+
+            // Full viewport height
+          }}
+          className="h-[170px] px-1"
+        >
+          {/* Content goes here */}
+        </section>
         <div className="flex items-center lg:px-0 sm:px-0 px-4">
           <div className="bg-pink lg:p-8 sm:p-8 p-2 rounded-tl-xl lg:text-xl sm:text-xl text-sm rounded-bl-xl bg-pink-500 sm:h-[250px] lg:h-[250px] h-[180px]">
             {" "}

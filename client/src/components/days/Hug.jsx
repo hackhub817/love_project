@@ -69,7 +69,7 @@ export const HugDay = ({
       className="w-full  bg-cover bg-center "
       style={{ backgroundImage: `url(${bgShape})` }}
     >
-      <section className="relative  w-full lg:block sm:block hidden">
+      <section className="relative  w-full lg:block sm:block pt-4 ">
         <div className="max-w-4xl mx-auto flex items-center  relative w-full">
           {/* Hug Image */}
           <div className="relative z-10">
@@ -83,12 +83,12 @@ export const HugDay = ({
         </div>
 
         {/* Text */}
-        <div className="absolute left-2/4   lg:top-28 sm:top-28 top-14 flex items-center gap-2 transform -translate-x-1/2 z-20 text-center text-black sm:text-2xl lg:text-4xl text-sm">
+        <div className="absolute left-2/4   lg:top-28 sm:top-28 top-[70px] flex items-center gap-2 transform -translate-x-1/2 z-20 text-center text-black sm:text-2xl lg:text-4xl text-sm">
           <img src={love} className="lg:h-10 lg:w-12 sm:h-10 sm:w-12 h-5 w-7" />
           <div>Happy Hug Day</div>
         </div>
       </section>
-      <section>
+      {/* <section>
         <section>
           <div className="max-w-4xl mx-auto relative">
             <div className="flex items-center justify-between px-40 ">
@@ -148,9 +148,9 @@ export const HugDay = ({
             </div>
           </div>
         </section>
-      </section>
+      </section> */}
       <section>
-        <div className="max-w-4xl mt-[550px] mx-auto sm:p-10 p-4">
+        <div className="max-w-4xl  mx-auto sm:p-10 p-4">
           <div className="w-full bg-[#F5B98D] flex items-center ">
             {/* Container for the vertical color blocks */}
 

@@ -21,48 +21,49 @@ export const ProposeDay = ({ isPreview, previewImages }) => {
   const [error, setError] = useState(null);
   const [promiseData, setPromiseData] = useState(null);
   const { username } = useParams();
-
-  useEffect(() => {
-    const fetchPromiseData = async () => {
-      try {
-        setLoading(true);
-        const response = await getPromiseDayData(username);
-        if (response.success) {
-          setPromiseData(response.dayData);
+  if (!isPreview) {
+    useEffect(() => {
+      const fetchPromiseData = async () => {
+        try {
+          setLoading(true);
+          const response = await getPromiseDayData(username);
+          if (response.success) {
+            setPromiseData(response.dayData);
+          }
+        } catch (err) {
+          console.error("Error fetching promise day data:", err);
+          setError(err.message || "Failed to fetch promise day data");
+          toast.error("Failed to load promise day data");
+        } finally {
+          setLoading(false);
         }
-      } catch (err) {
-        console.error("Error fetching promise day data:", err);
-        setError(err.message || "Failed to fetch promise day data");
-        toast.error("Failed to load promise day data");
-      } finally {
-        setLoading(false);
+      };
+
+      if (username) {
+        fetchPromiseData();
       }
-    };
+    }, [username]);
 
-    if (username) {
-      fetchPromiseData();
-    }
-  }, [username]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">
-            Error Loading Data
-          </h2>
-          <p className="text-gray-600">{error}</p>
+    if (loading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-red-600 mb-4">
+              Error Loading Data
+            </h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      );
+    }
   }
 
   return (
