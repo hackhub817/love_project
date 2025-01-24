@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getChocolateDayData } from "../../Pages/api/Api";
 import { toast } from "sonner";
-
+import bg from "../../assets/Chocolate/cocobg.jpg";
 export const ChocolateDay = ({
   isPreview,
   previewImages,
@@ -54,12 +54,12 @@ export const ChocolateDay = ({
       });
       setLoading(false);
     }
-  }, [isPreview, username, previewImages, messages, previewData]);
+  }, []);
 
   // Helper function to get images
   const getImages = (start, end) => {
     const images = isPreview ? previewImages : chocolateData?.images;
-    return images?.slice(start, end) || Array(end - start).fill(defaultImage);
+    return images?.slice(start, end) || Array(end - start).fill(couple3);
   };
 
   const images = [
@@ -83,29 +83,20 @@ export const ChocolateDay = ({
     love_icon,
     love_icon,
     love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
   ];
   return (
-    <div className="bg-[#a97e75] h-auto">
-      <div className=" ">
+    <>
+      <div className="bg-[#652a16] py-2 relative">
+        {/* Background Image with Opacity */}
         <div
-          className="bg-cover bg-center"
-          style={{ backgroundImage: `url(${chocoBack})` }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${bg})`,
+          }}
         >
+          <div className="absolute inset-0 bg-[#652a16] opacity-[0.6]"></div>
+        </div>
+        <div className="relative z-10">
           <section className="">
             <div className="max-w-4xl mx-auto">
               <div className="flex items-center justify-end">
@@ -120,76 +111,35 @@ export const ChocolateDay = ({
             </div>
           </section>
           <section className=" max-w-4xl mx-auto mt-20">
-            <div className="relative flex justify-center items-center h-64">
+            <div className=" flex justify-center items-center h-64">
               {/* First Image */}
               <img
                 src={love}
                 alt="Image 1"
-                className="lg:w-72  lg:h-72 sm:w-72  sm:h-72 w-48 h-44 relative z-10 "
-                style={{ marginRight: "-70px" }} // Adjust overlap here
+                className="lg:w-80  lg:h-80 sm:w-72  sm:h-72 w-40 h-32 lg:-mr-[30px] sm:-mr-[30px] -mr-[20px] "
               />
               {/* Second Image */}
-              <img
-                src={frame2}
-                alt="Image 2"
-                className="lg:w-1/2  lg:h-72 sm:w-1/2  sm:h-72 w-48 h-44 relative z-0 "
-              />
+              {getImages(0, 1).map((imageUrl, idx) => (
+                <img
+                  src={imageUrl}
+                  alt="Image 2"
+                  className="lg:w-1/2  lg:h-80 sm:w-1/2  sm:h-72 w-32 h-28 lg:border-[10px] sm:border-[10px] border-[6px] border-[#652a16] rounded-3xl "
+                />
+              ))}
             </div>
           </section>
-          <section className="max-w-6xl mx-auto mt-20">
-            {/* <div className="flex justify-center items-center mt-8">
-              <div className="relative">
-                <img
-                  src={cir}
-                  alt="Bottom"
-                  className="lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[120px] h-[120px] "
-                />
 
-                <img
-                  src={love}
-                  alt="Top"
-                  className="absolute lg:top-[120px] sm:top-[120px] top-[54px] left-1/2 lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[75px] h-[75px]  transform -translate-x-1/2 -translate-y-1/2"
-                />
-              </div>
-              <div className="relative">
-                <img
-                  src={cir}
-                  alt="Bottom"
-                  className="lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[120px] h-[120px] "
-                />
-
-                <img
-                  src={love}
-                  alt="Top"
-                  className="absolute lg:top-[120px] sm:top-[120px] top-[54px] left-1/2 lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[75px] h-[75px]  transform -translate-x-1/2 -translate-y-1/2"
-                />
-              </div>
-              <div className="relative">
-                <img
-                  src={cir}
-                  alt="Bottom"
-                  className="lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[120px] h-[120px] "
-                />
-
-                <img
-                  src={love}
-                  alt="Top"
-                  className="absolute lg:top-[120px] sm:top-[120px] top-[54px] left-1/2 lg:w-[200px] lg:h-[150px] sm:w-[200px] sm:h-[150px] w-[75px] h-[75px]  transform -translate-x-1/2 -translate-y-1/2"
-                />
-              </div>
-            </div>
-            <RollingGallery autoplay={true} pauseOnHover={true} /> */}
+          <section className="max-w-6xl mx-auto lg:mt-20 sm:mt-20 ">
             <Marquee pauseOnHover className="[--duration:20s]">
-              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
-              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
-
-              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+              {getImages(0, 3).map((imageUrl, idx) => (
+                <img src={imageUrl} alt="" className=" h-[180px] w-[250px]" />
+              ))}
             </Marquee>
             <Marquee reverse pauseOnHover className="[--duration:20s]">
               {" "}
-              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
-              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
-              <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
+              {getImages(3, 6).map((imageUrl, idx) => (
+                <img src={imageUrl} alt="" className=" h-[180px] w-[250px]" />
+              ))}
             </Marquee>
           </section>
           <section className="max-w-4xl mx-auto mt-20">
@@ -204,6 +154,6 @@ export const ChocolateDay = ({
           </section>
         </div>
       </div>
-    </div>
+    </>
   );
 };

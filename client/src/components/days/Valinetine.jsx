@@ -4,8 +4,52 @@ import frame from "../../assets/valentine/frameValintine.png";
 import flow2 from "../../assets/valentine/flowValine.png";
 import couple4 from "../../assets/hug/couple4.jpg";
 import sideflow from "../../assets/valentine/sideflow.png";
+import { getValentineDayData } from "../../Pages/api/Api";
 
-export const Valintine = () => {
+export const Valintine = ({
+  isPreview,
+  previewImages,
+  messages,
+  ...previewData
+}) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [teddyData, setTeddyData] = useState(null);
+  const navigate = useNavigate();
+  const { username } = useParams();
+  useEffect(() => {
+    const fetchValinetineData = async () => {
+      try {
+        setLoading(true);
+        const response = await getValentineDayData(username);
+        console.log("response", response);
+        if (response.success) {
+          setTeddyData(response.dayData);
+        }
+      } catch (err) {
+        console.error("Error fetching teddy day data:", err);
+        setError(err.message || "Failed to fetch teddy day data");
+        toast.error("Failed to load teddy day data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!isPreview && username) {
+      fetchValinetineData();
+    } else if (isPreview) {
+      setTeddyData({
+        images: previewImages || [],
+        messages: messages || [],
+        ...previewData,
+      });
+      setLoading(false);
+    }
+  }, []);
+  const getImages = (start, end) => {
+    const images = isPreview ? previewImages : teddyData?.images;
+    return images?.slice(start, end) || Array(end - start).fill(couple3);
+  };
   return (
     <>
       <div className="max-w-4xl w-auto  mx-auto space-y-4">

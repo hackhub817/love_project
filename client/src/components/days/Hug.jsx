@@ -17,6 +17,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getHugDayData } from "../../Pages/api/Api";
 import { toast } from "sonner";
+import RollingGallery from "../../blocks/Components/RollingGallery/RollingGallery";
+import { FaChessKing } from "react-icons/fa6";
 
 export const HugDay = ({
   isPreview,
@@ -56,13 +58,14 @@ export const HugDay = ({
       });
       setLoading(false);
     }
-  }, [isPreview, username, previewImages, messages, previewData]);
+  }, []);
 
   // Helper function to get images
   const getImages = (start, end) => {
     const images = isPreview ? previewImages : hugData?.images;
-    return images?.slice(start, end) || Array(end - start).fill(defaultImage);
+    return images?.slice(start, end) || Array(end - start).fill(couple4);
   };
+  const images = getImages(0, 6);
 
   return (
     <div
@@ -87,6 +90,9 @@ export const HugDay = ({
           <img src={love} className="lg:h-10 lg:w-12 sm:h-10 sm:w-12 h-5 w-7" />
           <div>Happy Hug Day</div>
         </div>
+      </section>
+      <section className="max-w-6xl mx-auto lg:mt-20 sm:mt-20 my-2 ">
+        <RollingGallery autoplay={true} pauseOnHover={true} images={images} />
       </section>
       {/* <section>
         <section>
@@ -160,16 +166,15 @@ export const HugDay = ({
             {/* Text and image container */}
             <div className="flex items-center ml-4">
               {/* Text Section */}
-              <div className="lg:text-lg sm:text-lg text-xs text-black">
+              <div className="lg:text-lg sm:text-lg text-[11px] font-semibold text-black">
                 Happy Hug Day, my love! ❤ I can ' t wait to feel your warm
-                embrace. 😘 You make me feel safe and loved. 🥰 Let's hug tight
-                and cherish this moment. 💕
+                embrace. 😘 You make me feel safe and loved.
               </div>
               {/* Image Section */}
               <img
                 src={handshake}
                 alt="hand"
-                className="lg:h-60 sm:h-60 h-32 w-auto ml-4"
+                className="lg:h-60 sm:h-60 h-24 w-auto ml-4"
               />
             </div>
           </div>
@@ -180,46 +185,24 @@ export const HugDay = ({
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-8">
             {/* Testimonial 1 */}
-            <div className="relative p-2 flex justify-center">
-              <img
-                src={img1}
-                className="h-[150px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
-              />
-              <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
-                Hello My love this is for you
-                <img src={couple1} alt="" className=" h-[180px] w-[250px]" />
-              </div>
-            </div>
-            <div className="relative p-2 flex justify-center">
-              <img
-                src={img2}
-                className="h-[110px] w-[150px] absolute  -top-4   lg:left-0 lg:right-0 mx-auto "
-              />
-              <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
-                Hello My love this is for you
-                <img src={couple2} alt="" className=" h-[180px] w-[250px]" />
-              </div>
-            </div>
-            <div className="relative p-2 flex justify-center">
-              <img
-                src={img3}
-                className="h-[110px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
-              />
-              <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
-                Hello My love this is for you
-                <img src={couple3} alt="" className=" h-[180px] w-[250px]" />
-              </div>
-            </div>
-            <div className="relative p-2 flex justify-center">
-              <img
-                src={img4}
-                className="h-[110px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
-              />
-              <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
-                Hello My love this is for you
-                <img src={couple4} alt="" className=" h-[180px] w-[250px]" />
-              </div>
-            </div>
+            {getImages(2, 6).map((imageUrl, idx) => (
+              <>
+                <div className="relative p-2 flex justify-center">
+                  <img
+                    src={img1}
+                    className="h-[150px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
+                  />
+                  <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
+                    Hello My love this is for you
+                    <img
+                      src={imageUrl}
+                      alt=""
+                      className=" h-[180px] w-[250px]"
+                    />
+                  </div>
+                </div>
+              </>
+            ))}
           </div>
         </div>
       </section>

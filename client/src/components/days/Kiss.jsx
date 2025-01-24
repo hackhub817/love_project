@@ -25,7 +25,7 @@ export const Kiss = ({
   const [kissData, setKissData] = useState(null);
   const { username } = useParams();
   const [ballCount, setBallCount] = useState(150);
-  if (!isPreview) {
+  if (isPreview) {
     useEffect(() => {
       const updateBallCount = () => {
         if (window.innerWidth < 640) {
@@ -77,7 +77,7 @@ export const Kiss = ({
         });
         setLoading(false);
       }
-    }, [isPreview, username, previewImages, messages, previewData]);
+    }, []);
 
     // Helper function to get images
 

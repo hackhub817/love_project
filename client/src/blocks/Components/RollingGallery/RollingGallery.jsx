@@ -31,10 +31,11 @@ const RollingGallery = ({
   pauseOnHover = false,
   images = [],
 }) => {
-  images = IMGS;
+  images = images;
   const [isScreenSizeSm, setIsScreenSizeSm] = useState(
-    window.innerWidth <= 640,
+    window.innerWidth <= 640
   );
+  console.log("iamges", images);
 
   const cylinderWidth = isScreenSizeSm ? 1100 : 1800;
   const faceCount = images.length;
@@ -119,8 +120,6 @@ const RollingGallery = ({
 
   return (
     <div className="gallery-container">
-      <div className="gallery-gradient gallery-gradient-left"></div>
-      <div className="gallery-gradient gallery-gradient-right"></div>
       <div className="gallery-content">
         <motion.div
           drag="x"
@@ -143,7 +142,9 @@ const RollingGallery = ({
               className="gallery-item"
               style={{
                 width: `${faceWidth}px`,
-                transform: `rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`,
+                transform: `rotateY(${
+                  i * (360 / faceCount)
+                }deg) translateZ(${radius}px)`,
               }}
             >
               <img src={url} alt="gallery" className="gallery-img" />

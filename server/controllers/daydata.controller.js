@@ -14,7 +14,12 @@ export const uploadImages = async (req, res, next) => {
       try {
         const result = await cloudinary.v2.uploader.upload(file.path, {
           folder: "valentine_days",
+          width: 320,
+          height: 360,
+          gravity: "faces",
+          crop: "fill",
         });
+
         await fs.unlink(file.path);
         return result.secure_url;
       } catch (uploadError) {
@@ -64,6 +69,8 @@ export const createDayData = async (req, res, next) => {
       specialMessage,
     } = req.body;
     const userId = req.user.id;
+    console.log(req.body);
+    console.log("req.user.id", req.user.id);
 
     if (!day || !messages || !images) {
       return next(
@@ -93,9 +100,9 @@ export const createDayData = async (req, res, next) => {
       { $push: { dayData: dayData._id } },
       { new: true }
     );
-
+    console.log("updatedUser", updatedUser);
     if (!updatedUser) {
-      return next(new CustomError("User not found", 404));
+      return next(new CustomError("User not found", 400));
     }
 
     res.status(201).json({

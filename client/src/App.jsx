@@ -19,17 +19,19 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/hug" element={<HugDay />} />
+      <Route path="/propose" element={<ProposeDay />} />
+      <Route path="/propose/:username" element={<ProposeDay />} />
+      <Route path="/chocolate/:username" element={<ChocolateDay />} />
       <Route path="/chocolate" element={<ChocolateDay />} />
+      <Route path="/hug/:username" element={<HugDay />} />
+      <Route path="/hug" element={<HugDay />} />
+      <Route path="/teddy/:username" element={<Teddy />} />
       <Route path="/teddy" element={<Teddy />} />
-      <Route path="/kiss" element={<Kiss isPreview={true} />} />
-      <Route path="/promise" element={<Promise />} />
-      <Route path="/propose" element={<ProposeDay isPreview={true} />} />
       <Route path="/kiss/:username" element={<Kiss />} />
+      <Route path="/kiss" element={<Kiss />} />
+      <Route path="/promise" element={<Promise />} />
       <Route path="/dashboard/*" element={<Dashboard />} />
       <Route path="/valintine" element={<Valintine />} />
-      <Route path="/propose/:username" element={<ProposeDay />} />
-      <Route path="/teddy/:username" element={<Teddy />} />
       <Route path="/upload" element={<ImageUploadForm />} />
       {/* Redirect root to dashboard if logged in, otherwise to login */}
       <Route

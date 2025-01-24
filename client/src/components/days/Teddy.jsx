@@ -35,6 +35,7 @@ export const Teddy = ({
       try {
         setLoading(true);
         const response = await getTeddyDayData(username);
+        console.log("response", response);
         if (response.success) {
           setTeddyData(response.dayData);
         }
@@ -57,7 +58,7 @@ export const Teddy = ({
       });
       setLoading(false);
     }
-  }, [isPreview, username, previewImages, messages, previewData]);
+  }, []);
 
   // Helper function to get images
   const getImages = (start, end) => {
@@ -128,7 +129,7 @@ export const Teddy = ({
               <div className="lg:text-2xl sm:text-2xl text-lg ml-3 font-semibold text-white ">
                 Happy Teddy Day!
               </div>
-              <div className="lg:text-lg sm:text-lg text-xs text-white p-4 w-60 italic">
+              <div className="lg:text-lg sm:text-lg text-xs text-white p-4 w-[250px] italic">
                 All our adventures together, from silly movie nights to
                 exploring new places, feel like the best cuddles with my
                 favorite teddy bear. 🐻❤️ You know, I feel like I've found my
@@ -140,7 +141,7 @@ export const Teddy = ({
             <img
               src={sit}
               alt="Image 1"
-              className="lg:w-full lg:h-auto sm:h-64 h-32 object-cover relative z-20 lg:-ml-24 sm:-ml-24 -ml-10"
+              className="lg:w-full lg:h-auto sm:h-64 h-40 object-cover relative z-20 lg:-ml-24 sm:-ml-24 -ml-8 "
             />
           </div>
         </section>

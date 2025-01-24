@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { getPromiseDayData } from "../../Pages/api/Api";
+import { getProposeDayData } from "../../Pages/api/Api";
 import kissBg from "../../assets/kisss/kissBg.png";
 import frame from "../../assets/kisss/frame.png";
 import kiss from "../../assets/kisss/kiss.png";
@@ -16,7 +16,12 @@ import {
   TextRevealCardTitle,
 } from "../ui/text-reveal-card";
 
-export const ProposeDay = ({ isPreview, previewImages }) => {
+export const ProposeDay = ({
+  isPreview,
+  previewImages,
+  messages,
+  ...previewData
+}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [promiseData, setPromiseData] = useState(null);
@@ -26,7 +31,7 @@ export const ProposeDay = ({ isPreview, previewImages }) => {
       const fetchPromiseData = async () => {
         try {
           setLoading(true);
-          const response = await getPromiseDayData(username);
+          const response = await getProposeDayData(username);
           if (response.success) {
             setPromiseData(response.dayData);
           }
@@ -39,10 +44,17 @@ export const ProposeDay = ({ isPreview, previewImages }) => {
         }
       };
 
-      if (username) {
+      if (!isPreview && username) {
         fetchPromiseData();
+      } else if (isPreview) {
+        setPromiseData({
+          images: previewImages || [],
+          messages: messages || [],
+          ...previewData,
+        });
+        setLoading(false);
       }
-    }, [username]);
+    }, []);
 
     if (loading) {
       return (
@@ -65,6 +77,11 @@ export const ProposeDay = ({ isPreview, previewImages }) => {
       );
     }
   }
+  // Helper function to get images
+  const getImages = (start, end) => {
+    const images = isPreview ? previewImages : promiseData?.images;
+    return images?.slice(start, end) || Array(end - start).fill(couple2);
+  };
 
   return (
     <div
@@ -100,17 +117,37 @@ export const ProposeDay = ({ isPreview, previewImages }) => {
         </section>
         <section className="mt-10">
           <div className="grid grid-cols-3 relative">
-            {promiseData?.images.slice(0, 3).map((imageUrl, idx) => (
-              <div key={idx}>
-                <img src={frame} alt="" className="lg:w-auto sm:w-auto w-32" />
-                <img
-                  src={imageUrl}
-                  alt={`Image ${idx + 1}`}
-                  className="absolute lg:left-[80px] sm:left-[80px] left-[40px] top-[1px] lg:h-[230px] lg:w-[174px] h-[110px] w-[90px] sm:h-[230px] sm:w-[174px]"
-                  style={{ left: `${80 + idx * 257}px` }}
-                />
-              </div>
-            ))}
+            {getImages(0, 3).map((imageUrl, idx) => {
+              let leftPosition;
+
+              // Adjust 'left' dynamically based on screen size
+              if (window.innerWidth >= 1024) {
+                // Large screens (lg)
+                leftPosition = 80 + idx * 257;
+              } else if (window.innerWidth >= 768) {
+                // Tablet screens (sm)
+                leftPosition = 50 + idx * 180;
+              } else {
+                // Mobile screens (default)
+                leftPosition = 20 + idx * 120;
+              }
+
+              return (
+                <div key={idx}>
+                  <img
+                    src={frame}
+                    alt=""
+                    className="lg:w-auto sm:w-auto w-32"
+                  />
+                  <img
+                    src={imageUrl}
+                    alt={`Image `}
+                    className="absolute lg:left-[80px] sm:left-[50px] left-[20px] top-[1px] lg:h-[230px] lg:w-[174px] h-[110px] w-[90px] sm:h-[160px] sm:w-[120px]"
+                    style={{ left: `${leftPosition}px` }}
+                  />
+                </div>
+              );
+            })}
           </div>
         </section>
         <section className="mt-10 relative px-4">
@@ -125,7 +162,7 @@ export const ProposeDay = ({ isPreview, previewImages }) => {
         </section>
         <section className="mt-10">
           <div className="grid lg:grid-cols-2 sm:grid-cols-2 grid-cols-1 lg:px-0 sm:px-4 px-8">
-            {promiseData?.images.slice(3).map((imageUrl, idx) => (
+            {getImages(2, 6).map((imageUrl, idx) => (
               <div key={idx} className="py-4">
                 <div className="relative">
                   <img

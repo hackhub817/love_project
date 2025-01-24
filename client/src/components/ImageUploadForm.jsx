@@ -394,7 +394,7 @@ const ImageUploadForm = () => {
                   </div>
 
                   {/* Sidebar Content */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  <div className="flex-1 overflow-y-auto  space-y-4">
                     {/* Message Input */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -453,7 +453,7 @@ const ImageUploadForm = () => {
                       <h4 className="font-medium text-gray-700 mb-2">
                         Preview
                       </h4>
-                      <div className="bg-gray-50 p-2 rounded">
+                      <div className="border-2 rounded-xl border-gray-900 ">
                         {renderDayPreview()}
                       </div>
                     </div>
