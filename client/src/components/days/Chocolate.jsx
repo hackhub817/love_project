@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getChocolateDayData } from "../../Pages/api/Api";
 import { toast } from "sonner";
+import chocoFrame from "../../assets/Chocolate/chocoFrame.png";
 import bg from "../../assets/Chocolate/cocobg.jpg";
 export const ChocolateDay = ({
   isPreview,
@@ -149,7 +150,7 @@ export const ChocolateDay = ({
           </section>
           <section className="mt-20">
             <div className="flex items-center justify-center p-2 ">
-              <img src={bottomShape} alt="" className="w-[400px] h-[300px]" />
+              <img src={chocoFrame} alt="" className="w-[400px] h-[300px]" />
             </div>
           </section>
         </div>

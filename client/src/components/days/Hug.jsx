@@ -4,15 +4,7 @@ import notes from "../../assets/hug/Note.png";
 import love from "../../assets/hug/love.png";
 import handshake from "../../assets/hug/handshake.png";
 import img1 from "../../assets/hug/img-1.png";
-import img2 from "../../assets/hug/img-2.png";
-import img3 from "../../assets/hug/img-3.png";
-import img4 from "../../assets/hug/img-4.png";
-import couple1 from "../../assets/hug/couple1.jpg";
-import couple2 from "../../assets/hug/couple2.jpg";
-import couple3 from "../../assets/hug/couple3.jpg";
 import couple4 from "../../assets/hug/couple4.jpg";
-import banner from "../../assets/hug/banner.png";
-import love_ballon from "../../assets/hug/love_ballon.png";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getHugDayData } from "../../Pages/api/Api";
@@ -88,10 +80,12 @@ export const HugDay = ({
         {/* Text */}
         <div className="absolute left-2/4   lg:top-28 sm:top-28 top-[70px] flex items-center gap-2 transform -translate-x-1/2 z-20 text-center text-black sm:text-2xl lg:text-4xl text-sm">
           <img src={love} className="lg:h-10 lg:w-12 sm:h-10 sm:w-12 h-5 w-7" />
-          <div>Happy Hug Day</div>
+          <div className="font-bold text-orange-500 lg:text-4xl sm:text-4xl ">
+            Happy Hug Day
+          </div>
         </div>
       </section>
-      <section className="max-w-6xl mx-auto lg:mt-20 sm:mt-20 my-2 ">
+      <section className="max-w-7xl mx-auto lg:mt-20 sm:mt-20 my-2 ">
         <RollingGallery autoplay={true} pauseOnHover={true} images={images} />
       </section>
       {/* <section>
@@ -192,12 +186,19 @@ export const HugDay = ({
                     src={img1}
                     className="h-[150px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
                   />
-                  <div className=" text-center uppercase h-[280px] rounded-[2rem] border-4 border-[#EE714B] w-[380px] pt-10 mt-[50px] flex flex-col items-center gap-2">
-                    Hello My love this is for you
+
+                  <div className=" text-red-500 font-semibold text-center uppercase h-[300px] rounded-[2rem] border-4 border-[#EE714B] w-[400px] pt-10 mt-[50px] flex flex-col items-center gap-2">
+                    {idx == 2
+                      ? "Hugs make everything 💖"
+                      : idx == 3
+                      ? "Sending you cozy hugs 🤗"
+                      : idx == 4
+                      ? "Wrapped in warm hugs 💕"
+                      : "Hugs are pure magic 🫂"}
                     <img
                       src={imageUrl}
                       alt=""
-                      className=" h-[180px] w-[250px]"
+                      className=" h-[200px] w-[300px]"
                     />
                   </div>
                 </div>

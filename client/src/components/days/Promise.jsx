@@ -48,7 +48,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
       });
       setLoading(false);
     }
-  }, [isPreview, username, previewImages, messages, previewData]);
+  }, []);
 
   // Helper function to get images
   const getImages = (start, end) => {

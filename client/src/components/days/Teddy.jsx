@@ -7,29 +7,67 @@ import bg from "../../assets/teddy/bg.png";
 import { TypewriterEffectSmooth } from "../ui/typewriter-effect";
 import couple3 from "../../assets/hug/couple3.jpg";
 import sit from "../../assets/teddy/sittingTeddy.png";
-import loveteddy from "../../assets/teddy/loveteddy.png";
-import loveteddy2 from "../../assets/teddy/teddylove2.png";
-import wall from "../../assets/teddy/wall.png";
-import hand from "../../assets/teddy/hand.png";
-import bg2 from "../../assets/teddy/bg2.png";
 import love from "../../assets/teddy/3love.png";
 import ballon from "../../assets/teddy/teddyballon.png";
 import female from "../../assets/teddy/female.png";
 import lovehand from "../../assets/teddy/lovehand.png";
-// import AnimatedTestimonials from "../../components/ui/animated-testimonials";
-
+import Stack from "../../blocks/Components/Stack/Stack";
 export const Teddy = ({
   isPreview,
   previewImages,
   messages,
   ...previewData
 }) => {
+  const [cardDimensions, setCardDimensions] = useState({
+    width: 120,
+    height: 120,
+  });
+
+  useEffect(() => {
+    // Set card size based on screen width
+    const updateCardDimensions = () => {
+      if (window.innerWidth >= 1024) {
+        setCardDimensions({ width: 230, height: 230 }); // Large screen
+      } else if (window.innerWidth >= 768) {
+        setCardDimensions({ width: 150, height: 150 }); // Medium screen
+      } else {
+        setCardDimensions({ width: 120, height: 120 }); // Small screen
+      }
+    };
+
+    // Update card size on load and resize
+    updateCardDimensions();
+    window.addEventListener("resize", updateCardDimensions);
+
+    // Clean up on component unmount
+    return () => {
+      window.removeEventListener("resize", updateCardDimensions);
+    };
+  }, []);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [teddyData, setTeddyData] = useState(null);
   const navigate = useNavigate();
   const { username } = useParams();
-
+  const images = [
+    {
+      id: 1,
+      img: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format",
+    },
+    {
+      id: 2,
+      img: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format",
+    },
+    {
+      id: 3,
+      img: "https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format",
+    },
+    {
+      id: 4,
+      img: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format",
+    },
+  ];
   useEffect(() => {
     const fetchTeddyData = async () => {
       try {
@@ -65,6 +103,13 @@ export const Teddy = ({
     const images = isPreview ? previewImages : teddyData?.images;
     return images?.slice(start, end) || Array(end - start).fill(couple3);
   };
+
+  const image1 = getImages(1, 3).map((image, index) => ({
+    id: index + 1, // Adding an id based on the index
+    img: image, // Assuming the image is a URL string
+  }));
+
+  console.log(image1);
 
   const words = [
     {
@@ -129,7 +174,7 @@ export const Teddy = ({
               <div className="lg:text-2xl sm:text-2xl text-lg ml-3 font-semibold text-white ">
                 Happy Teddy Day!
               </div>
-              <div className="lg:text-lg sm:text-lg text-xs text-white p-4 w-[250px] italic">
+              <div className="lg:text-lg sm:text-lg text-[11px] text-white p-4 lg:w-auto sm-auto w-[200px] italic">
                 All our adventures together, from silly movie nights to
                 exploring new places, feel like the best cuddles with my
                 favorite teddy bear. 🐻❤️ You know, I feel like I've found my
@@ -141,7 +186,7 @@ export const Teddy = ({
             <img
               src={sit}
               alt="Image 1"
-              className="lg:w-full lg:h-auto sm:h-64 h-40 object-cover relative z-20 lg:-ml-24 sm:-ml-24 -ml-8 "
+              className="lg:w-full lg:h-auto sm:h-64 h-32 w-32 object-cover relative z-20 lg:-ml-24 sm:-ml-24 -ml-2 "
             />
           </div>
         </section>
@@ -156,18 +201,15 @@ export const Teddy = ({
                 alt="Wall Image"
                 // className="lg:h-full sm:h-56 h-32 lg:w-[850px] sm:w-[550px] w-[210px] object-cover relative  "
               />
-
-              {/* Three Smaller Images */}
-              {/* <div className="absolute top-10 lg:left-32 sm:left-32 left-8 w-full flex lg:gap-10 sm:gap-10 gap-2 -mt-5 z-20">
-                {getImages(3, 6).map((imageUrl, idx) => (
-                  <img
-                    key={idx}
-                    src={imageUrl}
-                    alt={`Small Image ${idx + 1}`}
-                    className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12 border-4 border-white border-b-[14px] shadow-md"
-                  />
-                ))}
-              </div> */}
+              <div className="flex items-center flex-end absolute lg:top-[140px] lg:right-96 top-[85px] right-16 ">
+                <Stack
+                  randomRotation={true}
+                  sensitivity={180}
+                  sendToBackOnClick={false}
+                  cardDimensions={cardDimensions}
+                  cardsData={images}
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -181,9 +223,9 @@ export const Teddy = ({
             />
 
             {/* Text Overlay */}
-            <div className="absolute inset-0 flex items-center justify-end  text-white ">
+            <div className="absolute inset-0 flex items-center justify-end lg:pr-20 sm:pr-20 text-white ">
               <div>
-                <p className="lg:text-lg sm:text-base w-44 text-[9px] font-semibold ">
+                <p className="lg:text-lg sm:text-base lg:w-[400px] sm:w-96 w-44 text-[9px] font-semibold ">
                   All our adventures together, from silly movie nights to
                   exploring new places, feel like the best cuddles with my
                   favorite teddy bear. You know, I feel like I've found my
@@ -195,33 +237,20 @@ export const Teddy = ({
         </section>
         <section className="max-w-4xl mx-auto  lg:px-2  sm:px-2 relative">
           <div className="flex items-center relative">
-            {/* Ballon Image */}
-
-            {/* Wall Image */}
             <div className="">
-              <img
-                src={female}
-                alt="Wall Image"
-                // className="lg:h-full sm:h-56 h-32 lg:w-[850px] sm:w-[550px] w-[210px] object-cover relative  "
+              <img src={female} alt="Wall Image" />
+            </div>
+            <div className="flex items-center flex-end absolute lg:top-[140px] lg:right-96 top-[50px] right-32 ">
+              <Stack
+                randomRotation={true}
+                sensitivity={180}
+                sendToBackOnClick={false}
+                cardDimensions={cardDimensions}
+                cardsData={image1}
               />
-
-              {/* Three Smaller Images */}
-              {/* <div className="absolute top-10 lg:left-32 sm:left-32 left-8 w-full flex lg:gap-10 sm:gap-10 gap-2 -mt-5 z-20">
-                {getImages(3, 6).map((imageUrl, idx) => (
-                  <img
-                    key={idx}
-                    src={imageUrl}
-                    alt={`Small Image ${idx + 1}`}
-                    className="lg:h-24 lg:w-24 sm:h-24 sm:w-24 h-12 w-12 border-4 border-white border-b-[14px] shadow-md"
-                  />
-                ))}
-              </div> */}
             </div>
           </div>
         </section>
-        {/* <section>
-          <AnimatedTestimonials testimonials={testimonials} />
-        </section> */}
       </div>
     </div>
   );

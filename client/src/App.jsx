@@ -12,6 +12,7 @@ import Promise from "./components/days/Promise";
 import { Valintine } from "./components/days/Valinetine";
 import { Home } from "./Pages/Home";
 import ImageUploadForm from "./components/ImageUploadForm";
+import { WeekDays } from "./Pages/WeekDays";
 
 function App() {
   return (
@@ -29,10 +30,11 @@ function App() {
       <Route path="/teddy" element={<Teddy />} />
       <Route path="/kiss/:username" element={<Kiss />} />
       <Route path="/kiss" element={<Kiss />} />
-      <Route path="/promise" element={<Promise />} />
+      <Route path="/promise/:username" element={<Promise />} />
       <Route path="/dashboard/*" element={<Dashboard />} />
-      <Route path="/valintine" element={<Valintine />} />
+      <Route path="/valintine/:username" element={<Valintine />} />
       <Route path="/upload" element={<ImageUploadForm />} />
+      <Route path="/week-day" element={<WeekDays />} />
       {/* Redirect root to dashboard if logged in, otherwise to login */}
       <Route
         path="/"
