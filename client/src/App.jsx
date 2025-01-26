@@ -13,6 +13,7 @@ import { Valintine } from "./components/days/Valinetine";
 import { Home } from "./Pages/Home";
 import ImageUploadForm from "./components/ImageUploadForm";
 import { WeekDays } from "./Pages/WeekDays";
+import { Rose } from "./components/days/Rose";
 
 function App() {
   return (
@@ -30,7 +31,8 @@ function App() {
 
       <Route path="/register" element={<Register />} />
       <Route path="/propose" element={<ProposeDay />} />
-      <Route path="/chocolate" element={<ChocolateDay />} />
+      <Route path="/propose" element={<ProposeDay />} />
+      <Route path="/rose" element={<Rose />} />
       <Route path="/hug" element={<HugDay />} />
       <Route path="/teddy" element={<Teddy />} />
       <Route path="/kiss" element={<Kiss />} />
