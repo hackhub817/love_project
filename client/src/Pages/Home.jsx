@@ -10,9 +10,7 @@ export const Home = () => {
     <>
       <Navbar />
       <HeroSection />
-      {/* <FeaturesSection /> */}
       <GiftSection />
-      {/* <FallingText /> */}
     </>
   );
 };

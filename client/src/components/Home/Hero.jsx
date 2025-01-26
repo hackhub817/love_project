@@ -42,7 +42,7 @@ const HeroSection = () => {
         <div className="flex flex-col md:flex-row items-center">
           {/* Left Content */}
           <div className="text-center md:text-left md:w-1/2 space-y-6">
-            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+            <h1 className="text-2xl sm:text-5xl font-bold leading-tight">
               Welcome to Your Dream Website
             </h1>
             <p className="text-lg sm:text-xl">
