@@ -5,6 +5,7 @@ import HeroCloud from "../../assets/Promise/HeroCloud.png";
 import kissPanda from "../../assets/Promise/kissPanda.png";
 import couple2 from "../../assets/hug/couple2.jpg";
 import ScratchToReveal from "../../components/ui/scratch-to-reveal";
+import heart from "../../assets/heart.jpeg";
 
 import panda1 from "../../assets/Promise/panda1.png";
 import panda3 from "../../assets/Promise/panda3.png";
@@ -50,6 +51,37 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
     }
   }, []);
 
+  if (loading) {
+    return (
+      <div>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="h-32 w-32">
+            <img
+              src={heart}
+              alt=""
+              className="w-full h-full animate-heartbeat"
+            />
+            <p className="text-red-500 font-medium">
+              Please Wait your data is loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Error Loading Data
+          </h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
   // Helper function to get images
   const getImages = (start, end) => {
     const images = isPreview ? previewImages : promiseData?.images;
@@ -76,8 +108,11 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
                 />
               ))}
             </div>
-            <div>
-              <img src={HeroCloud} alt="" className="h-28" />
+            <div className="relative">
+              <img src={HeroCloud} alt="" className="h-32" />
+              <div className="lg:text-5xl lg:w-80   text-center w-44 text-[25px] top-5 left-4  absolute font-bold text-shadow-skyBlueGlow">
+                Happy Promise Day
+              </div>
             </div>
           </div>
           <div className="lg:pt-20 sm:pt-20 pt-5 flex ">
@@ -86,7 +121,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
             <img src={cloud} alt="" className="w-96" />
           </div>
           <div>
-            <div className="flex lg:gap-10 sm:gap-10 gap-1 gap lg:-mt-10 sm:-mt-10 -mt-5 px-2">
+            <div className="flex justify-evenly lg:gap-10 sm:gap-10 gap-1 gap lg:-mt-10 sm:-mt-10 -mt-5 px-2">
               <div>
                 <div className="lg:h-44 sm:h-44 h-32 w-1 lg:ml-28 sm:ml-28 ml-10 bg-[#51A9FE]"></div>
                 <div className="lg:w-64 lg:h-64 sm:w-64 sm:h-64  w-24 h-32">
@@ -125,7 +160,11 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
               </div>
             </div>
           </div>
-          <div className="lg:pt-20 sm:pt-20 py-4 p-4 flex justify-center">
+          <p className="pt-4 text-center font-medium italic">
+            Please scratch card to know the message
+          </p>
+
+          <div className="lg:pt-20 pb-6 sm:pt-20  px-4 flex justify-center">
             <ScratchToReveal
               width={700}
               height={250}
@@ -164,7 +203,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
                   className="lg:h-auto sm:h-auto lg:w-auto sm:w-auto h-16 w-28"
                 />
               </div>
-              <div className="bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold">
+              <div className="flex items-center justify-center bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold">
                 Together, always and forever. 🌸
               </div>
               <div>
@@ -183,8 +222,8 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
                   className="lg:h-auto sm:h-auto lg:w-auto sm:w-auto h-20 w-28"
                 />
               </div>
-              <div className="bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold">
-                "My heart, my promise, always yours. 💖"
+              <div className="bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold flex items-center justify-center">
+                My heart, my promise, always yours. 💖
               </div>
               <div>
                 <img
@@ -202,7 +241,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
                   className="lg:h-auto sm:h-auto lg:w-auto sm:w-auto h-20 w-28"
                 />
               </div>
-              <div className="bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold">
+              <div className="bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold flex items-center justify-center">
                 You + Me = Forever, I promise. 💞
               </div>
               <div>
@@ -214,6 +253,9 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="text-center mt-4 py-4 bg-[#51A9FE]">
+          Made With Love 💞
         </div>
       </div>
     </>

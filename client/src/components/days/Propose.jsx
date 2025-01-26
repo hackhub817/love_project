@@ -10,6 +10,8 @@ import couple from "../../assets/hug/couple1.jpg";
 import couple2 from "../../assets/hug/couple2.jpg";
 import ribbon from "../../assets/kisss/ribbon.png";
 import React from "react";
+import heart from "../../assets/heart.jpeg";
+
 import {
   TextRevealCard,
   TextRevealCardDescription,
@@ -35,6 +37,7 @@ export const ProposeDay = ({
           if (response.success) {
             setPromiseData(response.dayData);
           }
+          console.log(response);
         } catch (err) {
           console.error("Error fetching promise day data:", err);
           setError(err.message || "Failed to fetch promise day data");
@@ -58,8 +61,19 @@ export const ProposeDay = ({
 
     if (loading) {
       return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
+        <div>
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="h-32 w-32">
+              <img
+                src={heart}
+                alt=""
+                className="w-full h-full animate-heartbeat"
+              />
+              <p className="text-red-500 font-medium">
+                Please Wait your data is loading...
+              </p>
+            </div>
+          </div>
         </div>
       );
     }
@@ -89,34 +103,39 @@ export const ProposeDay = ({
       style={{ backgroundImage: `url(${kissBg})` }}
     >
       <div className="max-w-3xl mx-auto">
+        <div className="flex pt-8 items-center justify-center py-2">
+          <div className="lg:text-5xl  lg:w-80 text-center text-4xl  font-bold text-shadow-pinkGlow">
+            Happy Propose Day
+          </div>
+        </div>
         <section>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center -mt-12 justify-between">
             <div>
               <img src={butterfly} alt="" className="mb-24 h-[72px]" />
             </div>
             <div>
-              <img src={kiss} alt="" className="h-72" />
+              <img src={kiss} alt="" className="h-64" />
             </div>
             <div>
               <img src={butterfly} alt="" className="" />
             </div>
           </div>
         </section>
-        <section className="py-6">
-          <div className="flex items-center justify-center bg-[#CDBEE9] border-white border-4  rounded-2xl w-full">
+        <section className="p-6">
+          <div className="flex items-center justify-center bg-[#CDBEE9] border-white border-4 h-64 lg:h-full  rounded-2xl w-full">
             <TextRevealCard
-              text="Secret Message"
-              revealText="I Love You My Love"
+              text="Secret Message By Your Love"
+              revealText={promiseData?.secretMessage}
               className="bg-transparent"
             >
               <TextRevealCardTitle className="text-gray-500 font-semibold text-xl">
-                Please Hover on the to know Secret Message
+                Swipe right to know secret message
               </TextRevealCardTitle>
             </TextRevealCard>
           </div>
         </section>
         <section className="mt-10">
-          <div className="grid grid-cols-3 relative">
+          <div className="grid grid-cols-3 relative overflow-hidden">
             {getImages(0, 3).map((imageUrl, idx) => {
               let leftPosition;
 
@@ -129,7 +148,7 @@ export const ProposeDay = ({
                 leftPosition = 50 + idx * 180;
               } else {
                 // Mobile screens (default)
-                leftPosition = 20 + idx * 120;
+                leftPosition = 25 + idx * 120;
               }
 
               return (
@@ -155,12 +174,14 @@ export const ProposeDay = ({
             <div className="absolute -top-5 -left-4">
               <img src={ribbon} alt="" />
             </div>
-            <div className="p-4 text-center text-gray-800">
-              {promiseData?.messages[0]}
+            <div className="p-4 text-center text-[10px] text-gray-800">
+              You light up my world 🌟, fill my heart with endless love ❤, bring
+              joy to my soul 😊, and make me dream of a lifetime of togetherness
+              💕. Will you be mine forever? 💍✨
             </div>
           </div>
         </section>
-        <section className="mt-10">
+        <section className="mt-10 overflow-hidden">
           <div className="grid lg:grid-cols-2 sm:grid-cols-2 grid-cols-1 lg:px-0 sm:px-4 px-8">
             {getImages(2, 6).map((imageUrl, idx) => (
               <div key={idx} className="py-4">
@@ -191,6 +212,7 @@ export const ProposeDay = ({
           <div>
             <img src={butterfly} alt="" className="h-10 w-10" />
           </div>
+          <div className="italic font-light">Made With Love</div>
           <div>
             <img src={butterfly} alt="" className="h-10 w-10" />
           </div>

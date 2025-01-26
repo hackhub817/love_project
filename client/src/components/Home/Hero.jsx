@@ -45,7 +45,7 @@ const HeroSection = () => {
             <h1 className="text-2xl sm:text-5xl font-bold leading-tight">
               Welcome to Your Dream Website
             </h1>
-            <p className="text-lg sm:text-xl">
+            <p className="lg:text-lg text-base sm:text-xl">
               Create memorable experiences with a unique, personalized touch.
               Our platform helps you make every day special and stand out.
             </p>
@@ -58,9 +58,9 @@ const HeroSection = () => {
               </a>
               <a
                 href="#learn-more"
-                className="border border-white px-6 py-3 rounded font-medium hover:bg-white hover:text-[#eb1414]"
+                className="border border-white text-sm lg:px-6 lg:py-3 px-2 pt-3 rounded font-medium hover:bg-white hover:text-[#eb1414]"
               >
-                Learn More
+                How it work
               </a>
             </div>
           </div>

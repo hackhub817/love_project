@@ -12,7 +12,10 @@ export default {
       textShadow: {
         pinkGlow: "2px 2px 4px rgba(255, 105, 180, 0.8)",
         heavy: "4px 4px 8px rgba(255, 0, 0, 0.7)",
+        brownGlow: "2px 2px 4px rgba(165, 42, 42, 0.8)",
+        skyBlueGlow: "2px 2px 4px rgba(135, 206, 235, 0.8)",
       },
+
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -72,10 +75,15 @@ export default {
             transform: "translateY(calc(-100% - var(--gap)))",
           },
         },
+        heartbeat: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(0.8)" },
+        },
       },
       animation: {
         marquee: "marquee var(--duration) infinite linear",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+        heartbeat: "heartbeat 1s infinite",
       },
     },
   },

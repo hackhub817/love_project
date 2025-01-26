@@ -28,10 +28,11 @@ function App() {
       <Route path="/:username/valintine" element={<Valintine />} />
       <Route path="/:username/promise" element={<Promise />} />
       <Route path="/:username" element={<WeekDays />} />
+      <Route path="/:username/rose" element={<Rose />} />
 
       <Route path="/register" element={<Register />} />
       <Route path="/propose" element={<ProposeDay />} />
-      <Route path="/propose" element={<ProposeDay />} />
+      <Route path="/chocolate" element={<ChocolateDay />} />
       <Route path="/rose" element={<Rose />} />
       <Route path="/hug" element={<HugDay />} />
       <Route path="/teddy" element={<Teddy />} />

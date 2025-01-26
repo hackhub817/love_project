@@ -45,6 +45,13 @@ const userSchema = new Schema({
   referralCode: {
     type: String,
   },
+  passcode: {
+    type: String,
+  },
+  gender: {
+    type: String,
+  },
+  partnerName: {},
   createdAt: {
     type: Date,
     default: Date.now,

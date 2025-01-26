@@ -10,7 +10,7 @@ import dil from "../../assets/kiss/dil.png";
 import kisslove from "../../assets/kiss/kisslove.png";
 import love from "../../assets/kiss/lovelove.png";
 import Ballpit from "../../blocks/Backgrounds/Ballpit/Ballpit";
-
+import heart from "../../assets/heart.jpeg";
 import img from "../../assets/kiss/img-2.png";
 import kissfooter from "../../assets/kiss/kissfooter.png";
 
@@ -25,12 +25,11 @@ export const Kiss = ({
   const [kissData, setKissData] = useState(null);
   const { username } = useParams();
   const [ballCount, setBallCount] = useState(150);
-
   useEffect(() => {
     const updateBallCount = () => {
       if (window.innerWidth < 640) {
         // Small screens (e.g., mobile)
-        setBallCount(50);
+        setBallCount(250);
       } else if (window.innerWidth < 1024) {
         // Medium screens (e.g., tablets)
         setBallCount(100);
@@ -78,6 +77,8 @@ export const Kiss = ({
         ...previewData,
       });
       setLoading(false);
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -85,8 +86,19 @@ export const Kiss = ({
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
+      <div>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="h-32 w-32">
+            <img
+              src={heart}
+              alt=""
+              className="w-full h-full animate-heartbeat"
+            />
+            <p className="text-red-500 font-medium">
+              Please Wait your data is loading...
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -128,14 +140,18 @@ export const Kiss = ({
           </div>
           <div className="relative flex items-center justify-center  -mt-8 px-2">
             <img src={message} alt="Panda Kiss" className="" />
-            <div className="lg:top-5 sm:top-5 top-2 lg:px-0 sm:px-0 px-4  absolute font-bold text-white lg:text-5xl sm:text-5xl text-2xl">
-              Happy Kiss day
+            <div className="lg:text-5xl  lg:w-80 text-center absolute text-3xl  font-bold text-shadow-pinkGlow">
+              Happy Kiss Day
             </div>
           </div>
         </div>
         <section>
           <div className="relative ">
             <img src={kisslove} alt="" className="px-2 " />
+            <div className="absolute top-20 text-xs w-40 left-12 font-semibold">
+              A kiss from you is like magic—soft, sweet, and the best part of my
+              day. 💋❤️
+            </div>
             <div className="absolute top-[1vw] right-3 pt-9 w-full flex items-center justify-end">
               {getImages(0, 1).map((imageUrl, idx) => (
                 <img
@@ -148,11 +164,11 @@ export const Kiss = ({
           </div>
         </section>
         <div className="flex items-center lg:px-0 sm:px-0 px-4">
-          <div className="bg-pink lg:p-8 sm:p-8 p-2 rounded-tl-xl lg:text-xl sm:text-xl text-sm rounded-bl-xl bg-pink-500 sm:h-[250px] lg:h-[250px] h-[180px]">
+          <div className="bg-pink lg:p-8 sm:p-8 p-4 rounded-tl-xl font-semibold lg:text-xl sm:text-xl text-sm rounded-bl-xl bg-pink-500 sm:h-[250px] lg:h-[250px] h-[180px]">
             {" "}
-            Happy Hug Day, my love! ❤ I can ' t wait to feel your warm embrace.
-            😘 You make me feel safe and loved. 🥰 Let's hug tight and cherish
-            this moment. 💕
+            Every time I kiss you, it’s like the world pauses for a moment. It’s
+            not just our lips meeting—it’s my heart whispering how much I love
+            you, how much you mean to me, and how lucky I am to call you mine
           </div>
           <div className="relative my-10">
             {getImages(0, 1).map((imageUrl, idx) => (

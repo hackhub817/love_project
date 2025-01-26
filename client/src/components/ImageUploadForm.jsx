@@ -21,6 +21,10 @@ const ImageUploadForm = () => {
     specialMessage: "",
   });
 
+  const [passcode, setPasscode] = useState("");
+  const [gender, setGender] = useState("");
+  const [partnerName, setPartnerName] = useState("");
+
   const [dayMessages, setDayMessages] = useState({
     Rose: [],
     Propose: [],
@@ -66,10 +70,15 @@ const ImageUploadForm = () => {
 
   const handleMessageChange = (e) => {
     const { name, value } = e.target;
-    setMessages((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (value.length <= 30) {
+      setMessages((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handlePartnerNameChange = (e) => {
+    if (e.target.value.length <= 8) {
+      setPartnerName(e.target.value);
+    }
   };
 
   const handleDayMessageChange = (day, value) => {
@@ -96,6 +105,13 @@ const ImageUploadForm = () => {
       ...prev,
       [day]: selectedImages,
     }));
+  };
+  const handlePasscodeChange = (e) => {
+    setPasscode(e.target.value);
+  };
+
+  const handleGenderChange = (e) => {
+    setGender(e.target.value);
   };
 
   const handleFinalSubmit = async () => {
@@ -220,35 +236,96 @@ const ImageUploadForm = () => {
     <div className="max-w-7xl mx-auto p-4">
       {!previewMode ? (
         // Upload Form
-        <div className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Upload 12 Images
-            </label>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleImageChange}
-              className="mt-1 block w-full"
-            />
+        <div className="space-y-2">
+          <div className="font-semibold text-gray-600 text-center md:text-2xl text-lg uppercase">
+            Please Fill the form wisely{" "}
           </div>
-
-          {/* Global Message Fields */}
-          {Object.keys(messages).map((key) => (
-            <div key={key}>
+          <div className="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-md space-y-6">
+            {/* Passcode Field */}
+            <div>
               <label className="block text-sm font-medium text-gray-700">
-                {key.replace(/([A-Z])/g, " $1").trim()}
+                Upload 12 Images
               </label>
-              <textarea
-                name={key}
-                value={messages[key]}
-                onChange={handleMessageChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                rows={3}
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+                className="mt-2 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
+              <p className="mt-2 text-sm text-red-500">
+                For a better experience, please upload square-shaped images.
+              </p>
             </div>
-          ))}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Enter Passcode
+              </label>
+              <input
+                type="password"
+                value={passcode}
+                onChange={handlePasscodeChange}
+                className="mt-2 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <p className="mt-2 text-sm text-red-500">
+                To make you private data protected
+              </p>
+            </div>
+
+            {/* Gender Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                To Whom You Are Gifting
+              </label>
+              <select
+                value={gender}
+                onChange={handleGenderChange}
+                className="mt-2 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="" disabled>
+                  Select Gender
+                </option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+
+            {/* Partner Name Field */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Partner's First Name (Max 8 Characters)
+              </label>
+              <input
+                type="text"
+                value={partnerName}
+                onChange={handlePartnerNameChange}
+                className="mt-2 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <div className="text-sm text-gray-500 mt-1">
+                {partnerName.length}/8 characters
+              </div>
+            </div>
+
+            {/* Global Message Fields */}
+            {Object.keys(messages).map((key) => (
+              <div key={key}>
+                <label className="block text-base  font-semibold text-gray-700">
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </label>
+                <textarea
+                  name={key}
+                  value={messages[key]}
+                  onChange={handleMessageChange}
+                  className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  rows={3}
+                />
+                <div className="text-sm text-gray-500 mt-1">
+                  {messages[key]?.length || 0}/30 characters
+                </div>
+              </div>
+            ))}
+          </div>
 
           <button
             onClick={handlePreview}

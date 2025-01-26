@@ -54,14 +54,14 @@ const DashboardHome = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full">
       {/* Header Section */}
-      <div className="flex justify-between items-center bg-white rounded-lg shadow-lg p-6 mb-8">
+      <div className="flex justify-between items-center bg-gray-200 px-10 py-6 mb-8">
         <div>
           <h1 className="text-3xl font-bold text-indigo-900">
             Welcome to Love Birds
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 text-lg mt-2">
             Hello, {userName || "Valued Customer"}! 👋
           </p>
         </div>
@@ -80,36 +80,13 @@ const DashboardHome = () => {
           )}
         </button>
       </div>
-
-      {/* Main Content Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Dashboard Cards */}
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold text-indigo-900 mb-4">
-            Your Selected Days
-          </h2>
-          <p className="text-gray-600">
-            View and manage your special days here.
-          </p>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold text-indigo-900 mb-4">
-            Messages
-          </h2>
-          <p className="text-gray-600">
-            Check your romantic messages and updates.
-          </p>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold text-indigo-900 mb-4">
-            Profile
-          </h2>
-          <p className="text-gray-600">
-            Update your personal information and preferences.
-          </p>
-        </div>
+      <div className="flex justify-end px-10">
+        <button
+          onClick={() => navigate("/upload")}
+          className="bg-indigo-900 px-5 py-3 font-semibold text-white rounded-xl"
+        >
+          Make Your Own Website
+        </button>
       </div>
     </div>
   );

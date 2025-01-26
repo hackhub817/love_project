@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { CoolMode } from "../ui/cool-mode";
+import heart from "../../assets/heart.jpeg";
+
 import love_icon from "../../assets/love_icon.png";
 
 import IconCloud from "../../components/ui/icon-cloud";
@@ -82,6 +84,37 @@ export const Valintine = ({
       setLoading(false);
     }
   }, []);
+  if (loading) {
+    return (
+      <div>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="h-32 w-32">
+            <img
+              src={heart}
+              alt=""
+              className="w-full h-full animate-heartbeat"
+            />
+            <p className="text-red-500 font-medium">
+              Please Wait your data is loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Error Loading Data
+          </h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   const getImages = (start, end) => {
     const images = isPreview ? previewImages : teddyData?.images;

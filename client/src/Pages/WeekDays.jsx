@@ -57,7 +57,7 @@ export const WeekDays = () => {
               style={{ backgroundImage: `url(${road2})` }}
             >
               <div className="flex  pt-16">
-                <Link to={`/rose-day/piyush`}>
+                <Link to={`/${username}/rose`}>
                   <div className="px-[80px] ">
                     <div className="font-semibold text-sm text-gray-500">
                       Rose Day
@@ -95,7 +95,7 @@ export const WeekDays = () => {
                 <Link to={`/${username}/chocolate`}>
                   <div className="px-[4px] ">
                     <div className="flex ">
-                      <div className="font-semibold text-sm text-gray-500">
+                      <div className="font-semibold text-sm w-14 text-gray-500">
                         Chocolate Day
                       </div>
                       <div className="bg-pink-300 rounded-full flex items-center justify-center h-14 w-14 ">

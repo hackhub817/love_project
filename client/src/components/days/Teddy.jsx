@@ -144,7 +144,7 @@ export const Teddy = ({
 
       {/* Content */}
       <div className="relative z-10">
-        <section className="max-w-4xl mx-auto lg:p-4 sm:p-4">
+        <section className="max-w-4xl py-4 mx-auto lg:p-4 sm:p-4">
           <div className="flex items-center  justify-center">
             <img src={flower} alt="" className="lg:h-80 sm:h-72 h-28" />
             <div>
@@ -167,7 +167,7 @@ export const Teddy = ({
             ))}
           </div>
         </section>
-        <section className="max-w-4xl mx-auto mt-5 relative sm:px-6">
+        <section className="max-w-4xl mx-auto mt-5 relative sm:px-6 overflow-hidden">
           <div className="flex items-center p-2">
             {/* Background Box */}
             <div className="bg-[#483F2C]  lg:h-72 sm:h-64 h-52  rounded-[40px] relative z-10 lg:p-12 sm:p-12 p-4 pl-3 -mr-10">
@@ -186,7 +186,7 @@ export const Teddy = ({
             <img
               src={sit}
               alt="Image 1"
-              className="lg:w-full lg:h-auto sm:h-64 h-32 w-32 object-cover relative z-20 lg:-ml-24 sm:-ml-24 -ml-2 "
+              className="lg:w-full lg:h-auto sm:h-64 h-48 w-48 object-cover relative z-20 lg:-ml-24 sm:-ml-24 -ml-2 "
             />
           </div>
         </section>

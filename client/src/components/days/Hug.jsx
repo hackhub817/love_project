@@ -11,6 +11,7 @@ import { getHugDayData } from "../../Pages/api/Api";
 import { toast } from "sonner";
 import RollingGallery from "../../blocks/Components/RollingGallery/RollingGallery";
 import { FaChessKing } from "react-icons/fa6";
+import heart from "../../assets/heart.jpeg";
 
 export const HugDay = ({
   isPreview,
@@ -51,6 +52,38 @@ export const HugDay = ({
       setLoading(false);
     }
   }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="h-32 w-32">
+            <img
+              src={heart}
+              alt=""
+              className="w-full h-full animate-heartbeat"
+            />
+            <p className="text-red-500 font-medium">
+              Please Wait your data is loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Error Loading Data
+          </h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   // Helper function to get images
   const getImages = (start, end) => {

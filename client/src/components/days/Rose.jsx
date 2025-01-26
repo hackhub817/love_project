@@ -1,9 +1,14 @@
 import bg from "../../assets/Rose/rosedaybg.png";
-
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "sonner";
+import { getRoseDayData } from "../../Pages/api/Api";
 import dog1 from "../../assets/Rose/dog.png";
 import frame from "../../assets/Rose/circular-frame.png";
 import dog2 from "../../assets/Rose/dog2.png";
 import dog3 from "../../assets/Rose/dog3.png";
+import heart from "../../assets/heart.jpeg";
+
 import side from "../../assets/Rose/side.png";
 import sideview from "../../assets/Rose/sideview.png";
 import tree from "../../assets/Rose/tree.png";
@@ -11,7 +16,86 @@ import propose from "../../assets/Rose/propose.png";
 import surprise from "../../assets/Rose/surprise.png";
 import couple3 from "../../assets/hug/couple3.jpg";
 
-export const Rose = () => {
+export const Rose = ({
+  isPreview,
+  previewImages,
+  messages,
+  ...previewData
+}) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [roseData, setRoseData] = useState(null);
+  const { username } = useParams();
+  useEffect(() => {
+    const fetchKissData = async () => {
+      console.log("fetch");
+      try {
+        setLoading(true);
+        const response = await getRoseDayData(username);
+        console.log("response", response);
+        if (response.success) {
+          setRoseData(response.dayData);
+        }
+      } catch (err) {
+        console.error("Error fetching kiss day data:", err);
+        setError(err.message || "Failed to fetch kiss day data");
+        toast.error("Failed to load kiss day data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!isPreview && username) {
+      fetchKissData();
+    } else if (isPreview) {
+      setRoseData({
+        images: previewImages || [],
+        messages: messages || [],
+        ...previewData,
+      });
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="h-32 w-44">
+            <img
+              src={heart}
+              alt=""
+              className="w-full h-full animate-heartbeat"
+            />
+            <p className="text-red-500 font-medium">
+              Please Wait your data is loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Error Loading Data
+          </h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const getImages = (start, end) => {
+    const images = isPreview ? previewImages : roseData?.images;
+    return images?.slice(start, end) || Array(end - start).fill(couple3);
+  };
+
   return (
     <>
       <div
@@ -32,32 +116,26 @@ export const Rose = () => {
             </div>
           </div>
           <div>
-            <div className="mt-6 lg:text-3xl lg:pb-5 text-lg font-semibold text-pink-800 text-center">
+            <div className="mt-6 mb-2 lg:text-3xl lg:pb-5 text-lg font-semibold text-pink-800 text-center">
               You're my favorite rose, beautiful and rare.
             </div>
             <div className="relative space-y-3">
               <div className="flex item-center  justify-center gap-4">
-                <img
-                  src={couple3}
-                  className="h-32 w-32 md:h-72 md:w-72 border-[8px] border-[#E57586] border-b-[25px] rounded-sm"
-                />
-                <img
-                  src={couple3}
-                  className="h-32 w-32 md:h-72 md:w-72 border-[8px] border-[#E57586] border-b-[25px] rounded-sm"
-                  alt=""
-                />
+                {getImages(0, 2).map((imageUrl, idx) => (
+                  <img
+                    src={imageUrl}
+                    className="h-32 w-32 md:h-72 md:w-72 border-[8px] border-[#E57586] border-b-[25px] rounded-sm"
+                  />
+                ))}
               </div>
               <div className="flex item-center  justify-center gap-4">
-                <img
-                  src={couple3}
-                  className="h-32 w-32 md:h-72 md:w-72 border-[8px] border-[#E57586] border-b-[25px] rounded-sm"
-                  alt="h-20 w-20"
-                />
-                <img
-                  src={couple3}
-                  className="h-32 w-32 md:h-72 md:w-72 border-[8px] border-[#E57586] border-b-[25px] rounded-sm"
-                  alt=""
-                />
+                {getImages(2, 4).map((imageUrl, idx) => (
+                  <img
+                    src={imageUrl}
+                    className="h-32 w-32 md:h-72 md:w-72 border-[8px] border-[#E57586] border-b-[25px] rounded-sm"
+                    alt="h-20 w-20"
+                  />
+                ))}
               </div>
               <div className="absolute top-20  overflow-hidden">
                 <div className=" flex items-center lg:justify-between justify-center gap-40 lg:gap-[420px]">
@@ -83,34 +161,30 @@ export const Rose = () => {
             I'd give you a million roses if I could, but I'd rather spend my
             time with you. Happy Rose Day, my love." 🌹❤
           </div>
-          <div class="flex justify-center gap-2 items-center ">
-            <div className=" ">
-              <img src={dog1} alt="" className="h-16 md:h-28 pl-4" />
-              <img
-                src={couple3}
-                alt=""
-                className="h-24 w-24 md:h-64 md:w-64 rounded-full -mt-2 border-collapse border-[6px] border-[#E57586] md:border-[12px]  md:-mt-6"
-              />
-            </div>
+          <div className="flex justify-center gap-2 items-center">
+            {getImages(3, 6).map((imageUrl, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                {/* Conditionally render dog images based on idx */}
+                {idx === 0 && (
+                  <img src={dog1} alt="Dog 1" className="h-16 md:h-28 pl-4" />
+                )}
+                {idx === 1 && (
+                  <img src={dog2} alt="Dog 2" className="h-16 md:h-28 pl-4" />
+                )}
+                {idx === 2 && (
+                  <img src={dog3} alt="Dog 3" className="h-16 md:h-28 pl-4" />
+                )}
 
-            <div className=" ">
-              <img src={dog2} alt="" className="h-16 md:h-28 pl-4" />
-              <img
-                src={couple3}
-                alt=""
-                className="h-24 w-24 md:h-64 md:w-64 rounded-full -mt-2 md:border-[12px] md:-mt-6 border-collapse border-[6px] border-[#E57586]"
-              />
-            </div>
-
-            <div className=" ">
-              <img src={dog3} alt="" className="h-16 md:h-28 pl-4" />
-              <img
-                src={couple3}
-                alt=""
-                className="h-24 w-24 md:h-64 md:w-64 rounded-full -mt-2 md:-mt-6 border-collapse border-[6px] md:border-[12px] border-[#E57586]"
-              />
-            </div>
+                {/* Render the same couple image for all indexes */}
+                <img
+                  src={imageUrl}
+                  alt={`Couple ${idx}`}
+                  className="h-24 w-24 md:h-64 md:w-64 rounded-full -mt-2 border-collapse border-[6px] border-[#E57586] md:border-[12px] md:-mt-6"
+                />
+              </div>
+            ))}
           </div>
+
           <div className="bg-[#E57586] flex mt-2 py-1 item-center justify-center italic text-black font-light lg:text-2xl lg:py-4">
             Made with love
           </div>
