@@ -14,7 +14,7 @@ export const Rose = () => {
       <div className="bg-pink-200 h-screen py-2 relative">
         {/* Background Image with Opacity */}
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover"
           style={{
             backgroundImage: `url(${bg})`,
           }}
