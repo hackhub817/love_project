@@ -19,20 +19,22 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/:username/propose" element={<ProposeDay />} />
+      <Route path="/:username/chocolate" element={<ChocolateDay />} />
+      <Route path="/:username/hug" element={<HugDay />} />
+      <Route path="/:username/kiss" element={<Kiss />} />
+      <Route path="/:username/teddy" element={<Teddy />} />
+      <Route path="/:username/valintine" element={<Valintine />} />
+      <Route path="/:username/promise" element={<Promise />} />
+      <Route path="/:username" element={<WeekDays />} />
+
       <Route path="/register" element={<Register />} />
       <Route path="/propose" element={<ProposeDay />} />
-      <Route path="/propose/:username" element={<ProposeDay />} />
-      <Route path="/chocolate/:username" element={<ChocolateDay />} />
       <Route path="/chocolate" element={<ChocolateDay />} />
-      <Route path="/hug/:username" element={<HugDay />} />
       <Route path="/hug" element={<HugDay />} />
-      <Route path="/teddy/:username" element={<Teddy />} />
       <Route path="/teddy" element={<Teddy />} />
-      <Route path="/kiss/:username" element={<Kiss />} />
       <Route path="/kiss" element={<Kiss />} />
-      <Route path="/promise/:username" element={<Promise />} />
       <Route path="/dashboard/*" element={<Dashboard />} />
-      <Route path="/valintine/:username" element={<Valintine />} />
       <Route path="/upload" element={<ImageUploadForm />} />
       <Route path="/week-day" element={<WeekDays />} />
       {/* Redirect root to dashboard if logged in, otherwise to login */}

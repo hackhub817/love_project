@@ -25,83 +25,85 @@ export const Kiss = ({
   const [kissData, setKissData] = useState(null);
   const { username } = useParams();
   const [ballCount, setBallCount] = useState(150);
-  if (isPreview) {
-    useEffect(() => {
-      const updateBallCount = () => {
-        if (window.innerWidth < 640) {
-          // Small screens (e.g., mobile)
-          setBallCount(50);
-        } else if (window.innerWidth < 1024) {
-          // Medium screens (e.g., tablets)
-          setBallCount(100);
-        } else {
-          // Large screens (e.g., desktops)
-          setBallCount(150);
+
+  useEffect(() => {
+    const updateBallCount = () => {
+      if (window.innerWidth < 640) {
+        // Small screens (e.g., mobile)
+        setBallCount(50);
+      } else if (window.innerWidth < 1024) {
+        // Medium screens (e.g., tablets)
+        setBallCount(100);
+      } else {
+        // Large screens (e.g., desktops)
+        setBallCount(150);
+      }
+    };
+
+    // Initialize on mount
+    updateBallCount();
+
+    // Update on window resize
+    window.addEventListener("resize", updateBallCount);
+
+    // Cleanup event listener
+    return () => window.removeEventListener("resize", updateBallCount);
+  }, []);
+
+  useEffect(() => {
+    const fetchKissData = async () => {
+      console.log("fetch");
+      try {
+        setLoading(true);
+        const response = await getKissDayData(username);
+        console.log("response", response);
+        if (response.success) {
+          setKissData(response.dayData);
         }
-      };
-
-      // Initialize on mount
-      updateBallCount();
-
-      // Update on window resize
-      window.addEventListener("resize", updateBallCount);
-
-      // Cleanup event listener
-      return () => window.removeEventListener("resize", updateBallCount);
-    }, []);
-
-    useEffect(() => {
-      const fetchKissData = async () => {
-        try {
-          setLoading(true);
-          const response = await getKissDayData(username);
-          if (response.success) {
-            setKissData(response.dayData);
-          }
-        } catch (err) {
-          console.error("Error fetching kiss day data:", err);
-          setError(err.message || "Failed to fetch kiss day data");
-          toast.error("Failed to load kiss day data");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      if (!isPreview && username) {
-        fetchKissData();
-      } else if (isPreview) {
-        setKissData({
-          images: previewImages || [],
-          messages: messages || [],
-          ...previewData,
-        });
+      } catch (err) {
+        console.error("Error fetching kiss day data:", err);
+        setError(err.message || "Failed to fetch kiss day data");
+        toast.error("Failed to load kiss day data");
+      } finally {
         setLoading(false);
       }
-    }, []);
+    };
 
-    // Helper function to get images
-
-    if (loading) {
-      return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
-        </div>
-      );
+    if (!isPreview && username) {
+      fetchKissData();
+    } else if (isPreview) {
+      setKissData({
+        images: previewImages || [],
+        messages: messages || [],
+        ...previewData,
+      });
+      setLoading(false);
     }
+  }, []);
 
-    if (error) {
-      return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-red-600 mb-4">
-              Error Loading Data
-            </h2>
-            <p className="text-gray-600">{error}</p>
-          </div>
-        </div>
-      );
-    }
+  // Helper function to get images
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-900"></div>
+      </div>
+    );
   }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Error Loading Data
+          </h2>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   const getImages = (start, end) => {
     const images = isPreview ? previewImages : kissData?.images;
     return images?.slice(start, end) || Array(end - start).fill(couple2);
@@ -131,17 +133,19 @@ export const Kiss = ({
             </div>
           </div>
         </div>
-        <section
-          style={{
-            backgroundImage: `url(${kisslove})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-
-            // Full viewport height
-          }}
-          className="h-[170px] px-1"
-        >
-          {/* Content goes here */}
+        <section>
+          <div className="relative ">
+            <img src={kisslove} alt="" className="px-2 " />
+            <div className="absolute top-[1vw] right-3 pt-9 w-full flex items-center justify-end">
+              {getImages(0, 1).map((imageUrl, idx) => (
+                <img
+                  src={imageUrl}
+                  alt=""
+                  className="h-[39vw] w-[39vw] rounded-3xl"
+                />
+              ))}
+            </div>
+          </div>
         </section>
         <div className="flex items-center lg:px-0 sm:px-0 px-4">
           <div className="bg-pink lg:p-8 sm:p-8 p-2 rounded-tl-xl lg:text-xl sm:text-xl text-sm rounded-bl-xl bg-pink-500 sm:h-[250px] lg:h-[250px] h-[180px]">

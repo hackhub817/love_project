@@ -68,19 +68,22 @@ export const HugDay = ({
         <div className="max-w-4xl mx-auto flex items-center  relative w-full">
           {/* Hug Image */}
           <div className="relative z-10">
-            <img src={hug} alt="Hug Image" className="lg:h-64 sm:h-64 h-32" />
+            <img src={hug} alt="Hug Image" className="lg:h-64 sm:h-64 h-40" />
           </div>
 
           {/* Note Image */}
-          <div className="absolute z-0 lg:left-96 sm:left-96 left-1/2 transform -translate-x-1/2 ">
-            <img src={notes} alt="Notes Image" className="lg:h-32 sm:h-24 " />
+          <div className="absolute z-0 lg:left-96 sm:left-96 left-44 transform -translate-x-1/2 ">
+            <img
+              src={notes}
+              alt="Notes Image"
+              className="lg:h-32 sm:h-24 h-16 w-[350px] "
+            />
           </div>
         </div>
 
         {/* Text */}
-        <div className="absolute left-2/4   lg:top-28 sm:top-28 top-[70px] flex items-center gap-2 transform -translate-x-1/2 z-20 text-center text-black sm:text-2xl lg:text-4xl text-sm">
-          <img src={love} className="lg:h-10 lg:w-12 sm:h-10 sm:w-12 h-5 w-7" />
-          <div className="font-bold text-orange-500 lg:text-4xl sm:text-4xl ">
+        <div className="absolute left-44   lg:top-28 sm:top-28 top-[80px] flex items-center gap-2 transform -translate-x-1/2 z-20 text-center text-black sm:text-2xl lg:text-4xl text-sm">
+          <div className="font-bold text-orange-500 lg:text-4xl sm:text-4xl text-base ">
             Happy Hug Day
           </div>
         </div>
@@ -181,13 +184,13 @@ export const HugDay = ({
             {/* Testimonial 1 */}
             {getImages(2, 6).map((imageUrl, idx) => (
               <>
-                <div className="relative p-2 flex justify-center">
+                <div className="relative px-4 flex justify-center">
                   <img
                     src={img1}
                     className="h-[150px] w-[150px] absolute  -top-4  lg:left-0 lg:right-0 mx-auto "
                   />
 
-                  <div className=" text-red-500 font-semibold text-center uppercase h-[300px] rounded-[2rem] border-4 border-[#EE714B] w-[400px] pt-10 mt-[50px] flex flex-col items-center gap-2">
+                  <div className=" text-red-500 font-semibold text-center uppercase h-[300px] rounded-[2rem] border-4 border-[#EE714B] w-[350px] pt-10 mt-[50px] flex flex-col items-center gap-2">
                     {idx == 2
                       ? "Hugs make everything 💖"
                       : idx == 3
@@ -198,7 +201,7 @@ export const HugDay = ({
                     <img
                       src={imageUrl}
                       alt=""
-                      className=" h-[200px] w-[300px]"
+                      className=" h-[200px] w-[220px] rounded-xl"
                     />
                   </div>
                 </div>

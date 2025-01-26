@@ -16,8 +16,11 @@ import proposeIcon from "../assets/icon/icon/propose-icon.png";
 import roseIcon from "../assets/icon/icon/rose-icon.png";
 import teddyIcon from "../assets/icon/icon/teddy-icon.png";
 import valentineIcon from "../assets/icon/icon/valentine-icon.png";
+import { useParams } from "react-router-dom";
 
 export const WeekDays = () => {
+  const { username } = useParams();
+  console.log("params", username);
   const words = [
     {
       text: "Hy ",
@@ -70,7 +73,7 @@ export const WeekDays = () => {
                     </div>
                   </div>
                 </Link>
-                <Link to={`/propose/piyush`}>
+                <Link to={`/${username}/propose`}>
                   <div className="">
                     <div className="font-semibold text-sm text-gray-500">
                       Propose Day
@@ -89,7 +92,7 @@ export const WeekDays = () => {
               </div>
 
               <div className="flex items-center gap-24 pt-6">
-                <Link to={`/chocolate/piyush`}>
+                <Link to={`/${username}/chocolate`}>
                   <div className="px-[4px] ">
                     <div className="flex ">
                       <div className="font-semibold text-sm text-gray-500">
@@ -105,7 +108,7 @@ export const WeekDays = () => {
                     </div>
                   </div>
                 </Link>{" "}
-                <Link to={`/teddy/piyush`}>
+                <Link to={`/${username}/teddy`}>
                   <div className="-mt-5">
                     <div className="font-semibold text-sm text-gray-500">
                       Teddy Day
@@ -124,7 +127,7 @@ export const WeekDays = () => {
               </div>
               <div className="flex items-center gap-10 ">
                 <div className=" flex  gap-2 pt-2">
-                  <Link to={`/promise/piyush`}>
+                  <Link to={`/${username}/promise`}>
                     <div className="bg-pink-300 rounded-full h-14 w-14">
                       <div className="flex items-center justify-center h-14 w-14 ">
                         <img
@@ -140,7 +143,7 @@ export const WeekDays = () => {
                   </div>
                 </div>
                 <div className=" flex items-center gap-2 pt-4">
-                  <Link to={`/hug/piyush`}>
+                  <Link to={`/${username}/hug`}>
                     <div className="bg-pink-300 rounded-full h-14 w-14">
                       <div className="flex items-center justify-center h-14 w-14 ">
                         <img
@@ -161,7 +164,7 @@ export const WeekDays = () => {
                   <div className="font-semibold text-sm text-gray-500">
                     Kiss Day
                   </div>
-                  <Link to={`/kiss/piyush`}>
+                  <Link to={`/${username}/kiss`}>
                     <div className="bg-pink-300 rounded-full flex items-center justify-center h-14 w-14 ">
                       <img
                         src={kissIcon}
@@ -175,7 +178,7 @@ export const WeekDays = () => {
               <div className="flex items-center justify-center">
                 <div className="pl-28 pt-4 ">
                   <div className="flex items-center gap-2 ">
-                    <Link to={`/valintine/piyush`}>
+                    <Link to={`/${username}/valintine`}>
                       <div className="bg-pink-300 rounded-full flex items-center justify-center h-14 w-14 ">
                         <img
                           src={valentineIcon}

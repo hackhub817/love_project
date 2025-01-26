@@ -21,11 +21,13 @@ const sentOtp = async (req, res, next) => {
 
     // Check if user already exists
     const existingUser = await User.findOne({ userEmail });
-
+    console.log(existingUser);
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
+
     const existingUserName = await User.findOne({ userName });
+    console.log(existingUserName);
     if (existingUserName) {
       return res.status(400).json({ message: "Enter Unique UserName" });
     }

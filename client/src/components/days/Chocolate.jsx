@@ -9,8 +9,6 @@ import cir from "../../assets/Chocolate/cir.png";
 import couple3 from "../../assets/hug/couple3.jpg";
 import RollingGallery from "../../blocks/Components/RollingGallery/RollingGallery";
 import Marquee from "../../components/ui/marquee";
-import IconCloud from "../../components/ui/icon-cloud";
-import love_icon from "../../assets/love_icon.png";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getChocolateDayData } from "../../Pages/api/Api";
@@ -63,28 +61,6 @@ export const ChocolateDay = ({
     return images?.slice(start, end) || Array(end - start).fill(couple3);
   };
 
-  const images = [
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-    love_icon,
-  ];
   return (
     <>
       <div className="bg-[#652a16] py-2 relative">
@@ -143,11 +119,7 @@ export const ChocolateDay = ({
               ))}
             </Marquee>
           </section>
-          <section className="max-w-4xl mx-auto mt-20">
-            <div className="relative flex   items-center justify-center overflow-hidden rounded-lg border ">
-              <IconCloud images={images} />
-            </div>
-          </section>
+          <section className="max-w-4xl mx-auto mt-20"></section>
           <section className="mt-20">
             <div className="flex items-center justify-center p-2 ">
               <img src={chocoFrame} alt="" className="w-[400px] h-[300px]" />
