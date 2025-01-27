@@ -16,41 +16,141 @@ import proposeIcon from "../assets/icon/icon/propose-icon.png";
 import roseIcon from "../assets/icon/icon/rose-icon.png";
 import teddyIcon from "../assets/icon/icon/teddy-icon.png";
 import valentineIcon from "../assets/icon/icon/valentine-icon.png";
+import one from "../assets/weekdays/1.png";
+import two from "../assets/weekdays/2.png";
+import three from "../assets/weekdays/3.png";
+import four from "../assets/weekdays/4.png";
+import five from "../assets/weekdays/5.png";
+import six from "../assets/weekdays/6.png";
+import seven from "../assets/weekdays/7.png";
+import eight from "../assets/weekdays/8.png";
+import roadmap from "../assets/roadmap.png";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import { useParams } from "react-router-dom";
 
+const TimelineEvent = ({ position, date, day, imageSize = 100 }) => {
+  const navigate = useNavigate();
+  const [dimensions, setDimensions] = useState({ width: 150, height: 150 });
+
+  const { username } = useParams();
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setDimensions({ width: 300, height: 300 }); // For large screens (xl)
+      } else if (window.innerWidth >= 1024) {
+        setDimensions({ width: 300, height: 300 }); // For medium screens (lg)
+      } else {
+        setDimensions({ width: 150, height: 150 }); // Default size
+      }
+    };
+
+    // Set initial dimensions on component mount
+    handleResize();
+
+    // Add resize event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return (
+    <div className="relative flex items-center">
+      {/* Container for alternating layout */}
+      <div
+        className={`flex w-full ${
+          position === "right" ? "justify-end" : "justify-start"
+        }`}
+      >
+        {/* Image circle with border */}
+        <div className="relative">
+          <div
+            className=" overflow-hidden p-2 -mt-16"
+            style={{
+              width: `${dimensions.width}px`,
+              height: `${dimensions.height}px`,
+            }}
+          >
+            <Link to={`/${username}/${day}`}>
+              <img
+                // onClick={() => navigate(`/${username}/day`)}
+                src={date}
+                alt={date}
+                className="w-full h-full object-cover"
+              />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 export const WeekDays = () => {
   const { username } = useParams();
   console.log("params", username);
   const words = [
     {
       text: "Hy ",
+      className: "text-white",
     },
     {
       text: "Love",
-      className: "text-red-500",
+      className: "text-white",
     },
     {
       text: "Surprise ",
+      className: "text-white",
     },
     {
       text: "For  ",
+      className: "text-white",
     },
     {
       text: "You",
+      className: "text-white",
     },
+  ];
+  const events = [
+    { date: one, position: "left", day: "rose" },
+    { date: two, position: "right", day: "propose" },
+    { date: four, position: "left", day: "chocolate" },
+    { date: three, position: "right", day: "teddy" },
+    { date: five, position: "left", day: "promise" },
+    { date: six, position: "right", day: "hug" },
+    { date: seven, position: "left", day: "kiss" },
+    { date: eight, position: "right", day: "valentine" },
   ];
   return (
     <>
       <div
-        className="bg-pink-200
-      "
+        className="bg-cover bg-center"
+        style={{ backgroundImage: `url(${roadmap})` }}
       >
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto p-1 ">
           <div className="flex items-center justify-center">
             <TypewriterEffectSmooth className="" words={words} />
           </div>
+          <div className="bg-pink-400 md:mb-10 py-2 md:py-4 rounded-xl p-2">
+            <div className="text-center text-white italic font-light text-base md:text-3xl">
+              Let's make this Valentine's Week unforgettable
+            </div>
+          </div>
 
-          <div className=" px-2">
+          <div className=" pt-16 ">
+            <div className="relative">
+              {events.map((event, index) => (
+                <TimelineEvent
+                  key={index}
+                  date={event.date}
+                  day={event.day}
+                  position={event.position}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* <div className=" px-2">
             <img src={boy} alt="" className="w-20 " />
             <div
               className="-mt-32  w-[320px] h-[600px] bg-center bg-cover "
@@ -194,7 +294,7 @@ export const WeekDays = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

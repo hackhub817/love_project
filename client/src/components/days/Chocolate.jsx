@@ -116,7 +116,7 @@ export const ChocolateDay = ({
           <section className="">
             <div className="max-w-4xl mx-auto">
               <div className="flex mt-10 items-center">
-                <div className="lg:text-5xl lg:w-80   text-center  text-[45px] pt-24 w-44 font-bold text-shadow-brownGlow">
+                <div className="lg:text-5xl lg:w-80   text-center text-white  text-[45px] pt-24 w-44 font-bold text-shadow-brownGlow">
                   Happy
                 </div>
                 <div>
@@ -127,7 +127,7 @@ export const ChocolateDay = ({
                   />
                 </div>
               </div>
-              <div className="lg:text-5xl lg:w-80   text-center  text-[45px] w-full font-bold text-shadow-brownGlow">
+              <div className="lg:text-5xl lg:w-80 text-white   text-center  text-[45px] w-full font-bold text-shadow-brownGlow">
                 Chocolate Day
               </div>
             </div>

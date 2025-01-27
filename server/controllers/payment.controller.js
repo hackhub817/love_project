@@ -50,13 +50,15 @@ export const verifyPayment = async (req, res, next) => {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
       req.body;
 
+    console.log(razorpay_payment_id, razorpay_order_id, razorpay_signature);
+
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
       .update(body)
       .digest("hex");
-
+    console.log("expectedSignature", expectedSignature);
     if (expectedSignature !== razorpay_signature) {
       return res.status(400).json({
         message: "Invalid signature",

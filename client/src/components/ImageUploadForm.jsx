@@ -13,12 +13,11 @@ import {
   createDayData,
   makePayment,
   getKey,
+  verify,
 } from "../Pages/api/Api";
 import axios from "axios";
 
 const ImageUploadForm = () => {
-  const razorpayKey = getKey();
-
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
@@ -28,6 +27,7 @@ const ImageUploadForm = () => {
     secretMessage: "",
     specialMessage: "",
   });
+  const [key, setKey] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [discountedAmount, setDiscountedAmount] = useState(null);
   const [isCouponValid, setIsCouponValid] = useState(false);
@@ -63,7 +63,6 @@ const ImageUploadForm = () => {
   const [previewMode, setPreviewMode] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   // Add new state for sidebar
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -146,9 +145,12 @@ const ImageUploadForm = () => {
   };
 
   const handleBuyNow = async () => {
+    const { key: razorpayKey } = await getKey();
+
     console.log(1);
     const payData = await makePayment(couponCode);
     console.log(2);
+    console.log("payData", payData);
     const options = {
       key: razorpayKey, // Enter the Key ID generated from the Dashboard
       amount: payData?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -156,27 +158,27 @@ const ImageUploadForm = () => {
       name: "Snacky", //your business name
       description: "",
       // image: logoImg,
-      order_id: payData?.order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+      order_id: payData?.order?.id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
       handler: async function (res) {
         console.log(res);
         (paymentDetails.razorpay_payment_id = await res.razorpay_payment_id),
           (paymentDetails.razorpay_order_id = await res.razorpay_order_id),
           (paymentDetails.razorpay_signature = await res.razorpay_signature);
-        const response = await dispatch(verifyPayment(paymentDetails));
-        if (response?.payload?.success) {
+        console.log("paymentDetails", paymentDetails);
+        const response = await verify(paymentDetails);
+        if (response?.success) {
           toast.success("Order Placed!");
-          dispatch(getUserOrder(orderData));
-          dispatch(removeCartAfterOrder(cartId));
+          console.log("suceessfullllll");
+          // dispatch(getUserOrder(orderData));
+          // dispatch(removeCartAfterOrder(cartId));
         }
-        response?.payload?.success
-          ? navigate("/order")
-          : navigate("/order/fail");
+        // response?.success ? navigate("/order") : navigate("/order/fail");
       },
       prefill: {
         //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-        name: "dshdjs", //your customer's name
-        email: "scscj",
-        contact: "ccsjj", //Provide the customer's phone number for better conversion rates
+        name: "piyush", //your customer's name
+        email: "piyushguptaji123@gmail.com",
+        contact: 8174075872, //Provide the customer's phone number for better conversion rates
       },
       notes: {
         address: "Snacky Office",

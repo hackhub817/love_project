@@ -174,7 +174,7 @@ export const ProposeDay = ({
             <div className="absolute -top-5 -left-4">
               <img src={ribbon} alt="" />
             </div>
-            <div className="p-4 text-center text-[10px] text-gray-800">
+            <div className="p-4 text-center text-[10px] lg:text-xl font-light italic text-gray-800">
               You light up my world 🌟, fill my heart with endless love ❤, bring
               joy to my soul 😊, and make me dream of a lifetime of togetherness
               💕. Will you be mine forever? 💍✨

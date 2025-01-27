@@ -104,7 +104,11 @@ export const Teddy = ({
     return images?.slice(start, end) || Array(end - start).fill(couple3);
   };
 
-  const image1 = getImages(1, 3).map((image, index) => ({
+  const image1 = getImages(3, 6).map((image, index) => ({
+    id: index + 1, // Adding an id based on the index
+    img: image, // Assuming the image is a URL string
+  }));
+  const image2 = getImages(0, 3).map((image, index) => ({
     id: index + 1, // Adding an id based on the index
     img: image, // Assuming the image is a URL string
   }));
@@ -207,7 +211,7 @@ export const Teddy = ({
                   sensitivity={180}
                   sendToBackOnClick={false}
                   cardDimensions={cardDimensions}
-                  cardsData={images}
+                  cardsData={image1}
                 />
               </div>
             </div>
@@ -246,7 +250,7 @@ export const Teddy = ({
                 sensitivity={180}
                 sendToBackOnClick={false}
                 cardDimensions={cardDimensions}
-                cardsData={image1}
+                cardsData={image2}
               />
             </div>
           </div>

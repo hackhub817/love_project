@@ -27,6 +27,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
       try {
         setLoading(true);
         const response = await getPromiseDayData(username);
+        console.log(response);
         if (response.success) {
           setPromiseData(response.dayData);
         }
@@ -87,6 +88,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
     const images = isPreview ? previewImages : promiseData?.images;
     return images?.slice(start, end) || Array(end - start).fill(couple2);
   };
+  console.log(previewData.secretPromise);
 
   return (
     <>
@@ -173,7 +175,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
               gradientColors={["#51A9FE", "#F38CB8", "#51A9FE"]}
             >
               <p className="lg:text-6xl sm:text-6xl text-2xl font-bold">
-                {previewData.secretPromise}
+                {promiseData.secretPromise}
               </p>
             </ScratchToReveal>
           </div>
