@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ProposeDay } from "./days/Propose";
@@ -8,9 +8,17 @@ import { Valintine } from "./days/Valinetine";
 import Promise from "./days/Promise";
 import { Teddy } from "./days/Teddy";
 import { ChocolateDay } from "./days/Chocolate";
-import { uploadImages, createDayData } from "../Pages/api/Api";
+import {
+  uploadImages,
+  createDayData,
+  makePayment,
+  getKey,
+} from "../Pages/api/Api";
+import axios from "axios";
 
 const ImageUploadForm = () => {
+  const razorpayKey = getKey();
+
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
@@ -20,6 +28,10 @@ const ImageUploadForm = () => {
     secretMessage: "",
     specialMessage: "",
   });
+  const [couponCode, setCouponCode] = useState("");
+  const [discountedAmount, setDiscountedAmount] = useState(null);
+  const [isCouponValid, setIsCouponValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [passcode, setPasscode] = useState("");
   const [gender, setGender] = useState("");
@@ -68,6 +80,12 @@ const ImageUploadForm = () => {
     setPreviewImages(urls);
   };
 
+  const paymentDetails = {
+    razorpay_payment_id: "",
+    razorpay_order_id: "",
+    razorpay_signature: "",
+  };
+
   const handleMessageChange = (e) => {
     const { name, value } = e.target;
     if (value.length <= 30) {
@@ -94,6 +112,81 @@ const ImageUploadForm = () => {
       return;
     }
     setPreviewMode(true);
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      setErrorMessage("Please enter a coupon code.");
+      return;
+    }
+    console.log(couponCode);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/coupon/apply-coupon",
+        {
+          code: couponCode,
+        }
+      );
+
+      if (response.data.success) {
+        setDiscountedAmount(response.data.discountedAmount);
+        setIsCouponValid(true);
+        setCouponCode(couponCode);
+        setErrorMessage("");
+      } else {
+        setIsCouponValid(false);
+        setCouponCode("");
+        setErrorMessage(response.data.message || "Invalid coupon code.");
+      }
+    } catch (error) {
+      console.error("Error validating coupon:", error);
+      setIsCouponValid(false);
+      setErrorMessage("An error occurred while validating the coupon.");
+    }
+  };
+
+  const handleBuyNow = async () => {
+    console.log(1);
+    const payData = await makePayment(couponCode);
+    console.log(2);
+    const options = {
+      key: razorpayKey, // Enter the Key ID generated from the Dashboard
+      amount: payData?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: "Snacky", //your business name
+      description: "",
+      // image: logoImg,
+      order_id: payData?.order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+      handler: async function (res) {
+        console.log(res);
+        (paymentDetails.razorpay_payment_id = await res.razorpay_payment_id),
+          (paymentDetails.razorpay_order_id = await res.razorpay_order_id),
+          (paymentDetails.razorpay_signature = await res.razorpay_signature);
+        const response = await dispatch(verifyPayment(paymentDetails));
+        if (response?.payload?.success) {
+          toast.success("Order Placed!");
+          dispatch(getUserOrder(orderData));
+          dispatch(removeCartAfterOrder(cartId));
+        }
+        response?.payload?.success
+          ? navigate("/order")
+          : navigate("/order/fail");
+      },
+      prefill: {
+        //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+        name: "dshdjs", //your customer's name
+        email: "scscj",
+        contact: "ccsjj", //Provide the customer's phone number for better conversion rates
+      },
+      notes: {
+        address: "Snacky Office",
+      },
+      theme: {
+        color: "#FC683E",
+      },
+    };
+    const razor = new window.Razorpay(options);
+    razor.open();
   };
 
   const handleDayImageSelection = (day, selectedImages) => {
@@ -127,11 +220,11 @@ const ImageUploadForm = () => {
           setIsSubmitting(false);
           return;
         }
-        if (!dayMessages[day] || dayMessages[day].length === 0) {
-          toast.error(`Please add at least one message for ${day}`);
-          setIsSubmitting(false);
-          return;
-        }
+        // if (!dayMessages[day] || dayMessages[day].length === 0) {
+        //   toast.error(`Please add at least one message for ${day}`);
+        //   setIsSubmitting(false);
+        //   return;
+        // }
       }
       console.log("Validation completed successfully");
 
@@ -357,14 +450,14 @@ const ImageUploadForm = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Day Message
                       </label>
-                      <textarea
+                      {/* <textarea
                         value={dayMessages[day]?.[0] || ""}
                         onChange={(e) =>
                           handleDayMessageChange(day, e.target.value)
                         }
                         className="w-full rounded-md border-gray-300 shadow-sm"
                         rows={2}
-                      />
+                      /> */}
                     </div>
 
                     <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-2">
@@ -477,14 +570,14 @@ const ImageUploadForm = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Day Message
                       </label>
-                      <textarea
+                      {/* <textarea
                         value={dayMessages[selectedDay]?.[0] || ""}
                         onChange={(e) =>
                           handleDayMessageChange(selectedDay, e.target.value)
                         }
                         className="w-full rounded-md border-gray-300 shadow-sm"
                         rows={3}
-                      />
+                      /> */}
                     </div>
 
                     {/* Image Selection */}
@@ -549,27 +642,75 @@ const ImageUploadForm = () => {
           </div>
 
           {/* Submit Buttons - Adjusted for both layouts */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex gap-4">
-            <button
-              onClick={() => {
-                setPreviewMode(false);
-                setSelectedDay(null);
-                setSidebarOpen(false);
-              }}
-              className="flex-1 sm:flex-none bg-gray-500 text-white px-4 py-2 rounded-lg"
-              disabled={isSubmitting}
-            >
-              Back
-            </button>
-            <button
-              onClick={handleFinalSubmit}
-              className={`flex-1 sm:flex-none bg-green-500 text-white px-4 py-2 rounded-lg ${
-                isSubmitting ? "opacity-50" : ""
-              }`}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4  flex gap-4">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => {
+                  setPreviewMode(false);
+                  setSelectedDay(null);
+                  setSidebarOpen(false);
+                }}
+                className=" bg-gray-500 text-white px-4 py-2 rounded-lg"
+                disabled={isSubmitting}
+              >
+                Back
+              </button>
+              <button
+                onClick={handleFinalSubmit}
+                className={`flex-1 sm:flex-none bg-green-500 text-white px-4 py-2 rounded-lg ${
+                  isSubmitting ? "opacity-50" : ""
+                }`}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </button>
+            </div>
+            <div className="flex items-center w-full justify-end gap-4">
+              <div className="flex items-center gap-6">
+                <label
+                  className="block text-gray-600 font-medium mb-2 "
+                  htmlFor="coupon"
+                >
+                  Enter Coupon Code
+                </label>
+                <input
+                  type="text"
+                  id="coupon"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  placeholder="Enter your coupon code"
+                  className=" px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <button
+                onClick={handleApplyCoupon}
+                className=" px-2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+              >
+                Apply Coupon
+              </button>
+
+              {isCouponValid && (
+                <div className="text-green-600 font-medium">
+                  Coupon applied successfully! Discounted amount: ₹
+                  {discountedAmount}
+                </div>
+              )}
+
+              {errorMessage && (
+                <div className="text-red-600 font-medium">{errorMessage}</div>
+              )}
+
+              <button
+                onClick={handleBuyNow}
+                className={`px-2 py-2 rounded-lg text-black 
+                  
+                    "bg-green-500 hover:bg-green-600"
+                 transition`}
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
         </div>
       )}

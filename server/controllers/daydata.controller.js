@@ -72,7 +72,7 @@ export const createDayData = async (req, res, next) => {
     console.log(req.body);
     console.log("req.user.id", req.user.id);
 
-    if (!day || !messages || !images) {
+    if (!day || !images) {
       return next(
         new CustomError("Day, messages, and images are required", 400)
       );

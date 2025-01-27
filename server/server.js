@@ -9,6 +9,9 @@ import morgan from "morgan";
 import http from "http";
 import userRoute from "./routes/user.routes.js";
 import dayDataRoute from "./routes/daydata.routes.js";
+import CouponRoute from "./routes/coupon.routes.js";
+import PaymentRoute from "./routes/payment.routes.js";
+import Razorpay from "razorpay";
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -48,8 +51,15 @@ const connectDB = async () => {
 };
 connectDB();
 
+export const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_SECRET,
+});
+
 app.use("/api/user", userRoute);
 app.use("/api/day-data", dayDataRoute);
+app.use("/api/coupon", CouponRoute);
+app.use("/api/payment", PaymentRoute);
 
 app.get("/", (req, res) => {
   res.send("API is running");

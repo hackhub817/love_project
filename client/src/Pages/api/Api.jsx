@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://love-project-api.onrender.com/api";
+const API_URL = "http://localhost:5000/api";
 
 // Create axios instance with default config
 const axiosInstance = axios.create({
@@ -197,6 +197,34 @@ export const getKissDayData = async (username) => {
 export const getValentineDayData = async (username) => {
   try {
     const response = await axiosInstance.get(`/day-data/Valentine/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching valentine day data:", error);
+    throw error;
+  }
+};
+
+export const makePayment = async (couponCode) => {
+  try {
+    const response = await axiosInstance.post(`/payment/checkout`, couponCode);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching valentine day data:", error);
+    throw error;
+  }
+};
+export const getKey = async (couponCode) => {
+  try {
+    const response = await axiosInstance.get(`/payment/key`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching valentine day data:", error);
+    throw error;
+  }
+};
+export const verify = async (data) => {
+  try {
+    const response = await axiosInstance.post(`/payment/verify`, data);
     return response.data;
   } catch (error) {
     console.error("Error fetching valentine day data:", error);
