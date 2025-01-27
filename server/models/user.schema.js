@@ -20,6 +20,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isLocked: {
+    type: Boolean,
+    default: true,
+  },
   uniqueName: {
     type: String,
   },
@@ -51,7 +55,7 @@ const userSchema = new Schema({
   gender: {
     type: String,
   },
-  partnerName: {},
+  partnerName: { type: String },
   createdAt: {
     type: Date,
     default: Date.now,

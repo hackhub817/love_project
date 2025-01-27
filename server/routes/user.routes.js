@@ -12,6 +12,8 @@ import {
   forgotPassword,
   verifyOTP,
   verifyToken,
+  verifyPasscode,
+  verifyUser,
 } from "../controllers/user.controller.js";
 
 router.post("/sent-otp", sentOtp);
@@ -24,5 +26,7 @@ router.get("/", isLoggedIn, profile);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", verifyOTP);
 router.get("/verify-token", verifyToken);
+router.post("/verify-passcode", verifyPasscode);
+router.get("/verify-user/:username", verifyUser);
 
 export default router;

@@ -231,3 +231,23 @@ export const verify = async (data) => {
     throw error;
   }
 };
+
+export const verifyPasscode = async (data) => {
+  try {
+    const response = await axiosInstance.post("/user/verify-passcode", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying passcode:", error);
+    throw error;
+  }
+};
+
+export const verifyUser = async (username) => {
+  try {
+    const response = await axiosInstance.get(`/user/verify-user/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying user:", error);
+    throw error;
+  }
+};

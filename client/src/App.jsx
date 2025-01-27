@@ -14,20 +14,42 @@ import { Home } from "./Pages/Home";
 import ImageUploadForm from "./components/ImageUploadForm";
 import { WeekDays } from "./Pages/WeekDays";
 import { Rose } from "./components/days/Rose";
+import ProtectedUserRoute from "./components/ProtectedUserRoute";
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/:username/propose" element={<ProposeDay />} />
-      <Route path="/:username/chocolate" element={<ChocolateDay />} />
+      <Route
+        path="/:username/propose"
+        element={
+          <ProtectedUserRoute>
+            <ProposeDay />
+          </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/:username/chocolate"
+        element={
+          <ProtectedUserRoute>
+            <ChocolateDay />
+          </ProtectedUserRoute>
+        }
+      />
       <Route path="/:username/hug" element={<HugDay />} />
       <Route path="/:username/kiss" element={<Kiss />} />
       <Route path="/:username/teddy" element={<Teddy />} />
       <Route path="/:username/valintine" element={<Valintine />} />
       <Route path="/:username/promise" element={<Promise />} />
-      <Route path="/:username" element={<WeekDays />} />
+      <Route
+        path="/:username"
+        element={
+          <ProtectedUserRoute>
+            <WeekDays />
+          </ProtectedUserRoute>
+        }
+      />
       <Route path="/:username/rose" element={<Rose />} />
 
       <Route path="/register" element={<Register />} />
