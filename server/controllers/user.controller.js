@@ -129,13 +129,13 @@ const resendOtp = async (req, res, next) => {
   <tr>
     <td style="padding: 20px; text-align: center; background-color: #ffffff; border-radius: 8px;">
       <p style="margin: 0 0 20px; font-size: 1rem; color: #555;">
-        We noticed you requested a new OTP. Here’s your new code:
+        We noticed you requested a new OTP. Here's your new code:
       </p>
       <p style="margin: 0 0 20px; font-size: 1.5rem; font-weight: bold; color: #0074f9;">
         ${newOTP}
       </p>
       <p style="margin: 0 0 20px; font-size: 0.9rem; color: #999;">
-        If you didn’t request this, you can safely ignore this email.
+        If you didn't request this, you can safely ignore this email.
       </p>
     </td>
   </tr>
@@ -502,6 +502,67 @@ const verifyToken = async (req, res) => {
     res.status(401).json({
       success: false,
       message: "Invalid token",
+    });
+  }
+};
+
+export const verifyPasscode = async (req, res) => {
+  try {
+    const { username, passcode } = req.body;
+
+    const user = await User.findOne({ userName: username });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.passcode !== passcode) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid passcode",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Passcode verified successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error verifying passcode",
+      error: error.message,
+    });
+  }
+};
+
+export const verifyUser = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ userName: username });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user: {
+        isLocked: user.isLocked,
+        userName: user.userName,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error verifying user",
+      error: error.message,
     });
   }
 };
