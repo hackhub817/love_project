@@ -14,6 +14,8 @@ import {
   verifyToken,
   verifyPasscode,
   verifyUser,
+  toggleUserLock,
+  getUserDetails,
 } from "../controllers/user.controller.js";
 
 router.post("/sent-otp", sentOtp);
@@ -28,5 +30,7 @@ router.post("/reset-password", verifyOTP);
 router.get("/verify-token", verifyToken);
 router.post("/verify-passcode", verifyPasscode);
 router.get("/verify-user/:username", verifyUser);
+router.patch("/toggle-lock/:userId", toggleUserLock);
+router.get("/details", isLoggedIn, getUserDetails);
 
 export default router;

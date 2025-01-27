@@ -59,7 +59,14 @@ function App() {
       <Route path="/hug" element={<HugDay />} />
       <Route path="/teddy" element={<Teddy />} />
       <Route path="/kiss" element={<Kiss />} />
-      <Route path="/dashboard/*" element={<Dashboard />} />
+      <Route
+        path="/dashboard/*"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/upload" element={<ImageUploadForm />} />
       <Route path="/week-day" element={<WeekDays />} />
       {/* Redirect root to dashboard if logged in, otherwise to login */}

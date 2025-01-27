@@ -251,3 +251,23 @@ export const verifyUser = async (username) => {
     throw error;
   }
 };
+
+export const toggleUserLock = async (userId) => {
+  try {
+    const response = await axiosInstance.patch(`/user/toggle-lock/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error toggling user lock:", error);
+    throw error;
+  }
+};
+
+export const getUserDetails = async (userId) => {
+  try {
+    const response = await axiosInstance.get(`/user/details`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    throw error;
+  }
+};

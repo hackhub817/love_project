@@ -6,6 +6,7 @@ import cloudinary from "cloudinary";
 import CustomError from "../utils/error.utils.js";
 import sendEmail from "../utils/email.utils.js";
 import otpService from "../utils/otpUtils.js";
+import { CLIENT_RENEG_LIMIT } from "tls";
 
 const cookieOption = {
   secure: process.env.NODE_ENV === "production" ? true : false,
@@ -378,7 +379,7 @@ const profile = async (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   try {
-    const userId = req.params.id;
+    const userId = req.user.id;
     const user = await User.findById(userId);
 
     res.status(200).json({
@@ -509,7 +510,7 @@ const verifyToken = async (req, res) => {
 export const verifyPasscode = async (req, res) => {
   try {
     const { username, passcode } = req.body;
-
+    console.log(passcode);
     const user = await User.findOne({ userName: username });
 
     if (!user) {
@@ -562,6 +563,70 @@ export const verifyUser = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error verifying user",
+      error: error.message,
+    });
+  }
+};
+
+export const toggleUserLock = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Toggle the isLocked status
+    user.isLocked = !user.isLocked;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: `User ${user.isLocked ? "locked" : "unlocked"} successfully`,
+      isLocked: user.isLocked,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error toggling user lock",
+      error: error.message,
+    });
+  }
+};
+
+export const getUserDetails = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    console.log(req.user);
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user: {
+        fullName: user.fullName,
+        userName: user.userName,
+        userEmail: user.userEmail,
+        phoneNumber: user.phoneNumber,
+        isLocked: user.isLocked,
+        passcode: user.passcode,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching user details",
       error: error.message,
     });
   }
