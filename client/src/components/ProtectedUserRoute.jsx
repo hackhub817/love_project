@@ -19,19 +19,21 @@ const ProtectedUserRoute = ({ children }) => {
       try {
         const response = await verifyUser(username);
         setUserData(response.user);
+        console.log(response);
 
         const passcode = localStorage.getItem(`passcode_${username}`);
         if (passcode) {
           setShowOverlay(false);
         }
-
+        if (!response.user.isPasswordProtected) {
+          setShowOverlay(false);
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user data:", error);
         setLoading(false);
       }
     };
-
     checkAccess();
   }, [username]);
 

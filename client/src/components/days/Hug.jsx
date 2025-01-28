@@ -94,13 +94,13 @@ export const HugDay = ({
 
   return (
     <div
-      className="w-full  bg-cover bg-center "
+      className=" bg-cover bg-center overflow-hidden "
       style={{ backgroundImage: `url(${bgShape})` }}
     >
-      <section className="relative  w-full lg:block sm:block pt-4 ">
+      <section className="relative   lg:block sm:block pt-4 ">
         <div className="max-w-4xl mx-auto flex items-center  relative w-full">
           {/* Hug Image */}
-          <div className="relative z-10">
+          <div className="relative z-10 ">
             <img src={hug} alt="Hug Image" className="lg:h-64 sm:h-64 h-40" />
           </div>
 
@@ -109,7 +109,7 @@ export const HugDay = ({
             <img
               src={notes}
               alt="Notes Image"
-              className="lg:h-32 sm:h-24 h-16 w-[350px] "
+              className="lg:h-32 sm:h-24 h-16 w-[300px] "
             />
           </div>
         </div>
@@ -121,70 +121,10 @@ export const HugDay = ({
           </div>
         </div>
       </section>
-      <section className="max-w-7xl mx-auto lg:mt-20 sm:mt-20 my-2 ">
+      <section className="max-w-4xl mx-auto lg:mt-20 sm:mt-20 my-2 ">
         <RollingGallery autoplay={true} pauseOnHover={true} images={images} />
       </section>
-      {/* <section>
-        <section>
-          <div className="max-w-4xl mx-auto relative">
-            <div className="flex items-center justify-between px-40 ">
-              <div>
-                <img
-                  src={couple1}
-                  alt=""
-                  className="absolute -z-10 top-10  h-[200px] w-[250px] border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
-                />
-              </div>
-              <div>
-                <img
-                  src={couple2}
-                  alt=""
-                  className="absolute top-10 right-10 h-[200px] w-[250px] border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
-                />
-              </div>
-            </div>
-            <div className="flex items-center justify-between ">
-              <div>
-                <img
-                  src={couple3}
-                  alt=""
-                  className="h-[200px] w-[200px] absolute top-48 border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
-                />
-              </div>
-              <div>
-                <img
-                  src={love_ballon}
-                  alt=""
-                  className="h-[300px]  absolute top-40 left-[360px] "
-                />
-              </div>
-              <div>
-                <img
-                  src={couple4}
-                  alt=""
-                  className=" absolute top-48 left-[800px] h-[200px] w-[200px] z-10 border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
-                />
-              </div>
-            </div>
-            <div className="flex items-center justify-between px-40">
-              <div>
-                <img
-                  src={couple2}
-                  alt=""
-                  className="absolute top-[350px] -z-10 h-[200px] w-[250px] border-[6px] rounded-xl border-t-[30px] border-[#EE714B]"
-                />
-              </div>
-              <div>
-                <img
-                  src={couple1}
-                  alt=""
-                  className="h-[200px] right-10 w-[250px] absolute top-[350px] border-[6px] rounded-xl border-t-[30px] border-[#EE714B] -z-10 "
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-      </section> */}
+
       <section>
         <div className="max-w-4xl  mx-auto sm:p-10 p-4">
           <div className="w-full bg-[#F5B98D] flex items-center ">

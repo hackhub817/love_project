@@ -20,9 +20,9 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route
-        path="/:username/propose"
+        path="/week-day/:username/propose"
         element={
           <ProtectedUserRoute>
             <ProposeDay />
@@ -30,27 +30,69 @@ function App() {
         }
       />
       <Route
-        path="/:username/chocolate"
+        path="/week-day/:username/chocolate"
         element={
           <ProtectedUserRoute>
             <ChocolateDay />
           </ProtectedUserRoute>
         }
       />
-      <Route path="/:username/hug" element={<HugDay />} />
-      <Route path="/:username/kiss" element={<Kiss />} />
-      <Route path="/:username/teddy" element={<Teddy />} />
-      <Route path="/:username/valintine" element={<Valintine />} />
-      <Route path="/:username/promise" element={<Promise />} />
       <Route
-        path="/:username"
+        path="/week-day/:username/hug"
+        element={
+          <ProtectedUserRoute>
+            <HugDay />
+          </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/week-day/:username/kiss"
+        element={
+          <ProtectedUserRoute>
+            <Kiss />
+          </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/week-day/:username/teddy"
+        element={
+          <ProtectedUserRoute>
+            <Teddy />
+          </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/week-day/:username/valentine"
+        element={
+          <ProtectedUserRoute>
+            <Valintine />
+          </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/week-day/:username/promise"
+        element={
+          <ProtectedUserRoute>
+            <Promise />
+          </ProtectedUserRoute>
+        }
+      />
+      <Route
+        path="/week-day/:username"
         element={
           <ProtectedUserRoute>
             <WeekDays />
           </ProtectedUserRoute>
         }
       />
-      <Route path="/:username/rose" element={<Rose />} />
+      <Route
+        path="/week-day/:username/rose"
+        element={
+          <ProtectedUserRoute>
+            <Rose />
+          </ProtectedUserRoute>
+        }
+      />
 
       <Route path="/register" element={<Register />} />
       <Route path="/propose" element={<ProposeDay />} />
@@ -67,9 +109,15 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route path="/upload" element={<ImageUploadForm />} />
-      <Route path="/week-day" element={<WeekDays />} />
-      {/* Redirect root to dashboard if logged in, otherwise to login */}
+      <Route
+        path="/upload"
+        element={
+          <ProtectedRoute>
+            <ImageUploadForm />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/"
         element={

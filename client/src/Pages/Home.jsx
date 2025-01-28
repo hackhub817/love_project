@@ -4,9 +4,12 @@ import homebg from "../assets/home/homebg.png";
 import umbrella from "../assets/home/umbrella.png";
 import sitting from "../assets/home/sitting.png";
 import click from "../assets/home/click.png";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import footer from "../assets/home/footer.png";
 export const Home = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* Font Import */}
@@ -34,9 +37,12 @@ export const Home = () => {
             <a href="#" className="flex items-center text-[12px] lg:text-base">
               <Heart className="md:w-4 md:h-4 w-2 h-2 mr-1" /> Privacy Policy
             </a>
-            <a href="#" className="flex items-center text-[12px] lg:text-base">
+            <Link
+              to="/login"
+              className="flex items-center text-[12px] lg:text-base"
+            >
               <Heart className="md:w-4 md:h-4 w-2 h-2 mr-1 " /> Login
-            </a>
+            </Link>
           </nav>
 
           {/* Hero Section */}
@@ -51,7 +57,12 @@ export const Home = () => {
               Our platform helps you make every day special and stand out.
             </p>
             <div className="flex justify-start md:gap-4 gap-2 md:mb-12 mb-4">
-              <button className="bg-pink-400 border border-pink-600 text-white md:px-6 md:py-2 px-4 py-2 rounded-full md:text-lg text-xs hover:bg-pink-500">
+              <button
+                onClick={() => {
+                  navigate("/dashboard");
+                }}
+                className="bg-pink-400 border border-pink-600 text-white md:px-6 md:py-2 px-4 py-2 rounded-full md:text-lg text-xs hover:bg-pink-500"
+              >
                 Get Started
               </button>
               <button className="border border-pink-600 bg-white/80 text-pink-500 md:px-6 md:py-2 md:text-lg text-xs px-4 py-2 rounded-full hover:bg-white">

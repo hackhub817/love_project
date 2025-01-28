@@ -116,7 +116,7 @@ export const ChocolateDay = ({
           <section className="">
             <div className="max-w-4xl mx-auto">
               <div className="flex mt-10 items-center">
-                <div className="lg:text-5xl lg:w-80   text-center text-white  text-[45px] pt-24 w-44 font-bold text-shadow-brownGlow">
+                <div className="md:text-7xl lg:w-80   text-center text-white  text-[45px] pt-24 w-44 font-bold text-shadow-brownGlow">
                   Happy
                 </div>
                 <div>
@@ -127,7 +127,7 @@ export const ChocolateDay = ({
                   />
                 </div>
               </div>
-              <div className="lg:text-5xl lg:w-80 text-white   text-center  text-[45px] w-full font-bold text-shadow-brownGlow">
+              <div className="md:text-7xl  text-white md:py-4  text-[45px] w-full font-bold text-shadow-brownGlow">
                 Chocolate Day
               </div>
             </div>
@@ -145,14 +145,9 @@ export const ChocolateDay = ({
                 <img
                   src={imageUrl}
                   alt="Image 2"
-                  className="lg:w-1/2  lg:h-80 sm:w-1/2  sm:h-72 w-36 h-32 lg:border-[10px] sm:border-[10px] border-[6px] border-[#652a16] rounded-3xl "
+                  className="lg:w-[400px]  lg:h-80 sm:w-1/2  sm:h-72 w-36 h-32 lg:border-[10px] sm:border-[10px] border-[6px] border-[#652a16] rounded-3xl "
                 />
               ))}
-            </div>
-          </section>
-          <section>
-            <div className="flex justify-center pb-4">
-              <img src={flash} alt="" className="h-52 w-52 rounded-xl" />
             </div>
           </section>
 
@@ -177,14 +172,14 @@ export const ChocolateDay = ({
               ))}
             </Marquee>
           </section>
-          <section className="p-2">
+          <section className="p-2 max-w-4xl mx-auto">
             <div className="flex  items-center justify-center">
               <img
                 src={crose}
                 alt=""
-                className="h-44 w-44 -mr-4 animate-pulse"
+                className="h-44 w-44 md:w-48 md:h-52 -mr-4 animate-pulse"
               />
-              <div className="max-w-4xl mx-auto bg-[#57220f] lg:mt-20 mt-4 p-6 rounded-2xl text-base italic  text-white">
+              <div className="md:w-96 bg-[#57220f] lg:mt-20 mt-4 p-6 rounded-2xl md:text-xl md:p-10 text-base italic  text-white">
                 You’re like my favorite chocolate 🍫—irresistible, comforting,
                 and always making me crave more of your sweetness. 🍩🍪🍫
               </div>

@@ -10,10 +10,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { CoolMode } from "../ui/cool-mode";
 import heart from "../../assets/heart.jpeg";
-
 import love_icon from "../../assets/love_icon.png";
-
 import IconCloud from "../../components/ui/icon-cloud";
+import pearl from "../../assets/valentine/Pearl.jpeg";
 
 export const Valintine = ({
   isPreview,
@@ -191,19 +190,16 @@ export const Valintine = ({
                   {getImages(4, 5).map((imageUrl, idx) => (
                     <img
                       key={idx}
-                      src={couple4}
+                      src={imageUrl}
                       alt=""
-                      className="absolute -z-10 h-[150px] w-[50px] top-10"
+                      className="absolute z-10 h-[100px] w-[100px] top-0 l rounded-full md:h-[270px] md:w-[270px] md:top-3 md:left-8"
                     />
                   ))}
                 </div>
-                <div className="lg:text-xl sm:text-xl text-xs text-white lg:font-semibold">
-                  All our adventures together, from silly movie nights to
-                  exploring new places, feel like the best cuddles with my
-                  favorite teddy bear. 🐻❤️ You know, I feel like I've found my
-                  forever cuddle buddy in you. 🐻 ❤️ You're always there for me,
-                  a constant source of comfort and joy. Happy Teddy Day, my
-                  love.
+                <div className="lg:text-xl sm:text-xl text-sm text-white lg:font-semibold">
+                  "My love, you make my heart feel at home. Every moment with
+                  you is a cozy adventure, and I’m so lucky to have you by my
+                  side. Happy Valentine’s Day, my forever
                 </div>
               </div>
             </div>

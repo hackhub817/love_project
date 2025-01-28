@@ -80,7 +80,7 @@ const TimelineEvent = ({ position, date, day, imageSize = 100, isLocked }) => {
             }}
           >
             <Link
-              to={`/${username}/${day}`}
+              to={`/week-day/${username}/${day}`}
               onClick={handleClick}
               className="block relative"
             >

@@ -8,6 +8,7 @@ import { Valintine } from "./days/Valinetine";
 import Promise from "./days/Promise";
 import { Teddy } from "./days/Teddy";
 import { ChocolateDay } from "./days/Chocolate";
+import { Rose } from "./days/Rose";
 import {
   uploadImages,
   createDayData,
@@ -28,6 +29,7 @@ const ImageUploadForm = () => {
     specialMessage: "",
   });
   const [key, setKey] = useState("");
+  const [isRemoveCoupon, setIsRemovedCoupon] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [discountedAmount, setDiscountedAmount] = useState(null);
   const [isCouponValid, setIsCouponValid] = useState(false);
@@ -48,7 +50,6 @@ const ImageUploadForm = () => {
     Valentine: [],
   });
 
-  // State for selected images for each day
   const [daySelections, setDaySelections] = useState({
     Rose: [],
     Propose: [],
@@ -63,8 +64,11 @@ const ImageUploadForm = () => {
   const [previewMode, setPreviewMode] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // Add new state for sidebar
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [isAllDaysComplete, setIsAllDaysComplete] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(312); // Initial amount
+  const [isPaymentComplete, setIsPaymentComplete] = useState(false);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -121,16 +125,18 @@ const ImageUploadForm = () => {
     console.log(couponCode);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/coupon/apply-coupon",
+        "https://api.bobbuilder.shop/api/coupon/apply-coupon",
         {
           code: couponCode,
         }
       );
-
-      if (response.data.success) {
+      console.log(response);
+      if (response.status == 200) {
+        setTotalAmount(response.data.discountedAmount);
         setDiscountedAmount(response.data.discountedAmount);
         setIsCouponValid(true);
         setCouponCode(couponCode);
+        setIsRemovedCoupon(true);
         setErrorMessage("");
       } else {
         setIsCouponValid(false);
@@ -140,53 +146,79 @@ const ImageUploadForm = () => {
     } catch (error) {
       console.error("Error validating coupon:", error);
       setIsCouponValid(false);
+
       setErrorMessage("An error occurred while validating the coupon.");
+    }
+  };
+  const handleRemoveCoupon = async () => {
+    if (!couponCode) {
+      toast.error("Please enter a coupon code to remove");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://api.bobbuilder.shop/api/coupon/removeCoupon",
+        {
+          code: couponCode,
+          originalAmount: totalAmount,
+        }
+      );
+
+      // Extract the updated amount and message
+      const { updatedAmount, restoredDiscount, message } = response.data;
+      console.log(response.data);
+
+      // Update the state with the new amount and clear the coupon code
+      if (response.status == 200) {
+        setDiscountedAmount(updatedAmount);
+        setIsRemovedCoupon(false);
+        setIsCouponValid(false);
+        setCouponCode(""); // Reset coupon field
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
   const handleBuyNow = async () => {
     const { key: razorpayKey } = await getKey();
-
-    console.log(1);
     const payData = await makePayment(couponCode);
-    console.log(2);
-    console.log("payData", payData);
+
     const options = {
-      key: razorpayKey, // Enter the Key ID generated from the Dashboard
-      amount: payData?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      key: razorpayKey,
+      amount: payData?.amount,
       currency: "INR",
-      name: "Snacky", //your business name
-      description: "",
-      // image: logoImg,
-      order_id: payData?.order?.id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+      name: "LoveBirds",
+      description: "Valentine's Week Special Package",
+      order_id: payData?.order?.id,
       handler: async function (res) {
-        console.log(res);
-        (paymentDetails.razorpay_payment_id = await res.razorpay_payment_id),
-          (paymentDetails.razorpay_order_id = await res.razorpay_order_id),
-          (paymentDetails.razorpay_signature = await res.razorpay_signature);
-        console.log("paymentDetails", paymentDetails);
+        const paymentDetails = {
+          razorpay_payment_id: res.razorpay_payment_id,
+          razorpay_order_id: res.razorpay_order_id,
+          razorpay_signature: res.razorpay_signature,
+        };
+
         const response = await verify(paymentDetails);
         if (response?.success) {
-          toast.success("Order Placed!");
-          console.log("suceessfullllll");
-          // dispatch(getUserOrder(orderData));
-          // dispatch(removeCartAfterOrder(cartId));
+          toast.success("Payment Successful!");
+          setIsPaymentComplete(true);
+        } else {
+          toast.error("Payment verification failed");
         }
-        // response?.success ? navigate("/order") : navigate("/order/fail");
       },
       prefill: {
-        //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-        name: "piyush", //your customer's name
-        email: "piyushguptaji123@gmail.com",
-        contact: 8174075872, //Provide the customer's phone number for better conversion rates
-      },
-      notes: {
-        address: "Snacky Office",
+        name: "piyush ",
+        email: "hello@gmail.com",
+        contact: "8174075872",
       },
       theme: {
-        color: "#FC683E",
+        color: "#FF69B4",
       },
     };
+
     const razor = new window.Razorpay(options);
     razor.open();
   };
@@ -200,7 +232,19 @@ const ImageUploadForm = () => {
       ...prev,
       [day]: selectedImages,
     }));
+
+    // Check completion immediately after selection
+    const allDaysComplete = Object.values({
+      ...daySelections,
+      [day]: selectedImages,
+    }).every((selections) => selections.length === 6);
+
+    setIsAllDaysComplete(allDaysComplete);
+    if (allDaysComplete) {
+      toast.success("All days are complete! You can proceed with payment.");
+    }
   };
+
   const handlePasscodeChange = (e) => {
     setPasscode(e.target.value);
   };
@@ -308,6 +352,8 @@ const ImageUploadForm = () => {
     };
 
     switch (selectedDay) {
+      case "Rose":
+        return <Rose {...previewProps} />;
       case "Propose":
         return <ProposeDay {...previewProps} />;
       case "Hug":
@@ -326,6 +372,15 @@ const ImageUploadForm = () => {
         return null;
     }
   };
+
+  // Add this effect to update total amount when coupon is applied
+  useEffect(() => {
+    if (discountedAmount) {
+      setTotalAmount(discountedAmount);
+    } else {
+      setTotalAmount(312);
+    }
+  }, [discountedAmount]);
 
   return (
     <div className="max-w-7xl mx-auto p-4">
@@ -506,10 +561,11 @@ const ImageUploadForm = () => {
             </div>
           </div>
 
-          {/* Mobile Layout - Hidden on Tablet and Above */}
           <div className="sm:hidden">
-            {/* Days Grid */}
-            <div className="grid grid-cols-1 gap-4">
+            <div className="text-sm text-gray-600 font-light py-1">
+              Please watch demo and follow us for further
+            </div>
+            <div className="grid grid-cols-1 gap-4 pb-20">
               {Object.keys(daySelections).map((day) => (
                 <div
                   key={day}
@@ -520,7 +576,7 @@ const ImageUploadForm = () => {
                   className="border rounded-lg p-4 cursor-pointer hover:shadow-lg transition-all"
                 >
                   <div className="flex justify-between items-center">
-                    <h3 className="font-bold text-lg">{day}</h3>
+                    <h3 className="font-semibold text-base">{day}</h3>
                     <span className="text-sm text-gray-500">
                       {daySelections[day].length}/6 images
                     </span>
@@ -569,9 +625,9 @@ const ImageUploadForm = () => {
                   <div className="flex-1 overflow-y-auto  space-y-4">
                     {/* Message Input */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {/* <label className="block text-sm font-medium text-gray-700 mb-2">
                         Day Message
-                      </label>
+                      </label> */}
                       {/* <textarea
                         value={dayMessages[selectedDay]?.[0] || ""}
                         onChange={(e) =>
@@ -584,7 +640,7 @@ const ImageUploadForm = () => {
 
                     {/* Image Selection */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm  font-medium text-gray-700 mb-2">
                         Select Images (tap to select)
                       </label>
                       <div className="grid grid-cols-3 gap-2">
@@ -642,78 +698,119 @@ const ImageUploadForm = () => {
               />
             )}
           </div>
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t lg:p-4 p-2 flex justify-between items-center">
+            <p className="text-red-500 font-semibold text-xl">
+              You can preview how your website will look after adding photos.
+              Currently, subscriptions are not available, but stay tuned for
+              updates! Soon, you'll be able to check your website just as you
+              see in your previews. Stay connected with us for more updates.
+            </p>
+          </div>
 
-          {/* Submit Buttons - Adjusted for both layouts */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4  flex gap-4">
-            <div className="flex items-center gap-4">
+          {/* Fixed Footer */}
+          {/* <div className="fixed bottom-0 left-0 right-0 bg-white border-t lg:p-4 p-2 flex  justify-between items-center">
+            <div className="flex items-center md:block hidden md:gap-4">
               <button
                 onClick={() => {
                   setPreviewMode(false);
                   setSelectedDay(null);
                   setSidebarOpen(false);
                 }}
-                className=" bg-gray-500 text-white px-4 py-2 rounded-lg"
+                className="bg-gray-500 text-white md:px-4 md:py-2 px-2 py-1 md:text-lg text-sm  rounded-lg"
                 disabled={isSubmitting}
               >
                 Back
               </button>
-              <button
-                onClick={handleFinalSubmit}
-                className={`flex-1 sm:flex-none bg-green-500 text-white px-4 py-2 rounded-lg ${
-                  isSubmitting ? "opacity-50" : ""
-                }`}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Submitting..." : "Submit"}
-              </button>
             </div>
-            <div className="flex items-center w-full justify-end gap-4">
-              <div className="flex items-center gap-6">
-                <label
-                  className="block text-gray-600 font-medium mb-2 "
-                  htmlFor="coupon"
-                >
-                  Enter Coupon Code
-                </label>
-                <input
-                  type="text"
-                  id="coupon"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  placeholder="Enter your coupon code"
-                  className=" px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
 
-              <button
-                onClick={handleApplyCoupon}
-                className=" px-2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
-              >
-                Apply Coupon
-              </button>
+            {/* Payment Section */}
+          {/* <div className="flex md:flex-row flex-col items-center md:gap-4 gap-1">
+              {isAllDaysComplete && (
+                <>
+                  <div className="md:block hidden flex items-center gap-10">
+                    <div className="md:text-lg text-sm font-semibold">
+                      Total: ₹{discountedAmount || 312}
+                    </div>
+                  </div>
 
-              {isCouponValid && (
-                <div className="text-green-600 font-medium">
-                  Coupon applied successfully! Discounted amount: ₹
-                  {discountedAmount}
+                  <div className="flex items-center  gap-2">
+                    <input
+                      type="text"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      placeholder="Enter coupon code"
+                      className="md:px-4 md:py-2 py-1 px-2 md:w-auto w-32 border rounded-lg"
+                      disabled={isCouponValid}
+                    />
+                    {isRemoveCoupon ? (
+                      <button
+                        onClick={handleRemoveCoupon}
+                        className="md:px-4 md:py-2 px-2 py-1 md:text-lg text-sm bg-red-500 text-white rounded-lg hover:bg-red-600"
+                      >
+                        Remove
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleApplyCoupon}
+                        className="md:px-4 md:py-2 px-2 py-1 md:text-lg text-sm bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                      >
+                        Apply
+                      </button>
+                    )}
+                    <button
+                      onClick={handleBuyNow}
+                      className="md:px-4 md:py-2 px-2 py-1 md:text-lg text-sm bg-pink-500 text-white rounded-lg hover:bg-pink-600"
+                    >
+                      Pay Now
+                    </button>
+                  </div>
+                </>
+              )}
+              <div className="flex gap-4">
+                <div className="flex items-center gap-10">
+                  <div className="md:text-lg md:hidden block text-sm font-semibold">
+                    Total: ₹{discountedAmount || 312}
+                  </div>
                 </div>
-              )}
+                <button
+                  onClick={() => {
+                    setPreviewMode(false);
+                    setSelectedDay(null);
+                    setSidebarOpen(false);
+                  }}
+                  className="bg-gray-500 md:hidden block text-white md:px-4 md:py-2 px-2 py-1 md:text-lg text-sm  rounded-lg"
+                  disabled={isSubmitting}
+                >
+                  Back
+                </button>
+                <button
+                  onClick={handleFinalSubmit}
+                  className={`md:px-4 md:py-2 px-2 py-1 md:text-lg text-sm rounded-lg text-white ${
+                    isPaymentComplete
+                      ? "bg-green-500 hover:bg-green-600"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }`}
+                  disabled={!isPaymentComplete}
+                >
+                  {isSubmitting ? "Submitting..." : "Submit Data"}
+                </button>
+              </div>
+            </div> */}
+          {/* </div>  */}
 
-              {errorMessage && (
-                <div className="text-red-600 font-medium">{errorMessage}</div>
-              )}
-
-              <button
-                onClick={handleBuyNow}
-                className={`px-2 py-2 rounded-lg text-black 
-                  
-                    "bg-green-500 hover:bg-green-600"
-                 transition`}
-              >
-                Buy Now
-              </button>
+          {/* Message when days are not complete */}
+          {/* {!isAllDaysComplete && (
+            <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-2 rounded-lg">
+              Select 6 images for each day to proceed with payment
             </div>
-          </div>
+          )} */}
+
+          {/* Success message for coupon */}
+          {/* {isCouponValid && (
+            <div className="fixed bottom-20 md:block hidden right-4 bg-green-50 border border-green-200 text-green-800 px-4 py-2 rounded-lg">
+              Coupon applied! New total: ₹{discountedAmount}
+            </div>
+          )} */}
         </div>
       )}
     </div>

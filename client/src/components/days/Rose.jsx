@@ -8,7 +8,6 @@ import frame from "../../assets/Rose/circular-frame.png";
 import dog2 from "../../assets/Rose/dog2.png";
 import dog3 from "../../assets/Rose/dog3.png";
 import heart from "../../assets/heart.jpeg";
-
 import side from "../../assets/Rose/side.png";
 import sideview from "../../assets/Rose/sideview.png";
 import tree from "../../assets/Rose/tree.png";

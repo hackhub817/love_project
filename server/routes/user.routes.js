@@ -16,6 +16,7 @@ import {
   verifyUser,
   toggleUserLock,
   getUserDetails,
+  paymentStatus,
 } from "../controllers/user.controller.js";
 
 router.post("/sent-otp", sentOtp);
@@ -32,5 +33,6 @@ router.post("/verify-passcode", verifyPasscode);
 router.get("/verify-user/:username", verifyUser);
 router.patch("/toggle-lock/:userId", toggleUserLock);
 router.get("/details", isLoggedIn, getUserDetails);
+router.get("/updatePaymentStatus", isLoggedIn, paymentStatus);
 
 export default router;

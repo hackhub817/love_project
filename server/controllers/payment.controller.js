@@ -20,9 +20,10 @@ export const razorpayKey = async (req, res, next) => {
 export const checkout = async (req, res, next) => {
   try {
     const { code = "" } = req.body;
+    console.log(code);
     const couponData = await Coupon.findOne({ code });
     console.log("couponData", couponData);
-    const amount = 100;
+    const amount = 312;
 
     const razorAmount =
       amount - ((amount * couponData?.discountValue) / 100 || 0);

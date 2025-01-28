@@ -29,7 +29,10 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin:
+      process.env.FRONTEND_URL ||
+      "http://localhost:5174" ||
+      "https://bobbuilder.shop",
     credentials: true,
   })
 );

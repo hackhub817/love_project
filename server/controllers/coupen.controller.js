@@ -3,7 +3,7 @@ import { Coupon } from "../models/coupen.js";
 export const applyCoupen = async (req, res) => {
   const { code } = req.body;
 
-  const amount = 200;
+  const amount = 312;
   if (!code) {
     return res
       .status(400)
@@ -37,6 +37,50 @@ export const applyCoupen = async (req, res) => {
       discountApplied: amount - discountedAmount,
       discountedAmount: discountedAmount,
       message: "Coupon applied successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+export const removeCoupon = async (req, res) => {
+  const { code, originalAmount } = req.body; // Include originalAmount in the request body
+  if (!code || !originalAmount) {
+    return res
+      .status(400)
+      .json({ message: "Coupon code and original amount are required" });
+  }
+
+  try {
+    // Find the coupon by its code
+    const coupon = await Coupon.findOne({ code });
+
+    if (!coupon) {
+      return res
+        .status(400)
+        .json({ message: "Coupon not found or is inactive" });
+    }
+
+    // Ensure the coupon has been used at least once before decrementing the used count
+    if (coupon.usedCount <= 0) {
+      return res
+        .status(400)
+        .json({ message: "Coupon has not been applied yet" });
+    }
+
+    // Decrease the used count
+    coupon.usedCount -= 1;
+    await coupon.save();
+
+    // Calculate the amount after removing the discount
+    const discountAmount = (originalAmount * coupon.discountValue) / 100;
+    const updatedAmount = originalAmount + discountAmount;
+
+    res.status(200).json({
+      message: "Coupon removed successfully",
+      updatedAmount: updatedAmount,
+      restoredDiscount: discountAmount,
+      remainingUsage: coupon.usageLimit - coupon.usedCount,
     });
   } catch (error) {
     console.error(error);

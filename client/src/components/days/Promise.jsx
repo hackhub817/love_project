@@ -106,13 +106,13 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
                   key={idx}
                   src={imageUrl}
                   alt={`Image ${idx + 1}`}
-                  className="h-44 border-[5px] border-b-[20px] border-white"
+                  className="h-44 w-auto md:h-64 border-[5px] border-b-[20px] border-white"
                 />
               ))}
             </div>
             <div className="relative">
-              <img src={HeroCloud} alt="" className="h-32" />
-              <div className="lg:text-5xl lg:w-80   text-center w-44 text-[25px] top-5 left-4  absolute font-bold text-shadow-skyBlueGlow">
+              <img src={HeroCloud} alt="" className="h-32 md:h-52" />
+              <div className="lg:text-5xl lg:w-80   text-center w-44 text-[25px] top-5 md:top-12 left-4 md:left-7  absolute font-bold text-shadow-skyBlueGlow">
                 Happy Promise Day
               </div>
             </div>
@@ -162,11 +162,10 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
               </div>
             </div>
           </div>
-          <p className="pt-4 text-center font-medium italic">
+          <div className="pt-4 md:pt-10 md:mt-12 text-sm md:text-2xl text-center font-medium italic">
             Please scratch card to know the message
-          </p>
-
-          <div className="lg:pt-20 pb-6 sm:pt-20  px-4 flex justify-center">
+          </div>
+          <div className=" pb-6  px-4 flex justify-center">
             <ScratchToReveal
               width={700}
               height={250}
@@ -205,7 +204,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
                   className="lg:h-auto sm:h-auto lg:w-auto sm:w-auto h-16 w-28"
                 />
               </div>
-              <div className="flex items-center justify-center bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold">
+              <div className="flex items-center justify-center bg-[#A3CFF9] rounded-3xl w-full md:text-2xl text-sm px-4 py-2 font-semibold">
                 Together, always and forever. 🌸
               </div>
               <div>
@@ -224,7 +223,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
                   className="lg:h-auto sm:h-auto lg:w-auto sm:w-auto h-20 w-28"
                 />
               </div>
-              <div className="bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold flex items-center justify-center">
+              <div className="bg-[#A3CFF9]  md:text-2xl rounded-3xl w-full text-sm px-4 py-2 font-semibold flex items-center justify-center">
                 My heart, my promise, always yours. 💖
               </div>
               <div>
@@ -243,7 +242,7 @@ const Promise = ({ isPreview, previewImages, messages, ...previewData }) => {
                   className="lg:h-auto sm:h-auto lg:w-auto sm:w-auto h-20 w-28"
                 />
               </div>
-              <div className="bg-[#A3CFF9] rounded-3xl w-full text-sm px-4 py-2 font-semibold flex items-center justify-center">
+              <div className="bg-[#A3CFF9]  md:text-2xl rounded-3xl w-full text-sm px-4 py-2 font-semibold flex items-center justify-center">
                 You + Me = Forever, I promise. 💞
               </div>
               <div>

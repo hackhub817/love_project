@@ -20,6 +20,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isPasswordProtected: {
+    type: Boolean,
+    default: true,
+  },
   isLocked: {
     type: Boolean,
     default: true,
@@ -27,6 +31,7 @@ const userSchema = new Schema({
   uniqueName: {
     type: String,
   },
+  isSubmittedData: {},
   role: {
     type: String,
     enum: ["USER", "ADMIN"],

@@ -1,12 +1,12 @@
 export const VALENTINE_DATES = {
-  rose: "2024-02-07",
-  propose: "2024-02-08",
-  chocolate: "2024-02-09",
-  teddy: "2024-02-10",
-  promise: "2024-02-11",
-  hug: "2024-02-12",
-  kiss: "2024-02-13",
-  valentine: "2024-02-14",
+  rose: "2025-02-07",
+  propose: "2025-02-08",
+  chocolate: "2025-02-09",
+  teddy: "2025-02-10",
+  promise: "2025-02-11",
+  hug: "2025-02-12",
+  kiss: "2025-02-13",
+  valentine: "2025-02-14",
 };
 
 export const isDateLocked = (dayType) => {

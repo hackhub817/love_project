@@ -140,7 +140,7 @@ export const Kiss = ({
           </div>
           <div className="relative flex items-center justify-center  -mt-8 px-2">
             <img src={message} alt="Panda Kiss" className="" />
-            <div className="lg:text-5xl  lg:w-80 text-center absolute text-3xl  font-bold text-shadow-pinkGlow">
+            <div className="lg:text-[45px]  lg:w-96 text-center absolute text-3xl  font-bold text-shadow-pinkGlow">
               Happy Kiss Day
             </div>
           </div>
@@ -148,23 +148,23 @@ export const Kiss = ({
         <section>
           <div className="relative ">
             <img src={kisslove} alt="" className="px-2 " />
-            <div className="absolute top-20 text-xs w-40 left-12 font-semibold">
+            <div className="absolute top-20 text-xs md:top-52 md:left-40 w-40 left-12 font-semibold md:w-64 md:text-2xl">
               A kiss from you is like magic—soft, sweet, and the best part of my
               day. 💋❤️
             </div>
-            <div className="absolute top-[1vw] right-3 pt-9 w-full flex items-center justify-end">
+            <div className="absolute top-[1vw] md:top-[70px] right-3 md:right-6 pt-9 w-full flex items-center justify-end">
               {getImages(0, 1).map((imageUrl, idx) => (
                 <img
                   src={imageUrl}
                   alt=""
-                  className="h-[39vw] w-[39vw] rounded-3xl"
+                  className="h-[39vw] w-[39vw] lg:h-[25.5vw] lg:w-[25.5vw] md:rounded-[35px] rounded-3xl"
                 />
               ))}
             </div>
           </div>
         </section>
         <div className="flex items-center lg:px-0 sm:px-0 px-4">
-          <div className="bg-pink lg:p-8 sm:p-8 p-4 rounded-tl-xl font-semibold lg:text-xl sm:text-xl text-sm rounded-bl-xl bg-pink-500 sm:h-[250px] lg:h-[250px] h-[180px]">
+          <div className="bg-pink lg:p-12 sm:p-8 p-4 rounded-tl-xl font-medium lg:text-xl sm:text-xl text-xs rounded-bl-xl bg-pink-500 md:w-[700px] sm:h-[250px] lg:h-[300px] h-[180px]">
             {" "}
             Every time I kiss you, it’s like the world pauses for a moment. It’s
             not just our lips meeting—it’s my heart whispering how much I love
@@ -176,11 +176,11 @@ export const Kiss = ({
                 key={idx}
                 src={imageUrl}
                 alt={`Image ${idx + 1}`}
-                className="border-[10px] rounded-tr-xl rounded-br-xl border-pink-500 lg:w-[600px] sm:w-[600px] w-[1000px] sm:h-[250px] lg:h-[250px] h-[180px]"
+                className="border-[10px] rounded-tr-xl rounded-br-xl border-pink-500 lg:w-[1000px]  sm:w-[600px] w-[1000px] sm:h-[250px] lg:h-[300px] h-[180px]"
               />
             ))}
             <div className="flex items-center justify-center lg:block sm:block hidden">
-              <div className="absolute top-0 -mt-5 ">
+              <div className="absolute top-0 -mt-5 md:left-24 ">
                 <img src={dil} alt="" className="" />
               </div>
             </div>
@@ -192,12 +192,12 @@ export const Kiss = ({
               <img
                 src={love}
                 alt=""
-                className="lg:h-20 lg:w-20 sm:h-20 sm:w-20 h-10 w-10  "
+                className="lg:h-20 lg:w-20 sm:h-20 sm:w-20 h-12 w-20  "
               />
               <img
                 src={img}
                 alt=""
-                className="lg:h-28 lg:w-28 sm:h-28 sm:w-28 h-8 w-8  "
+                className="lg:h-28 lg:w-28 sm:h-28 sm:w-28 h-16 w-20  "
               />
             </div>
             {getImages(1, 4).map((imageUrl, idx) => (
@@ -217,7 +217,7 @@ export const Kiss = ({
               key={idx}
               src={imageUrl}
               alt={`Image ${idx + 5}`}
-              className="absolute lg:top-24 lg:left-[28px] lg:w-[276px] lg:h-[335px] sm:top-[85px] sm:left-[28px] sm:w-[236px] sm:h-[290px] top-14 left-[12px] w-[95px] h-[125px]"
+              className="absolute lg:top-24 lg:left-[28px] lg:w-[276px] lg:h-[335px] sm:top-[85px] sm:left-[28px] sm:w-[236px] sm:h-[290px] top-14 left-[15px] w-[110px] h-[140px]"
             />
           ))}
         </div>

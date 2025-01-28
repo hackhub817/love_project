@@ -425,15 +425,6 @@ const SignUpForm = () => {
           <div className="ml-4 ease-in-out mt-1 size-[1.2rem] border-[2.4px] border-y-[#57575769] animate-spin rounded-full bottom-0"></div>
         )}
       </button>
-
-      <div className="relative">
-        <hr className="my-6 border-gray-400 md:my-12" />
-        <span className="absolute px-2 -translate-x-1/2 -translate-y-1/2 bg-white top-1/2 left-1/2 ">
-          Or
-        </span>
-      </div>
-
-      <SocialLoginButton />
     </form>
   );
 };
@@ -441,9 +432,9 @@ const SignUpForm = () => {
 const Register = () => {
   return (
     <>
-      <section className="bg-gradient-to-r pt-10 flex relative overflow-hidden items-center justify-center from-[#281996] via-[#140A64] to-[#281996] font-poppins min-h-[100vh]">
-        <div className="absolute bg-[#082ec4] blur-3xl  rounded-full w-[30vw] h-[50vh] top-[-6rem] left-[-1rem]"></div>
-        <div className="absolute bg-[#082ec4d4] blur-3xl rounded-full w-[30vw] h-[50vh] bottom-[-6rem] right-0"></div>
+      <section className="bg-gradient-to-r pt-10 flex relative overflow-hidden items-center justify-center from-pink-500 via-orange-400 to-pink-500 font-poppins min-h-[100vh]">
+        <div className="absolute bg-pink-400 blur-3xl  rounded-full w-[30vw] h-[50vh] top-[-6rem] left-[-1rem]"></div>
+        <div className="absolute bg-pink-600 blur-3xl rounded-full w-[30vw] h-[50vh] bottom-[-6rem] right-0"></div>
         <div className="container relative px-4 mx-auto mt-10">
           <div className="grid h-full grid-cols-6 gap-6">
             <div className="col-span-6 md:col-span-2 lg:col-span-3">

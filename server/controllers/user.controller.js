@@ -557,6 +557,7 @@ export const verifyUser = async (req, res) => {
       user: {
         isLocked: user.isLocked,
         userName: user.userName,
+        isPasswordProtected: user?.isPasswordProtected,
       },
     });
   } catch (error) {
@@ -629,6 +630,35 @@ export const getUserDetails = async (req, res) => {
       message: "Error fetching user details",
       error: error.message,
     });
+  }
+};
+
+export const paymentStatus = async (req, res) => {
+  const userId = req.user.id; // Accept userId from the request body
+
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
+  try {
+    // Find the user by ID and update the isPaymentDone field to true
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { isPaymentDone: true },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Payment status updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating payment status:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

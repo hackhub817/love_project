@@ -10,17 +10,6 @@ import { loginUser, forgetPassword, resetPassword } from "../api/Api";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import OTPInput from "react-otp-input";
 
-const SocialLoginButton = () => (
-  <div className="flex items-center justify-center gap-4">
-    <button className="flex items-center justify-center p-3 text-white bg-blue-600 rounded">
-      <IoLogoFacebook className="text-white " />
-    </button>
-    <button className="flex items-center justify-center p-3 text-white bg-red-500 rounded">
-      <FaGoogle className="text-white " />
-    </button>
-  </div>
-);
-
 const AuthForm = () => {
   const navigate = useNavigate();
   const [otpValues, setOtpValues] = useState();
@@ -416,7 +405,6 @@ const AuthForm = () => {
                 Or
               </span>
             </div>
-            <SocialLoginButton />
           </form>
         </div>
       )}
@@ -429,9 +417,9 @@ const Login = () => {
 
   return (
     <>
-      <section className="bg-gradient-to-r pt-10 flex relative overflow-hidden items-center justify-center from-[#281996] via-[#140A64] to-[#281996] font-poppins min-h-[100vh]">
-        <div className="absolute bg-[#082ec4] blur-3xl  rounded-full w-[30vw] h-[50vh] top-[-6rem] left-[-1rem]"></div>
-        <div className="absolute bg-[#082ec4d4] blur-3xl rounded-full w-[30vw] h-[50vh] bottom-[-6rem] right-0"></div>
+      <section className="bg-gradient-to-r pt-10 flex relative overflow-hidden items-center justify-center from-pink-500 via-orange-400 to-pink-500 font-poppins min-h-[100vh]">
+        <div className="absolute bg-pink-400 blur-3xl  rounded-full w-[30vw] h-[50vh] top-[-6rem] left-[-1rem]"></div>
+        <div className="absolute bg-pink-600 blur-3xl rounded-full w-[30vw] h-[50vh] bottom-[-6rem] right-0"></div>
         <div className="container relative px-4 mx-auto mt-10">
           <div className="grid h-full grid-cols-6 gap-6">
             <div className="col-span-6 md:col-span-2 lg:col-span-3">
