@@ -41,7 +41,7 @@ app.use(cookieParser());
 // );
 app.use(
   cors({
-    origin: ["https://love-bird.onrender.com"],
+    origin: ["https://bobbuilder.shop"],
     credentials: true,
   })
 );
