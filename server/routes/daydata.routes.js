@@ -20,7 +20,7 @@ const router = Router();
 const upload = multer({
   dest: "uploads/",
   limits: {
-    fileSize: 20 * 1024 * 1024,
+    fileSize: 30 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith("image/")) {
@@ -38,7 +38,7 @@ router.post(
   upload.array("images", 12),
   uploadImages
 );
-router.post("/create", isLoggedIn, createDayData);
+router.post("/create", createDayData);
 
 // Get day data routes
 router.get("/Rose/:username", getRoseDayData);
