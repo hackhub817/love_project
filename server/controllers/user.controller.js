@@ -9,10 +9,10 @@ import otpService from "../utils/otpUtils.js";
 import { CLIENT_RENEG_LIMIT } from "tls";
 
 const cookieOption = {
-  secure: process.env.NODE_ENV === "production" ? true : false,
+  secure: true,
   maxAge: 7 * 24 * 60 * 60 * 1000,
   httpOnly: true,
-  sameSite: process.env.NODE_ENV === "production" ? "None" : "lax",
+  sameSite: "None",
 };
 
 const sentOtp = async (req, res, next) => {
