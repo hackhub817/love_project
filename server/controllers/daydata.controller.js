@@ -95,18 +95,23 @@ export const createDayData = async (req, res, next) => {
       secretMessage,
       specialMessage,
       user: userId,
-      passcode,
-      partnerName,
-      gender,
-      isSubmittedData: true,
     });
 
     // Update user's dayData array
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { $push: { dayData: dayData._id } },
+      {
+        $push: { dayData: dayData._id }, // Push only inside the array field
+        $set: {
+          isSubmittedData: true,
+          passcode,
+          partnerName,
+          gender,
+        }, // Set values for non-array fields
+      },
       { new: true }
     );
+
     console.log("updatedUser", updatedUser);
     if (!updatedUser) {
       return next(new CustomError("User not found", 400));
