@@ -90,7 +90,6 @@ export const removeCoupon = async (req, res) => {
 
 export const addCoupon = async (req, res) => {
   const { code, discountValue, usageLimit, isActive } = req.body;
-  console.log("req.bod", req.body);
   if (!code || !discountValue) {
     return res.status(400).json({
       message:

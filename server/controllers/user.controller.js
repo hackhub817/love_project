@@ -25,17 +25,15 @@ const cookieOption = {
 const sentOtp = async (req, res, next) => {
   try {
     const { userEmail, userName } = req.body;
-    console.log("body", req.body);
 
     // Check if user already exists
     const existingUser = await User.findOne({ userEmail });
-    console.log(existingUser);
+
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
     const existingUserName = await User.findOne({ userName });
-    console.log(existingUserName);
     if (existingUserName) {
       return res.status(400).json({ message: "Enter Unique UserName" });
     }
@@ -196,9 +194,7 @@ const register = async (req, res, next) => {
       userName,
       termsAccepted,
     } = req.body;
-    console.log("body", req.body);
     const isValidOTP = otpService.verifyOTP(userEmail, otp);
-    console.log("isValidOTP", isValidOTP);
 
     if (!isValidOTP) {
       return next(new CustomError("Otp is Invalid or Expired !!", 400));
@@ -216,7 +212,6 @@ const register = async (req, res, next) => {
     if (uniqueName) {
       return next(new CustomError("UniqueName is required", 400));
     }
-    console.log("uniqueEmail", uniqueEmail);
 
     const user = await User.create({
       fullName,
@@ -230,11 +225,9 @@ const register = async (req, res, next) => {
     if (!user) {
       return next(new CustomError("Registration Failed!", 400));
     }
-    console.log("user", user);
 
     const token = await user.generateJWTToken();
     res.cookie("token", token, cookieOption);
-    console.log("token", token);
 
     const userSubject =
       "Congratulation, Registered Successfully in Love Birds !! ";
@@ -342,7 +335,6 @@ const login = async (req, res, next) => {
     if (!passwordCheck) {
       return next(new CustomError("Password is wrong", 400));
     }
-    console.log(user.isBlocked);
     if (user.isBlocked) {
       return next(
         new CustomError("Admin has Blocked you . Please contact Admin", 400)
@@ -350,7 +342,6 @@ const login = async (req, res, next) => {
     }
     const token = await user.generateJWTToken();
     res.cookie("token", token, cookieOption);
-    console.log(res.cookie);
     res.status(200).json({
       success: true,
       message: "Login Successfull!",
@@ -526,7 +517,6 @@ const verifyToken = async (req, res) => {
 export const verifyPasscode = async (req, res) => {
   try {
     const { username, passcode } = req.body;
-    console.log(passcode);
     const user = await User.findOne({ userName: username });
 
     if (!user) {
@@ -618,7 +608,6 @@ export const toggleUserLock = async (req, res) => {
 export const getUserDetails = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(req.user);
     const user = await User.findById(userId);
 
     if (!user) {
@@ -672,10 +661,8 @@ export const paymentStatus = async (req, res) => {
 const handleLockToggle = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(userId);
     // Find the user by ID
     const user = await User.findById(userId);
-    console.log("user", user);
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -700,10 +687,10 @@ const handleLockToggle = async (req, res) => {
 const handlePasswordToggle = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(userId);
+    userId;
     // Find the user by ID
     const user = await User.findById(userId);
-    console.log("user", user);
+    ("user", user);
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });

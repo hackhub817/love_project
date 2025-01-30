@@ -86,8 +86,6 @@ export const createDayData = async (req, res, next) => {
       gender,
     } = req.body;
     const userId = req.user.id;
-    console.log(req.body);
-    console.log("req.user.id", req.user.id);
 
     if (!day || !images) {
       return next(
@@ -126,7 +124,6 @@ export const createDayData = async (req, res, next) => {
       { new: true }
     );
 
-    console.log("updatedUser", updatedUser);
     if (!updatedUser) {
       return next(new CustomError("User not found", 400));
     }

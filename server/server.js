@@ -45,7 +45,6 @@ app.use(express.json({ limit: "50mb" }));
 
 mongoose.set("strictQuery", false);
 const connectDB = async () => {
-  console.log("data");
   try {
     const { connection } = await mongoose.connect(process.env.MONGO_URI);
 

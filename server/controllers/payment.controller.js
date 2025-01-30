@@ -20,28 +20,26 @@ export const razorpayKey = async (req, res, next) => {
 export const checkout = async (req, res, next) => {
   try {
     const { code = "" } = req.body;
-    console.log(code);
+
     const couponData = await Coupon.findOne({ code });
-    console.log("couponData", couponData);
+
     const amount = 312;
 
     const razorAmount =
       amount - ((amount * couponData?.discountValue) / 100 || 0);
-    console.log(razorAmount);
+
     const options = {
       amount: razorAmount * 100,
       currency: "INR",
     };
-    console.log(options);
-    console.log("object");
+
     const order = await razorpay.orders.create(options);
-    console.log(order);
+
     res.status(200).json({
       success: true,
       order,
     });
   } catch (e) {
-    console.log(e);
     return next(new CustomError(e.message, 500));
   }
 };
