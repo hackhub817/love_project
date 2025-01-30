@@ -168,6 +168,7 @@ const resendOtp = async (req, res, next) => {
     await sendEmail(userEmail, subject, message);
 
     res.status(200).json({
+      success: true,
       message: "New OTP sent successfully",
       userEmail,
     });
@@ -179,8 +180,15 @@ const resendOtp = async (req, res, next) => {
 
 const register = async (req, res, next) => {
   try {
-    const { fullName, userEmail, userPassword, phoneNumber, otp, userName } =
-      req.body;
+    const {
+      fullName,
+      userEmail,
+      userPassword,
+      phoneNumber,
+      otp,
+      userName,
+      termsAccepted,
+    } = req.body;
     console.log("body", req.body);
     const isValidOTP = otpService.verifyOTP(userEmail, otp);
     console.log("isValidOTP", isValidOTP);
@@ -209,6 +217,7 @@ const register = async (req, res, next) => {
       userPassword,
       phoneNumber: phoneNumber && phoneNumber,
       userName,
+      termsAccepted,
     });
 
     if (!user) {
@@ -614,15 +623,7 @@ export const getUserDetails = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      user: {
-        fullName: user.fullName,
-        userName: user.userName,
-        userEmail: user.userEmail,
-        phoneNumber: user.phoneNumber,
-        isLocked: user.isLocked,
-        passcode: user.passcode,
-        createdAt: user.createdAt,
-      },
+      user,
     });
   } catch (error) {
     res.status(500).json({
@@ -661,8 +662,176 @@ export const paymentStatus = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+const handleLockToggle = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    console.log(userId);
+    // Find the user by ID
+    const user = await User.findById(userId);
+    console.log("user", user);
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Toggle the isLocked field
+    user.isLocked = !user.isLocked;
+
+    // Save the updated user
+    await user.save();
+
+    // Return the updated user
+    res.status(200).json({
+      message: `User lock status toggled to ${user.isLocked}`,
+      user,
+    });
+  } catch (error) {
+    console.error("Error toggling user lock:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+const handlePasswordToggle = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    console.log(userId);
+    // Find the user by ID
+    const user = await User.findById(userId);
+    console.log("user", user);
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Toggle the isLocked field
+    user.isPasswordProtected = !user.isPasswordProtected;
+
+    // Save the updated user
+    await user.save();
+
+    // Return the updated user
+    res.status(200).json({
+      message: `User lock status toggled to ${user.isPasswordProtected}`,
+      user,
+    });
+  } catch (error) {
+    console.error("Error toggling user lock:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Backend route handler
+const contactUs = async (req, res) => {
+  const { name, email, phone, subject, message } = req.body;
+  const emailTemplate = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+        .container {
+          background: linear-gradient(to right, #fff5f5, #fff0f0);
+          border-radius: 15px;
+          padding: 30px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          text-align: center;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #ff6b6b;
+        }
+        .heart {
+          color: #ff4d4d;
+          font-size: 24px;
+        }
+        .message-content {
+          background: white;
+          padding: 20px;
+          border-radius: 10px;
+          margin: 20px 0;
+        }
+        .footer {
+          text-align: center;
+          font-size: 12px;
+          color: #666;
+          margin-top: 20px;
+        }
+        .details {
+          margin: 20px 0;
+          padding: 15px;
+          background: rgba(255, 192, 203, 0.1);
+          border-radius: 8px;
+        }
+        .label {
+          font-weight: bold;
+          color: #ff4d4d;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <span class="heart">❤️</span>
+          <h1 style="color: #ff4d4d; margin: 10px 0;">New Love Note Received</h1>
+          <span class="heart">❤️</span>
+        </div>
+        
+        <div class="details">
+          <p><span class="label">From:</span> ${name}</p>
+          <p><span class="label">Email:</span> ${email}</p>
+          <p><span class="label">Phone:</span> ${phone}</p>
+          <p><span class="label">Subject:</span> ${subject}</p>
+        </div>
+
+        <div class="message-content">
+          <h3 style="color: #ff4d4d;">Message:</h3>
+          <p>${message}</p>
+        </div>
+
+        <div class="footer">
+          <p>This message was sent from the LoveBirds Contact Form</p>
+          <p>Spreading love and happiness this Valentine's season ❤️</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+  try {
+    // Validate required fields
+    if (!name || !email || !phone || !subject || !message) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all required fields",
+      });
+    }
+
+    const Emailsubject = `❤️ New Contact Form Message:${subject}`;
+
+    const userEmail = "piy735d@gmail.com";
+    await sendEmail(userEmail, Emailsubject, emailTemplate);
+
+    return res.status(200).json({
+      success: true,
+      message: "Your message has been sent successfully!",
+    });
+  } catch (error) {
+    console.error("Email sending failed:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send message. Please try again later.",
+    });
+  }
+};
 
 export {
+  handleLockToggle,
+  contactUs,
   register,
   login,
   getUserById,
@@ -673,4 +842,5 @@ export {
   forgotPassword,
   verifyOTP,
   verifyToken,
+  handlePasswordToggle,
 };

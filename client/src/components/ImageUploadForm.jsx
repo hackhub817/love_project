@@ -553,7 +553,9 @@ const ImageUploadForm = () => {
               {selectedDay && (
                 <div className="w-full">
                   <div className="border p-4 rounded sticky top-4">
-                    <h3 className="font-bold text-lg mb-4">Page Preview</h3>
+                    <h3 className="font-bold text-lg w-[375px] mb-4">
+                      Page Preview
+                    </h3>
                     {renderDayPreview()}
                   </div>
                 </div>

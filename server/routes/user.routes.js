@@ -17,6 +17,9 @@ import {
   toggleUserLock,
   getUserDetails,
   paymentStatus,
+  handleLockToggle,
+  handlePasswordToggle,
+  contactUs,
 } from "../controllers/user.controller.js";
 
 router.post("/sent-otp", sentOtp);
@@ -31,8 +34,10 @@ router.post("/reset-password", verifyOTP);
 router.get("/verify-token", verifyToken);
 router.post("/verify-passcode", verifyPasscode);
 router.get("/verify-user/:username", verifyUser);
-router.patch("/toggle-lock/:userId", toggleUserLock);
 router.get("/details", isLoggedIn, getUserDetails);
+router.patch("/toggle-lock", isLoggedIn, handleLockToggle);
+router.patch("/toggle-password", isLoggedIn, handlePasswordToggle);
+router.post("/contact", contactUs);
 router.get("/updatePaymentStatus", isLoggedIn, paymentStatus);
 
 export default router;

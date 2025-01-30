@@ -31,11 +31,15 @@ const userSchema = new Schema({
   uniqueName: {
     type: String,
   },
-  isSubmittedData: {},
+  isSubmittedData: { type: Boolean, default: false },
   role: {
     type: String,
     enum: ["USER", "ADMIN"],
     default: "USER",
+  },
+  termsAccepted: {
+    type: Boolean,
+    default: false,
   },
   userEmail: {
     type: String,

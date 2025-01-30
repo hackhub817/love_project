@@ -67,6 +67,9 @@ export const createDayData = async (req, res, next) => {
       secretPromise,
       secretMessage,
       specialMessage,
+      passcode,
+      partnerName,
+      gender,
     } = req.body;
     const userId = req.user.id;
     console.log(req.body);
@@ -92,6 +95,10 @@ export const createDayData = async (req, res, next) => {
       secretMessage,
       specialMessage,
       user: userId,
+      passcode,
+      partnerName,
+      gender,
+      isSubmittedData: true,
     });
 
     // Update user's dayData array
