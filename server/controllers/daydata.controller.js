@@ -6,8 +6,15 @@ import CustomError from "../utils/error.utils.js";
 
 export const uploadImages = async (req, res, next) => {
   try {
+    // Add CORS headers explicitly for upload responses
+    res.header("Access-Control-Allow-Origin", "https://bobbuilder.shop");
+    res.header("Access-Control-Allow-Credentials", "true");
+
     if (!req.files || req.files.length === 0) {
-      return next(new CustomError("No images provided", 400));
+      return res.status(400).json({
+        success: false,
+        message: "No images provided",
+      });
     }
 
     const uploadPromises = req.files.map(async (file) => {
@@ -18,11 +25,13 @@ export const uploadImages = async (req, res, next) => {
           height: 360,
           gravity: "faces",
           crop: "fill",
+          timeout: 120000, // Increase timeout to 120 seconds
         });
 
         await fs.unlink(file.path);
         return result.secure_url;
       } catch (uploadError) {
+        console.error("Cloudinary upload error:", uploadError);
         await fs
           .unlink(file.path)
           .catch((err) =>
@@ -40,6 +49,9 @@ export const uploadImages = async (req, res, next) => {
       imageUrls,
     });
   } catch (error) {
+    console.error("Upload controller error:", error);
+
+    // Cleanup any remaining files
     if (req.files) {
       await Promise.all(
         req.files.map((file) =>
@@ -51,9 +63,11 @@ export const uploadImages = async (req, res, next) => {
         )
       );
     }
-    return next(
-      new CustomError(error.message || "Error uploading images", 500)
-    );
+
+    res.status(500).json({
+      success: false,
+      message: error.message || "Error uploading images",
+    });
   }
 };
 

@@ -14,7 +14,7 @@ import PaymentRoute from "./routes/payment.routes.js";
 import Razorpay from "razorpay";
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 const PORT = process.env.PORT || 5000;
 config();
 
@@ -27,25 +27,21 @@ const res = cloudinary.v2.config({
 app.use(morgan("dev"));
 
 app.use(cookieParser());
-// app.use(
-//   cors({
-//     origin: [
-//       process.env.FRONTEND_URL,
-//       "https: //love-bird.onrender.com",
-//       "http://localhost:5174",
-//       "https://bobbuilder.shop",
-//       "http://localhost:5173",
-//     ],
-//     credentials: true,
-//   })
-// );
 app.use(
   cors({
-    origin: ["https://bobbuilder.shop"],
+    origin: [
+      "https://bobbuilder.shop",
+      "http://localhost:5173",
+      "http://localhost:5174",
+    ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    exposedHeaders: ["Content-Range", "X-Content-Range"],
+    maxAge: 600, // Increase cache time for preflight requests
   })
 );
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 
 mongoose.set("strictQuery", false);
 const connectDB = async () => {
