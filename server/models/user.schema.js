@@ -79,6 +79,9 @@ const userSchema = new Schema({
   otpExpiry: {
     type: Date,
   },
+  googleId: {
+    type: String,
+  },
   selectedDays: {
     type: [String],
     enum: [

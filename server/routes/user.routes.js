@@ -20,7 +20,26 @@ import {
   handleLockToggle,
   handlePasswordToggle,
   contactUs,
+  handleSocialLogin,
 } from "../controllers/user.controller.js";
+import passport from "passport";
+
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  }),
+  (req, res, next) => {
+    console.log(req.user);
+    res.send("Redirecting to google login!");
+  }
+);
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  handleSocialLogin
+);
 
 router.post("/sent-otp", sentOtp);
 router.post("/resend-otp", resendOtp);
@@ -31,7 +50,7 @@ router.get("/get-user/:id", isLoggedIn, getUserById);
 router.get("/", isLoggedIn, profile);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", verifyOTP);
-router.get("/verify-token", verifyToken);
+router.get("/verify-token", isLoggedIn, verifyToken);
 router.post("/verify-passcode", verifyPasscode);
 router.get("/verify-user/:username", verifyUser);
 router.get("/details", isLoggedIn, getUserDetails);

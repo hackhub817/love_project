@@ -12,6 +12,8 @@ import dayDataRoute from "./routes/daydata.routes.js";
 import CouponRoute from "./routes/coupon.routes.js";
 import PaymentRoute from "./routes/payment.routes.js";
 import Razorpay from "razorpay";
+import passport from "./passport/passport.js";
+import session from "express-session";
 const app = express();
 
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
@@ -27,6 +29,20 @@ const res = cloudinary.v2.config({
 app.use(morgan("dev"));
 
 app.use(cookieParser());
+
+app.use(
+  session({
+    secret: "your-secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
+    },
+  })
+);
+
 app.use(
   cors({
     origin: [
@@ -62,6 +78,9 @@ export const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
 });
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/user", userRoute);
 app.use("/api/day-data", dayDataRoute);

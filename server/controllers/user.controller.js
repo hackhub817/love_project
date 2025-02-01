@@ -514,6 +514,38 @@ const verifyToken = async (req, res) => {
   }
 };
 
+export const handleSocialLogin = async (req, res) => {
+  try {
+    console.log(req?.user?.id);
+    const user = await User.findById(req?.user?.id);
+
+    const token = await user.generateJWTToken();
+    // return await jwt.sign(
+    //   {
+    //     id: req._id,
+    //     email: this.email,
+    //     role: this.role,
+    //   },
+    //   process.env.JWT_SECRET,
+    //   {
+    //     expiresIn: process.env.JWT_EXPIRY,
+    //   }
+    // );
+    // res.cookie("token", token, cookieOption);
+    res
+      .status(200)
+      .cookie("token", token, cookieOption)
+      .redirect("https://bobbuilder.shop?success=true");
+    // .json({
+    //   success: true,
+    //   user: req.user,
+    //   message: "User logged in successfully!",
+    // });
+  } catch (err) {
+    return console.log(err);
+  }
+};
+
 export const verifyPasscode = async (req, res) => {
   try {
     const { username, passcode } = req.body;
