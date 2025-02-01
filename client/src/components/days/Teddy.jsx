@@ -12,6 +12,7 @@ import ballon from "../../assets/teddy/teddyballon.png";
 import female from "../../assets/teddy/female.png";
 import lovehand from "../../assets/teddy/lovehand.png";
 import Stack from "../../blocks/Components/Stack/Stack";
+
 export const Teddy = ({
   isPreview,
   previewImages,

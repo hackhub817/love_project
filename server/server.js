@@ -11,6 +11,7 @@ import userRoute from "./routes/user.routes.js";
 import dayDataRoute from "./routes/daydata.routes.js";
 import CouponRoute from "./routes/coupon.routes.js";
 import PaymentRoute from "./routes/payment.routes.js";
+import AdminRoute from "./routes/admin.routes.js";
 import Razorpay from "razorpay";
 import passport from "./passport/passport.js";
 import session from "express-session";
@@ -86,6 +87,7 @@ app.use("/api/user", userRoute);
 app.use("/api/day-data", dayDataRoute);
 app.use("/api/coupon", CouponRoute);
 app.use("/api/payment", PaymentRoute);
+app.use("/api/admin", AdminRoute);
 
 app.get("/", (req, res) => {
   res.send("API is running");

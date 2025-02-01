@@ -79,6 +79,15 @@ const userSchema = new Schema({
   otpExpiry: {
     type: Date,
   },
+  screenShot: {
+    publicId: {
+      type: "String",
+    },
+    secure_url: {
+      type: "String",
+    },
+  },
+
   googleId: {
     type: String,
   },

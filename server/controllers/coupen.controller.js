@@ -35,7 +35,7 @@ export const applyCoupen = async (req, res) => {
     res.status(200).json({
       originalAmount: amount,
       discountApplied: amount - discountedAmount,
-      discountedAmount: 49  ,
+      discountedAmount: 0,
       message: "Coupon applied successfully",
     });
   } catch (error) {
