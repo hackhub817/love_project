@@ -266,8 +266,8 @@ const register = async (req, res, next) => {
           </p>
 
           <div style="text-align: center; margin: 20px 0;">
-            <a href="https://lovebirds-website.onrender.com" style="display: inline-block; background-color: #0074f9; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
-              Visit Lovebirds
+            <a href="https://bobbuilder.shop" style="display: inline-block; background-color: #0074f9; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+              Visit Bobbuilder
             </a>
           </div>
 
@@ -690,7 +690,7 @@ const handlePasswordToggle = async (req, res) => {
     userId;
     // Find the user by ID
     const user = await User.findById(userId);
-    ("user", user);
+    "user", user;
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
