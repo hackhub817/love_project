@@ -7,9 +7,9 @@ import CustomError from "../utils/error.utils.js";
 export const uploadImages = async (req, res, next) => {
   try {
     // Add CORS headers explicitly for upload responses
-    res.header("Access-Control-Allow-Origin", "https://bobbuilder.shop");
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
     res.header("Access-Control-Allow-Credentials", "true");
-
+    console.log("req.file", req.files);
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,

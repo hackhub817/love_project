@@ -48,6 +48,7 @@ app.use(
   cors({
     origin: [
       "https://bobbuilder.shop",
+      "https://love-bird.onrender.com",
       "http://localhost:5173",
       "http://localhost:5174",
     ],

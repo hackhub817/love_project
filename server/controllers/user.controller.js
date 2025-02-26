@@ -266,7 +266,7 @@ const register = async (req, res, next) => {
           </p>
 
           <div style="text-align: center; margin: 20px 0;">
-            <a href="https://bobbuilder.shop" style="display: inline-block; background-color: #0074f9; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+            <a href="https://love-bird.onrender.com" style="display: inline-block; background-color: #0074f9; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
               Visit Bobbuilder
             </a>
           </div>
@@ -535,7 +535,7 @@ export const handleSocialLogin = async (req, res) => {
     res
       .status(200)
       .cookie("token", token, cookieOption)
-      .redirect("https://bobbuilder.shop?success=true");
+      .redirect("https://love-bird.onrender.com?success=true");
     // .json({
     //   success: true,
     //   user: req.user,

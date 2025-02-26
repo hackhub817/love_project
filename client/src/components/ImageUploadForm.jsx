@@ -1,6 +1,3 @@
-Beore fixes api hiting perblem 
-
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -247,13 +244,13 @@ const ImageUploadForm = () => {
   };
 
   // Add effect to save preview mode state
-  useEffect(() => {
-    if (previewMode) {
-      localStorage.setItem("previewMode", "true");
-    } else {
-      localStorage.removeItem("previewMode");
-    }
-  }, [previewMode]);
+  // useEffect(() => {
+  //   if (previewMode) {
+  //     localStorage.setItem("previewMode", "true");
+  //   } else {
+  //     localStorage.removeItem("previewMode");
+  //   }
+  // }, [previewMode]);
 
   const paymentDetails = {
     razorpay_payment_id: "",
@@ -876,7 +873,6 @@ const ImageUploadForm = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-pink-50 via-red-50 to-pink-50 py-8">
-      {/* Floating Hearts Background - similar to Dashboard */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         {[...Array(20)].map((_, i) => (
           <FaHeart
@@ -893,7 +889,7 @@ const ImageUploadForm = () => {
         ))}
       </div>
 
-      <div className="  px-2 relative">
+      <div className="px-2 relative">
         {!previewMode ? (
           // Upload Form
           <div className="space-y-6">
