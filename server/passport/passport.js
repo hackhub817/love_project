@@ -9,7 +9,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://api.bobbuilder.shop/api/user/google/callback",
+      callbackURL:
+        "https://love-project-api.onrender.com/api/user/google/callback",
     },
 
     async (_, __, profile, done) => {

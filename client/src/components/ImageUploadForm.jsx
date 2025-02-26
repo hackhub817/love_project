@@ -323,7 +323,7 @@ const ImageUploadForm = () => {
     }
     try {
       const response = await axios.post(
-        "https://api.bobbuilder.shop/api/coupon/apply-coupon",
+        "https://love-project-api.onrender.com/api/coupon/apply-coupon",
         {
           code: couponCode,
         }
@@ -362,7 +362,7 @@ const ImageUploadForm = () => {
 
     try {
       const response = await axios.post(
-        "https://api.bobbuilder.shop/api/coupon/removeCoupon",
+        "https://love-project-api.onrender.com/api/coupon/removeCoupon",
         {
           code: couponCode,
           originalAmount: totalAmount,
